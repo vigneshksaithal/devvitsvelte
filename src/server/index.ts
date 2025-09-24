@@ -1,42 +1,34 @@
-import {
-	context,
-	createServer,
-	getServerPort,
-	reddit,
-	redis
-} from '@devvit/web/server'
-import express from 'express'
-import type {
-	DecrementResponse,
-	IncrementResponse,
-	InitResponse
-} from '../shared/types/api'
+// import {
+// 	context,
+// 	createServer,
+// 	getServerPort,
+// 	reddit,
+// 	redis
+// } from '@devvit/web/server'
+// import type {
+// 	InitResponse
+// } from '../shared/types/api'
+// import { createPost } from './core/post'
+
+import { context, reddit, redis } from '@devvit/web/server'
+import { serve } from '@hono/node-server'
+import { Hono } from 'hono'
 import { createPost } from './core/post'
 
-const app = express()
+const app = new Hono()
 
-// Middleware for JSON body parsing
-app.use(express.json())
-// Middleware for URL-encoded body parsing
-app.use(express.urlencoded({ extended: true }))
-// Middleware for plain text body parsing
-app.use(express.text())
-
-const router = express.Router()
-
-router.get<
-	{ postId: string },
-	InitResponse | { status: string; message: string }
->('/api/init', async (_req, res): Promise<void> => {
+app.get('/api/init', async (c) => {
 	const { postId } = context
 
 	if (!postId) {
 		console.error('API Init Error: postId not found in devvit context')
-		res.status(400).json({
-			status: 'error',
-			message: 'postId is required but missing from context'
-		})
-		return
+		return c.json(
+			{
+				status: 'error',
+				message: 'postId is required but missing from context'
+			},
+			400
+		)
 	}
 
 	try {
@@ -45,10 +37,10 @@ router.get<
 			reddit.getCurrentUsername()
 		])
 
-		res.json({
+		return c.json({
 			type: 'init',
 			postId: postId,
-			count: count ? parseInt(count) : 0,
+			count: count ? parseInt(count, 10) : 0,
 			username: username ?? 'anonymous'
 		})
 	} catch (error) {
@@ -57,87 +49,94 @@ router.get<
 		if (error instanceof Error) {
 			errorMessage = `Initialization failed: ${error.message}`
 		}
-		res.status(400).json({ status: 'error', message: errorMessage })
+		return c.json({ status: 'error', message: errorMessage }, 400)
 	}
 })
 
-router.post<
-	{ postId: string },
-	IncrementResponse | { status: string; message: string },
-	unknown
->('/api/increment', async (_req, res): Promise<void> => {
-	const { postId } = context
-	if (!postId) {
-		res.status(400).json({
-			status: 'error',
-			message: 'postId is required'
-		})
-		return
-	}
+// router.get<
+// 	{ postId: string },
+// 	InitResponse | { status: string; message: string }
+// >('/api/init', async (_req, res): Promise<void> => {
+// 	const { postId } = context
 
-	res.json({
-		count: await redis.incrBy('count', 1),
-		postId,
-		type: 'increment'
-	})
-})
+// 	if (!postId) {
+// 		console.error('API Init Error: postId not found in devvit context')
+// 		res.status(400).json({
+// 			status: 'error',
+// 			message: 'postId is required but missing from context'
+// 		})
+// 		return
+// 	}
 
-router.post<
-	{ postId: string },
-	DecrementResponse | { status: string; message: string },
-	unknown
->('/api/decrement', async (_req, res): Promise<void> => {
-	const { postId } = context
-	if (!postId) {
-		res.status(400).json({
-			status: 'error',
-			message: 'postId is required'
-		})
-		return
-	}
+// 	try {
+// 		const [count, username] = await Promise.all([
+// 			redis.get('count'),
+// 			reddit.getCurrentUsername()
+// 		])
 
-	res.json({
-		count: await redis.incrBy('count', -1),
-		postId,
-		type: 'decrement'
-	})
-})
+// 		res.json({
+// 			type: 'init',
+// 			postId: postId,
+// 			count: count ? parseInt(count, 10) : 0,
+// 			username: username ?? 'anonymous'
+// 		})
+// 	} catch (error) {
+// 		console.error(`API Init Error for post ${postId}:`, error)
+// 		let errorMessage = 'Unknown error during initialization'
+// 		if (error instanceof Error) {
+// 			errorMessage = `Initialization failed: ${error.message}`
+// 		}
+// 		res.status(400).json({ status: 'error', message: errorMessage })
+// 	}
+// })
 
-router.post('/internal/on-app-install', async (_req, res): Promise<void> => {
+// router.post('/internal/on-app-install', async (_req, res): Promise<void> => {
+// 	try {
+// 		const post = await createPost()
+
+// 		res.json({
+// 			status: 'success',
+// 			message: `Post created in subreddit ${context.subredditName} with id ${post.id}`
+// 		})
+// 	} catch (error) {
+// 		console.error(`Error creating post: ${error}`)
+// 		res.status(400).json({
+// 			status: 'error',
+// 			message: 'Failed to create post'
+// 		})
+// 	}
+// })
+
+app.post('/internal/on-app-install', async (c) => {
 	try {
 		const post = await createPost()
 
-		res.json({
-			status: 'success',
-			message: `Post created in subreddit ${context.subredditName} with id ${post.id}`
-		})
-	} catch (error) {
-		console.error(`Error creating post: ${error}`)
-		res.status(400).json({
-			status: 'error',
-			message: 'Failed to create post'
-		})
-	}
-})
-
-router.post('/internal/menu/post-create', async (_req, res): Promise<void> => {
-	try {
-		const post = await createPost()
-
-		res.json({
+		return c.json({
 			navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
 		})
 	} catch (error) {
 		console.error(`Error creating post: ${error}`)
-		res.status(400).json({
+		return c.json({
 			status: 'error',
 			message: 'Failed to create post'
-		})
+		}, 400)
 	}
 })
 
-app.use(router)
+app.post('/internal/menu/post-create', async (c) => {
+	try {
+		const post = await createPost()
 
-const server = createServer(app)
-server.on('error', (err) => console.error(`server error; ${err.stack}`))
-server.listen(getServerPort())
+		return c.json({
+			navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
+		})
+	} catch (error) {
+		console.error(`Error creating post: ${error}`)
+		return c.json({
+			status: 'error',
+			message: 'Failed to create post'
+		}, 400)
+	}
+})
+
+serve(app)
