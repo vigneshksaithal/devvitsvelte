@@ -5,6 +5,6 @@ const increment = () => {
 }
 </script>
 
-<button onclick={increment}>
+<button class="bg-blue-500 text-white p-2 rounded-md" onclick={increment}>
   count is {count}
 </button>
