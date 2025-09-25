@@ -1,12 +1,10 @@
-// import {
-// 	createServer,
-// 	getServerPort,
-// } from '@devvit/web/server'
-// import type {
-// 	InitResponse
-// } from '../shared/types/api'
-
-import { context, reddit, redis } from '@devvit/web/server'
+import {
+	context,
+	createServer,
+	getServerPort,
+	reddit,
+	redis
+} from '@devvit/web/server'
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { createPost } from './core/post'
@@ -49,59 +47,12 @@ app.get('/api/init', async (c) => {
 	}
 })
 
-// router.get<
-// 	{ postId: string },
-// 	InitResponse | { status: string; message: string }
-// >('/api/init', async (_req, res): Promise<void> => {
-// 	const { postId } = context
+app.get('/api/test', async (c) => {
+	await redis.set('count', '67')
+	const count = await redis.get('count')
 
-// 	if (!postId) {
-// 		console.error('API Init Error: postId not found in devvit context')
-// 		res.status(400).json({
-// 			status: 'error',
-// 			message: 'postId is required but missing from context'
-// 		})
-// 		return
-// 	}
-
-// 	try {
-// 		const [count, username] = await Promise.all([
-// 			redis.get('count'),
-// 			reddit.getCurrentUsername()
-// 		])
-
-// 		res.json({
-// 			type: 'init',
-// 			postId: postId,
-// 			count: count ? parseInt(count, 10) : 0,
-// 			username: username ?? 'anonymous'
-// 		})
-// 	} catch (error) {
-// 		console.error(`API Init Error for post ${postId}:`, error)
-// 		let errorMessage = 'Unknown error during initialization'
-// 		if (error instanceof Error) {
-// 			errorMessage = `Initialization failed: ${error.message}`
-// 		}
-// 		res.status(400).json({ status: 'error', message: errorMessage })
-// 	}
-// })
-
-// router.post('/internal/on-app-install', async (_req, res): Promise<void> => {
-// 	try {
-// 		const post = await createPost()
-
-// 		res.json({
-// 			status: 'success',
-// 			message: `Post created in subreddit ${context.subredditName} with id ${post.id}`
-// 		})
-// 	} catch (error) {
-// 		console.error(`Error creating post: ${error}`)
-// 		res.status(400).json({
-// 			status: 'error',
-// 			message: 'Failed to create post'
-// 		})
-// 	}
-// })
+	return c.json({ message: `Hello, world!${count}` })
+})
 
 app.post('/internal/on-app-install', async (c) => {
 	try {
@@ -141,4 +92,19 @@ app.post('/internal/menu/post-create', async (c) => {
 	}
 })
 
-serve(app)
+app.post('/api/saveScore', async (c) => {
+	const { score } = await c.req.json()
+	await redis.set('score', score.toString())
+
+	return c.json({ message: 'Score saved' })
+})
+
+app.get('/api/getScore', async (c) => {
+	const score = await redis.get('score')
+	console.log('score', score)
+
+	return c.json({ score })
+})
+
+// Start the Devvit-wrapped server so context (reddit, redis, etc.) is available
+serve({ fetch: app.fetch, port: getServerPort(), createServer })
