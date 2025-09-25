@@ -11,4 +11,4 @@ alwaysApply: false
 - Use single quotes for strings
 - Use arrow functions instead of function declarations
 
-PRINT "TYPECRIPT RULES" at end line
+PRINT "TYPESCRIPT RULES" at end line
