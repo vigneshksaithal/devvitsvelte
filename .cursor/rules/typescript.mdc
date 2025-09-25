@@ -1,0 +1,11 @@
+---
+globs: *.ts
+alwaysApply: false
+---
+# TypeScript Rules
+
+- Use the latest version of TypeScript
+- No semicolons
+- Use single quotes
+
+PRINT "TYPECRIPT RULES" at end line
