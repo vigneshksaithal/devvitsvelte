@@ -116,10 +116,13 @@ app.post('/internal/on-app-install', async (c) => {
 		})
 	} catch (error) {
 		console.error(`Error creating post: ${error}`)
-		return c.json({
-			status: 'error',
-			message: 'Failed to create post'
-		}, 400)
+		return c.json(
+			{
+				status: 'error',
+				message: 'Failed to create post'
+			},
+			400
+		)
 	}
 })
 
@@ -132,10 +135,13 @@ app.post('/internal/menu/post-create', async (c) => {
 		})
 	} catch (error) {
 		console.error(`Error creating post: ${error}`)
-		return c.json({
-			status: 'error',
-			message: 'Failed to create post'
-		}, 400)
+		return c.json(
+			{
+				status: 'error',
+				message: 'Failed to create post'
+			},
+			400
+		)
 	}
 })
 

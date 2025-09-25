@@ -1,5 +1,4 @@
 <script lang="ts">
-// biome-ignore lint/correctness/noUnusedImports: import Counter
 import Counter from './lib/Counter.svelte'
 </script>
 
