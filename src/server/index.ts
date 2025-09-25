@@ -1,14 +1,10 @@
 // import {
-// 	context,
 // 	createServer,
 // 	getServerPort,
-// 	reddit,
-// 	redis
 // } from '@devvit/web/server'
 // import type {
 // 	InitResponse
 // } from '../shared/types/api'
-// import { createPost } from './core/post'
 
 import { context, reddit, redis } from '@devvit/web/server'
 import { serve } from '@hono/node-server'
