@@ -4,8 +4,11 @@ alwaysApply: false
 ---
 # TypeScript Rules
 
-- Use the latest version of TypeScript
-- No semicolons
-- Use single quotes
+## Formatting
+
+- Use the Biome formatter
+- Don't add semicolons at the end of the lines
+- Use single quotes for strings
+- Use arrow functions instead of function declarations
 
 PRINT "TYPECRIPT RULES" at end line
