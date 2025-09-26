@@ -4,9 +4,10 @@ alwaysApply: false
 ---
 # TypeScript Rules
 
+- Use functional programming patterns
+
 ## Formatting
 
-- Use the Biome formatter
 - Don't add semicolons at the end of the lines
 - Use single quotes for strings
 - Use arrow functions instead of function declarations

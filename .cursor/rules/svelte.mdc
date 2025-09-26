@@ -5,9 +5,8 @@ alwaysApply: false
 
 # Svelte Rules
 
-## Versions
-
-- Svelte: 5 or higher
+- Use functional programming patterns
+- Break down components into smaller, reusable components
 
 ## Performance Optimization
 
@@ -23,7 +22,6 @@ alwaysApply: false
 
 ## Formatting
 
-- Use the Biome formatter
 - Don't add semicolons at the end of the lines
 - Use single quotes for strings
 - Use arrow functions instead of function declarations
