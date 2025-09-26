@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte"
+import { onMount } from 'svelte'
 
 let count: number = $state(0)
 let message: string = $state('')
@@ -10,20 +10,23 @@ const increment = () => {
 }
 
 const saveScore = async () => {
-	const res = await fetch('/api/saveScore', { method: 'POST', body: JSON.stringify({ score: count }) })
+	const res = await fetch('/api/saveScore', {
+		method: 'POST',
+		body: JSON.stringify({ score: count })
+	})
 	const data = await res.json()
 	console.log(data)
 
-  const getScore = await fetch('/api/getScore', { method: 'GET' })
+	const getScore = await fetch('/api/getScore', { method: 'GET' })
 	const scoreData = await getScore.json()
 	console.log(scoreData)
-  score = scoreData.score
+	score = scoreData.score
 }
 
-onMount( async () => {
+onMount(async () => {
 	const res = await fetch('/api/test', { method: 'GET' })
 	const data = await res.json()
-  console.log(data)
+	console.log(data)
 	message = data
 })
 </script>
