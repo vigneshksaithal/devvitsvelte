@@ -1,6 +1,6 @@
 {
 	"$schema": "https://developers.reddit.com/schema/config-file.v1.json",
-	"name": "svelte-demo-x",
+	"name": "",
 	"post": {
 		"dir": "dist/client",
 		"entrypoints": {
@@ -16,8 +16,8 @@
 	"menu": {
 		"items": [
 			{
-				"label": "Create a new post",
-				"description": "Svelte",
+				"label": "",
+				"description": "",
 				"location": "subreddit",
 				"forUserType": "moderator",
 				"endpoint": "/internal/menu/post-create"
@@ -28,6 +28,6 @@
 		"onAppInstall": "/internal/on-app-install"
 	},
 	"dev": {
-		"subreddit": "app_fdoo23423_0_dev"
+		"subreddit": ""
 	}
 }
