@@ -37,6 +37,7 @@
 		"svelte": "^5.39.8",
 		"svelte-check": "^4.3.2",
 		"typescript": "^5.9.3",
+		"ultracite": "5.4.7",
 		"vite": "npm:rolldown-vite@^7.1.15"
 	}
 }
