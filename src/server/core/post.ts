@@ -10,7 +10,7 @@ export const createPost = async () => {
 		splash: {
 			appDisplayName: '<% name %>'
 		},
-		subredditName: subredditName,
+		subredditName,
 		title: '<% name %>'
 	})
 }
