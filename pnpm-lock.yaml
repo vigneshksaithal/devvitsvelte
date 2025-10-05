@@ -55,8 +55,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       ultracite:
-        specifier: 5.4.7
-        version: 5.4.7(@types/node@24.6.2)(jiti@2.6.1)(jsdom@24.1.0)(lightningcss@1.30.2)(typescript@5.9.3)
+        specifier: 5.5.0
+        version: 5.5.0(@types/node@24.6.2)(jiti@2.6.1)(jsdom@24.1.0)(lightningcss@1.30.2)(typescript@5.9.3)
       vite:
         specifier: npm:rolldown-vite@^7.1.15
         version: rolldown-vite@7.1.15(@types/node@24.6.2)(esbuild@0.25.10)(jiti@2.6.1)
@@ -2674,8 +2674,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ultracite@5.4.7:
-    resolution: {integrity: sha512-qIaUCjleUyQww3x8oZjclmeroMtNemEEyZeZAnx7rM7zx/tFBdSZFF8C1j4HeQHcwjioh810i0oUNPmgcFyjNQ==}
+  ultracite@5.5.0:
+    resolution: {integrity: sha512-mkfm9gpB3aVP5OfH3Wmy4QVwICJVGMa3MUNb9k2kmT6mJKQl9j662XjARQFVbJFQLkX4Lg1u2It3oY9PMuJc1A==}
     hasBin: true
 
   undici-types@7.13.0:
@@ -5410,7 +5410,7 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  ultracite@5.4.7(@types/node@24.6.2)(jiti@2.6.1)(jsdom@24.1.0)(lightningcss@1.30.2)(typescript@5.9.3):
+  ultracite@5.5.0(@types/node@24.6.2)(jiti@2.6.1)(jsdom@24.1.0)(lightningcss@1.30.2)(typescript@5.9.3):
     dependencies:
       '@clack/prompts': 0.11.0
       '@trpc/server': 11.6.0(typescript@5.9.3)
