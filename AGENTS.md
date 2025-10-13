@@ -54,7 +54,7 @@ This will build both the client and server.
 This project uses [Biome](https://biomejs.dev/) for linting and formatting. To check for and fix issues, run:
 
 ```bash
-pnpm check:biome
+pnpm fix
 ```
 
 Please ensure that all code passes the Biome checks before submitting.
@@ -64,8 +64,6 @@ Please ensure that all code passes the Biome checks before submitting.
 The backend exposes a few API endpoints that the client can use. These are defined in `src/server/index.ts`. All API routes are prefixed with `/api`.
 
 - `GET /api/init`: Initializes the application with data from the Devvit context.
-- `POST /api/saveScore`: Saves the user's score to Redis.
-- `GET /api/getScore`: Retrieves the user's score from Redis.
 - `GET /api/test`: A test endpoint.
 
 ## Deployment
