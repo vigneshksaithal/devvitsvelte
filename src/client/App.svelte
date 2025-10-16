@@ -5,7 +5,5 @@ import Counter from './lib/Counter.svelte'
 <main>
 	<h1>Devvit + Svelte</h1>
 
-	<div class="card">
-		<Counter />
-	</div>
+	<Counter />
 </main>

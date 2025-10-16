@@ -39,6 +39,18 @@ pnpm dev
 
 This will start the client and server in watch mode and run the Devvit playtest command.
 
+### Devvit Setup
+
+- Make sure you are authenticated with Reddit via the Devvit CLI before running any Devvit commands:
+
+  ```bash
+  pnpm login
+  ```
+
+- Development and playtesting rely on the Devvit CLI reading environment variables from a local `.env` file (for example credentials such as `DEVVIT_APP_ID` and `DEVVIT_APP_SECRET`). Keep that file out of version control.
+
+If you need to reset the Devvit session, rerun `pnpm login`.
+
 ## Building
 
 To build the application for production, use the following command:
@@ -59,12 +71,26 @@ pnpm fix
 
 Please ensure that all code passes the Biome checks before submitting.
 
+Additional validation scripts:
+
+- `pnpm check`: Runs `svelte-check` against the client `tsconfig`.
+- `pnpm type-check`: Executes a TypeScript project build across the repo.
+- `pnpm launch`: Builds, uploads, and then publishes the package (intended for release workflows).
+
 ## API
 
 The backend exposes a few API endpoints that the client can use. These are defined in `src/server/index.ts`. All API routes are prefixed with `/api`.
 
 - `GET /api/init`: Initializes the application with data from the Devvit context.
 - `GET /api/test`: A test endpoint.
+
+When adding new routes:
+
+- Update the Hono router in `src/server/index.ts`.
+- Place shared request/response types in `src/shared` so both client and server can consume them.
+- Import the shared types in `src/client` components or stores to keep client/server contracts aligned.
+
+The Devvit handler expects a Fetch-compatible function; ensure new middleware stays compatible.
 
 ## Deployment
 
@@ -75,3 +101,12 @@ pnpm deploy
 ```
 
 This will build the application and upload it to Devvit.
+
+## Testing
+
+There is no dedicated automated test suite yet. Validate changes by:
+
+- Running `pnpm dev` and using the Devvit playtest environment.
+- Exercising new API endpoints with manual requests or lightweight scripts.
+
+If you introduce testing utilities or fixtures, keep them in `src/shared` when they are usable in both client and server contexts.

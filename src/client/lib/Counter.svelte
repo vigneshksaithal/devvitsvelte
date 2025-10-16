@@ -1,22 +1,12 @@
 <script lang="ts">
-import { onMount } from 'svelte'
-
 let count: number = $state(0)
-let message: string = $state('')
 
 const increment = () => {
 	count += 1
 }
-
-onMount(async () => {
-	const res = await fetch('/api/test', { method: 'GET' })
-	const data = await res.json()
-	console.log(data)
-	message = data
-})
 </script>
 
-Message: {message}
-<button class="bg-blue-500 text-white p-2 rounded-md" onclick={increment}>
-	count is {count}
+<p class="text-sm text-gray-500">Click the button to increment the counter.</p>
+<button class="mt-2 bg-blue-500 text-white px-3 py-2 rounded-md" onclick={increment}>
+	Count: {count}
 </button>
