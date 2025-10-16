@@ -12,6 +12,15 @@ The application is structured as follows:
 - `src/server`: Contains the Hono backend code, which runs in the Devvit environment.
 - `src/shared`: Contains code that can be shared between the client and server.
 
+## Prerequisites & Environment Setup
+
+- **Node**: Use Node.js 20.x LTS (Devvit CLI currently targets Node 18+, but local tooling is built and tested on 20.x).
+- **Package manager**: `pnpm` ≥ 9 (lockfile is `pnpm-lock.yaml`; using npm will break workspace linking).
+- **Devvit CLI**: 0.12.1 (kept in sync with `devvit` dependency). Install globally via `pnpm add -g devvit@0.12.1`.
+- **Environment variables**: Create a local `.env` containing Devvit credentials (`DEVVIT_APP_ID`, `DEVVIT_APP_SECRET`, etc.). Never commit `.env`.
+- **Authentication**: Run `pnpm login` once per session to refresh Devvit credentials.
+- **Optional helpers**: `direnv` or similar tooling can auto-load the `.env`, but ensure secrets stay local.
+
 ## Tech Stack
 
 - **Svelte 5**: The frontend is built with Svelte 5. Please use the new [runes](https://svelte.dev/docs/runes) for reactivity.
@@ -28,6 +37,11 @@ The application is structured as follows:
 - **Tailwind CSS Classes**: Use Tailwind CSS utility classes for all styling. Do not use `<style>` blocks in Svelte components.
 - **Immutability**: When updating state, create new objects or arrays instead of mutating existing ones.
 - **Async/Await**: Use `async/await` for all asynchronous operations.
+- **Naming**: Use PascalCase for Svelte components, camelCase for variables/functions, and SCREAMING_SNAKE_CASE for constants.
+- **File organization**: Prefer colocating component-specific helpers in the same directory; shared logic belongs in `src/shared`.
+- **Stores & context**: Create derived stores instead of manual subscriptions; avoid writable global stores unless state truly spans multiple views.
+- **Data contracts**: Define shared request/response interfaces in `src/shared` and import them from both client and server to keep APIs aligned.
+- **Error handling**: Surface user-facing errors with typed results instead of `throw`; log unexpected failures with context so Devvit logs remain actionable.
 
 ## Development
 
@@ -77,6 +91,18 @@ Additional validation scripts:
 - `pnpm type-check`: Executes a TypeScript project build across the repo.
 - `pnpm launch`: Builds, uploads, and then publishes the package (intended for release workflows).
 
+## Verification Checklist
+
+Always complete these before handing changes back:
+
+1. `pnpm fix` (required) — ensures Biome formatting/linting passes.
+2. `pnpm type-check` (required) — catches TS regressions across client/server bundles.
+3. `pnpm check` (when UI changes) — validates Svelte component health.
+4. `pnpm build` (for releases or major refactors) — confirms both bundles still compile.
+5. Document any manual Devvit playtest steps executed, including subreddit and commands used.
+
+If a command fails because of a known limitation (e.g., missing credentials), call it out explicitly in your notes instead of skipping silently.
+
 ## API
 
 The backend exposes a few API endpoints that the client can use. These are defined in `src/server/index.ts`. All API routes are prefixed with `/api`.
@@ -89,8 +115,16 @@ When adding new routes:
 - Update the Hono router in `src/server/index.ts`.
 - Place shared request/response types in `src/shared` so both client and server can consume them.
 - Import the shared types in `src/client` components or stores to keep client/server contracts aligned.
+- Validate new routes with manual requests via `devvit playtest` or simple `fetch` calls, and document the request/response payloads tested.
 
 The Devvit handler expects a Fetch-compatible function; ensure new middleware stays compatible.
+
+## Devvit Context Guidance
+
+- Treat `context.reddit` and `context.redis` as production services: avoid destructive actions in shared environments and honor API rate limits.
+- Prefer idempotent operations and include subreddit/thread identifiers in logs for traceability.
+- When mocking is required, create lightweight adapters in `src/shared` so server and client can share types without leaking Devvit-only objects.
+- Do not assume synchronous availability of Devvit data; guard against missing fields and surface fallback UI states.
 
 ## Deployment
 
@@ -101,6 +135,14 @@ pnpm deploy
 ```
 
 This will build the application and upload it to Devvit.
+
+## Common Pitfalls
+
+- Tailwind v4 runs via the Vite plugin; every utility must be present in your markup (no `@apply`). Unrecognized classes will be purged.
+- The client `vite build --watch` used in `pnpm dev` does not hot-reload markup; rely on Devvit playtest refreshes to validate UI changes.
+- Forgetting `pnpm login` causes `devvit playtest` and deployment commands to fail with opaque auth errors.
+- Devvit APIs require subreddit whitelisting; keep `devvit.json` updated when testing new environments.
+- Avoid mixing npm and pnpm commands—the postinstall hook expects npm, but local workflows should stay on pnpm to respect the lockfile.
 
 ## Testing
 
