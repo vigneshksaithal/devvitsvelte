@@ -30,6 +30,24 @@ The application is structured as follows:
 - **TypeScript**: The entire codebase is written in TypeScript.
 - **Vite**: The project uses Vite for building both the client and server.
 
+## Devvit Web Guidelines
+
+- **Server access**: Use `@devvit/web/server` exports (`createServer`, `context`, `getServerPort`, `redis`, etc.) when wiring backend routes so handlers run inside the Devvit runtime and have typed access to Reddit/Redis services ([docs/devvit-docs.txt:1507](docs/devvit-docs.txt:1507)).
+- **Client effects**: Import UI helpers such as `showToast`, `showForm`, and `navigateTo` from `@devvit/web/client` inside Svelte components, and only call them in direct response to user actions to mirror the documented client effects flow ([docs/devvit-docs.txt:7198](docs/devvit-docs.txt:7198)).
+- **Menu endpoints**: Server handlers registered under `/internal/menu/...` should respond with a `UIResponse` payload (e.g. `{ showToast: '...' }`, `{ navigateTo: '...' }`) and use the `UIResponse` type from `@devvit/web/shared`, because server code cannot invoke `@devvit/web/client` directly ([docs/devvit-docs.txt:7578](docs/devvit-docs.txt:7578)).
+- **devvit.json permissions**: Request platform features via `devvit.json`—set `permissions.redis`, `permissions.http`, or `reddit.asUser` scopes instead of `Devvit.configure`, keep internal endpoints prefixed with `/internal/`, and only enable scopes the feature needs ([docs/devvit-docs.txt:3197](docs/devvit-docs.txt:3197), [docs/devvit-docs.txt:6959](docs/devvit-docs.txt:6959)).
+
+## Repository Workflow Norms
+
+- **Plan first**: Begin substantial tasks by writing a short pseudocode plan, then confirm it before coding; this keeps discussion transparent and aligned.
+- **Comment every function**: Prepend each function with a brief description of its purpose, and mirror existing documentation style.
+- **Keep diffs surgical**: Modify only the code necessary for the task, leaving unrelated sections untouched and avoiding opportunistic cleanups.
+- **Favor type aliases**: When introducing new TypeScript types, prefer `type` aliases over `interface` declarations unless interoperability demands otherwise.
+- **Client constraints**: Webview code must rely on PNPM-managed, browser-safe dependencies and avoid WebSockets; if realtime behavior is required, consult Devvit’s realtime services.
+- **Server constraints**: Backend code runs in a serverless environment without access to `fs`, `http`, `https`, or `net`; use `fetch` for HTTP calls and the provided `redis` helpers for persistence.
+- **Svelte formatting**: Inside `<script>` blocks use single quotes, omit trailing semicolons, favor arrow functions, and rely solely on Tailwind utility classes for styling.
+- **Lint expectations**: Adhere to the strict lint configuration—prefer `const`, use arrow functions, avoid introducing new `console` statements, and follow the project’s accessibility and TypeScript safety rules.
+
 ## Coding Conventions
 
 - **Functional Programming**: Please use functional programming principles where possible. Avoid mutations and side effects when you can.
