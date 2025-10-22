@@ -2036,107 +2036,6 @@ When you're ready to publicly release your app, you’ll need to add it to the A
 
 ---
 
-# AI Tools
-
-Devvit ships with first class support for common AI tools and patterns.
-
-## LLMs.txt files
-
-- https://developers.reddit.com/docs/llms.txt: Most useful for pasting into the chat UI of common LLMs BEFORE your prompt. Place your prompt last as models are auto-regressive.
-- https://developers.reddit.com/docs/llms-full.txt: Useful for pasting into the chat UI of LLMs with large context windows (Gemini, Claude Sonnet 4). This lets you chat with the docs instead of reading them. It's easy to pollute your context if your using this for coding so we recommend only using this to learn about Devvit or plan. To execute, use `llms.txt` as most modern LLMs can tool call websites.
-
-## Cursor Support
-
-The React, ThreeJS, and Phaser templates ship with support for cursor rules out of the box. We've found these helps Cursor output high quality code for Devvit. Feel free to add and remove them as you see fit.
-
-## MCP
-
-Devvit ships with a MCP server to assist with agent driven development. There are two commands at the moment:
-
-- `devvit_search`: Executes hybrid search over all of our docs. This is preferable to pasting in tons of docs since it can be more specific and lowers the risk of polluting your context.
-- `devvit_logs` [experimental]: Queries for logs of your app and a subreddit to place into an agent's context. It can be fun any useful, and shows a glimpse of the future of AI Devvit! Try this after MCP is turned on in your agent, "find a bug in my app deployed to the subreddit <YOUR_SUBREDDIT_NAME> from the past week and a fix it". It might not work, but when it does, magic!
-
-### Cursor
-
-> Note that React, ThreeJS, and Phaser ship with first class support. All you have to do is run a template from [/new](https://developers.reddit.com/new) in cursor and you will see a popup at the bottom-left corner to enable.
-
-1.  In your project, ensure a `.cursor` directory exists at the root. Create it if necessary.
-2.  Inside `.cursor`, create or open the `mcp.json` file.
-3.  Paste the following configuration into `mcp.json`:
-
-    ```json
-    {
-      "mcpServers": {
-        "devvit": {
-          "command": "npx",
-          "args": ["-y", "@devvit/mcp"]
-        }
-      }
-    }
-    ```
-
-4.  Save the file.
-5.  Check [Cursor](https://www.cursor.com/)'s **Settings/MCP** section. The Devvit MCP server should show an active status (green indicator). You might need to click "Refresh" if it doesn't appear immediately.
-
-### Claude Code
-
-```sh
-claude mcp add devvit -- npx -y @devvit/mcp
-```
-
-Things should work after that!
-
-### Claude Desktop
-
-1.  Open the [Claude desktop](https://claude.ai/download) application and go to **Settings**.
-2.  Navigate to the **Developer** tab and click **Edit Config**.
-3.  Add the Devvit server configuration:
-
-```json
-{
-  "mcpServers": {
-    "devvit": {
-      "command": "npx",
-      "args": ["-y", "@devvit/mcp"]
-    }
-  }
-}
-```
-
-4.  Save the configuration file and restart the Claude desktop application.
-5.  When starting a new chat, look for the MCP icon (hammer); the Devvit server should now be listed as available.
-
-### Visual Studio Code (Copilot)
-
-1.  Ensure your project root contains a `.vscode` directory. Create one if it's missing.
-2.  Create or open the `mcp.json` file within the `.vscode` directory.
-3.  Insert the following configuration:
-
-    ```json
-    {
-      "servers": {
-        "devvit": {
-          "command": "npx",
-          "args": ["-y", "@devvit/mcp"]
-        }
-      }
-    }
-    ```
-
-4.  Save `mcp.json`.
-5.  In the Copilot chat panel within [Visual Studio Code](https://code.visualstudio.com/), ensure you're in "Agent" mode. The tool icon should now indicate that Devvit MCP tools are available for use.
-
-Refer to the [official Copilot documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for further details on VS Code MCP integration.
-
-### Testing the Connection
-
-With your AI tool configured, you should now be able to leverage the Devvit MCP server. A good way to test this is to ask your AI assistant a question that requires accessing Devvit resources, for example: "Search the Devvit docs for information on redis."
-
-If you encounter problems, refer to the official Devvit documentation or reach out in the [Discord](https://discord.com/invite/R7yu2wh9Qz).
-
-
----
-
 # Mod Resources
 
 Devvit apps are programs hosted and run on Reddit’s Developer Platform. Moderators can install an app on their subreddits to customize a community with bespoke mod tools, discussion bots, new governance tools, games, leaderboards, and more.
@@ -2313,6 +2212,107 @@ Your game should be fun at any player count:
 ## Key takeaway
 
 The most successful Reddit community games create interesting content while being played, establishing a virtuous cycle of engagement and discovery. Focus on simplicity, scalability, and social interaction to make your game thrive.
+
+
+---
+
+# AI Tools
+
+Devvit ships with first class support for common AI tools and patterns.
+
+## LLMs.txt files
+
+- https://developers.reddit.com/docs/llms.txt: Most useful for pasting into the chat UI of common LLMs BEFORE your prompt. Place your prompt last as models are auto-regressive.
+- https://developers.reddit.com/docs/llms-full.txt: Useful for pasting into the chat UI of LLMs with large context windows (Gemini, Claude Sonnet 4). This lets you chat with the docs instead of reading them. It's easy to pollute your context if your using this for coding so we recommend only using this to learn about Devvit or plan. To execute, use `llms.txt` as most modern LLMs can tool call websites.
+
+## Cursor Support
+
+The React, ThreeJS, and Phaser templates ship with support for cursor rules out of the box. We've found these helps Cursor output high quality code for Devvit. Feel free to add and remove them as you see fit.
+
+## MCP
+
+Devvit ships with a MCP server to assist with agent driven development. There are two commands at the moment:
+
+- `devvit_search`: Executes hybrid search over all of our docs. This is preferable to pasting in tons of docs since it can be more specific and lowers the risk of polluting your context.
+- `devvit_logs` [experimental]: Queries for logs of your app and a subreddit to place into an agent's context. It can be fun any useful, and shows a glimpse of the future of AI Devvit! Try this after MCP is turned on in your agent, "find a bug in my app deployed to the subreddit <YOUR_SUBREDDIT_NAME> from the past week and a fix it". It might not work, but when it does, magic!
+
+### Cursor
+
+> Note that React, ThreeJS, and Phaser ship with first class support. All you have to do is run a template from [/new](https://developers.reddit.com/new) in cursor and you will see a popup at the bottom-left corner to enable.
+
+1.  In your project, ensure a `.cursor` directory exists at the root. Create it if necessary.
+2.  Inside `.cursor`, create or open the `mcp.json` file.
+3.  Paste the following configuration into `mcp.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "devvit": {
+          "command": "npx",
+          "args": ["-y", "@devvit/mcp"]
+        }
+      }
+    }
+    ```
+
+4.  Save the file.
+5.  Check [Cursor](https://www.cursor.com/)'s **Settings/MCP** section. The Devvit MCP server should show an active status (green indicator). You might need to click "Refresh" if it doesn't appear immediately.
+
+### Claude Code
+
+```sh
+claude mcp add devvit -- npx -y @devvit/mcp
+```
+
+Things should work after that!
+
+### Claude Desktop
+
+1.  Open the [Claude desktop](https://claude.ai/download) application and go to **Settings**.
+2.  Navigate to the **Developer** tab and click **Edit Config**.
+3.  Add the Devvit server configuration:
+
+```json
+{
+  "mcpServers": {
+    "devvit": {
+      "command": "npx",
+      "args": ["-y", "@devvit/mcp"]
+    }
+  }
+}
+```
+
+4.  Save the configuration file and restart the Claude desktop application.
+5.  When starting a new chat, look for the MCP icon (hammer); the Devvit server should now be listed as available.
+
+### Visual Studio Code (Copilot)
+
+1.  Ensure your project root contains a `.vscode` directory. Create one if it's missing.
+2.  Create or open the `mcp.json` file within the `.vscode` directory.
+3.  Insert the following configuration:
+
+    ```json
+    {
+      "servers": {
+        "devvit": {
+          "command": "npx",
+          "args": ["-y", "@devvit/mcp"]
+        }
+      }
+    }
+    ```
+
+4.  Save `mcp.json`.
+5.  In the Copilot chat panel within [Visual Studio Code](https://code.visualstudio.com/), ensure you're in "Agent" mode. The tool icon should now indicate that Devvit MCP tools are available for use.
+
+Refer to the [official Copilot documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for further details on VS Code MCP integration.
+
+### Testing the Connection
+
+With your AI tool configured, you should now be able to leverage the Devvit MCP server. A good way to test this is to ask your AI assistant a question that requires accessing Devvit resources, for example: "Search the Devvit docs for information on redis."
+
+If you encounter problems, refer to the official Devvit documentation or reach out in the [Discord](https://discord.com/invite/R7yu2wh9Qz).
 
 
 ---
@@ -2821,334 +2821,6 @@ const payments = usePayments((result: OnPurchaseResult) => { console.log('Tried 
 
 // for each sku in products:
 <button onPress{payments.purchase(sku)}>Buy a {sku}</button>
-```
-
-
----
-
-# Realtime in Devvit Blocks
-
-This guide walks through step-by-step instructions on how to set up [Realtime](./overview.md) in a [Devvit Blocks](../blocks/overview.md) application
-
-## Create a live interactive post
-
-#### 1. Configure realtime
-
-```tsx
-Devvit.configure({
-  realtime: true,
-});
-```
-
-#### 2. Create and subscribe to a channel
-
-`useChannel` hook allows interactive posts to subscribe and send to an event stream.
-
-A new channel can be setup with function handlers containing custom logic to update state:
-
-- `onMessage` - called every time a message is received on a channel
-- `onSubscribed` - optional hook to be informed when channel has connected
-- `onUnsubscribed` - optional hook to be informed when channel has disconnected
-
-```tsx
-import { Devvit, useChannel } from '@devvit/public-api';
-
-// Defined within render function of an interactive post
-
-// Choose a channel name that works for you
-
-// You have the flexibility to define the message data shape to be published
-// via channel.send - same shape will be received in the onMessage handler
-
-const channel = useChannel({
-  name: 'events',
-  onMessage: (data) => {
-    // modify local state
-  },
-  onSubscribed: () => {
-    // handle connection setup
-  },
-  onUnsubscribed: () => {
-    // handle network degradation with fallback scenarios
-  },
-});
-
-// subscribe to the channel to receive messages
-channel.subscribe();
-```
-
-#### 3. Send messages to a channel
-
-`channel.send` is recommended for peer-to-peer synchronization across clients. See [Mini Place](#mini-place) and [Snoo Club](#snoo-club)
-
-```tsx
-<button
-  icon="add-fill"
-  width={50}
-  onPress={async () => {
-    const newProgress = Math.max(progress + 10, 0);
-    const message: RealtimeMessage = {
-      payload: { progress: newProgress },
-      session: UUID,
-    };
-    setProgress(newProgress); // set local state
-    await channel.send(message); // publish message to the channel
-  }}
-/>
-```
-
-`realtime.send` is recommended for re-rendering interactive posts based on server events. This can be invoked on an event trigger, scheduled job, or after a HTTP fetch call. [Server-Push](#server-push) example illustrates how to compose scheduler and realtime together.
-
-```tsx
-// During app installation, we create a scheduled job 'publish_to_channel' that runs
-// every minute - it uses realtime plugin to publish events to an arbitrary channel
-
-Devvit.addTrigger({
-  event: 'AppInstall',
-  onEvent: async (_event, context) => {
-    await context.scheduler.runJob({
-      name: 'publish_to_channel',
-      cron: '* * * * *',
-    });
-  },
-});
-
-// Interactive posts subscribed to the 'events' channel via useChannel hook will start
-// receiving messages which can processed in the onMessage handler to update local state.
-Devvit.addSchedulerJob({
-  name: 'publish_to_channel',
-  onRun: async (_event, context) => {
-    await context.realtime.send('events', {
-      message: payload,
-    });
-  },
-});
-```
-
-## Limits and quotas
-
-- Messages/sec per installation: 100
-- Maximum message payload: 1 MB
-- Channels per app installation: 5
-
-## Examples
-
-:::note
-Try the demos with multiple browser windows and see local changes sync across sessions without any lag.
-:::
-
-### Mini place
-
-![mini_place_high](../../assets/realtime/mini_place_high.gif)
-
-**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bumd7e/mini_place/)**,
-**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/mini-place)**
-
-### Snoo club
-
-![snoo_club](../../assets/realtime/snoo_club.gif)
-
-**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bunpzv/interactive_snooclub/)**,
-**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/snooclub)**
-
-### Synced progress bar
-
-![synced_progress_bar](../../assets/realtime/synced_progress_bar.gif)
-
-**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1b3ccp9/synced_progress_bar/),**
-**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/synced-progress-bar)**
-
-### Devvit emoji chat
-
-![devvit_emoji_chat](../../assets/realtime/devvit_emoji_chat.gif)
-
-**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bvf6if/emoji_chat/),**
-**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/devvit-emoji-chat)**
-
-### Server push
-
-![server_push](../../assets/realtime/server_push.gif)
-
-**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bnnc60/server_push/),**
-**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/server-push)**
-
-
----
-
-# Overview
-
-Create live and event-driven interactive posts. Realtime provides a set of primitives that lets you build interactive posts that are:
-
-- **Live**. Users engaging with the same interactive post see each others’ changes without any observable lag.
-- **Event-driven**. Posts render automatically in response to server events.
-- **Synced**. Using realtime with [Redis](../server/redis.mdx) lets you build persistent community experiences that are backed by high performance data synchronization.
-
-Realtime is supported in both [Devvit Web](../devvit-web/devvit_web_overview.mdx) and [Devvit Blocks](../blocks/overview.md) applications.
-
-Follow this guide, [Realtime in Devvit Blocks](./realtime_in_devvit_blocks.md), for instructions on using realtime in Devvit Blocks.
-
-# Realtime in Devvit Web
-
-This guide walks through step-by-step instructions on how to set up [Realtime](./overview.md) in a [Devvit Web](../devvit-web/devvit_web_overview.mdx) application
-
-## Overview
-
-The realtime client allows you to:
-
-- **Connect** to realtime channels for receiving messages
-- **Handle** connection lifecycle events (connect/disconnect)
-- **Process** incoming messages with custom logic
-- **Manage** multiple channel subscriptions
-- **Disconnect** from channels when no longer needed
-
-## Architecture
-
-Realtime functionality in Devvit follows a client/server architecture:
-
-- **Client-side** (connectRealtime): Subscribe to channels and receive messages
-- **Server-side** (realtime.send): Send messages to channels
-
-This separation ensures that message sending is controlled by server-side logic while clients can freely subscribe to channels they're interested in.
-
-## Client-side API reference
-
-### connectRealtime
-
-Connects to a realtime channel for receiving messages.
-
-```tsx
-import { connectRealtime } from '@devvit/web/client';
-
-const connection = await connectRealtime({
-  channel: 'my-channel',
-  onConnect: (channel) => {
-    console.log(`Connected to ${channel}`);
-  },
-  onDisconnect: (channel) => {
-    console.log(`Disconnected from ${channel}`);
-  },
-  onMessage: (data) => {
-    console.log('Received message:', data);
-  },
-});
-```
-
-#### Parameters
-
-- `opts` - Connection options object
-  - `channel` (string) - The name of the channel to connect to
-  - `onConnect?` (function) - Optional callback called when connection is established
-  - `onDisconnect?` (function) - Optional callback called when connection is lost
-  - `onMessage` (function) - Required callback called when a message is received
-
-#### Returns
-
-A `Connection` object with a `disconnect()` method.
-
-### Connection
-
-A connection object returned by `connectRealtime()`.
-
-#### Methods
-
-##### disconnect()
-
-Disconnects from the realtime channel.
-
-```tsx
-await connection.disconnect();
-```
-
-This method:
-
-- Removes the channel from active subscriptions
-- Cleans up event listeners
-- Calls the `onDisconnect` callback if provided
-
-## Server-side API reference
-
-### Realtime plugin
-
-The server-side plugin for sending messages to realtime channels.
-
-```tsx
-import { realtime } from '@devvit/web/server';
-
-// Send a message to a channel
-await realtime.send('my-channel', {
-  type: 'user-joined',
-  userId: '123',
-});
-```
-
-#### Methods
-
-##### send(channel: string, msg: JSONValue): Promise<void>
-
-Sends a message to a specific channel.
-
-- `channel` (string) - The name of the channel to send the message to
-- `msg` (JSONValue) - The message data to send
-
-## Usage examples
-
-### Client-side: basic channel connection
-
-```tsx
-import { connectRealtime } from '@devvit/web/client';
-
-// Connect to a channel
-const connection = await connectRealtime({
-  channel: 'user-updates',
-  onMessage: (data) => {
-    // Handle incoming messages
-    console.log('User update:', data);
-  },
-});
-
-// Later, disconnect when done
-await connection.disconnect();
-```
-
-### Client-side: connection lifecycle management
-
-```tsx
-import { connectRealtime } from '@devvit/web/client';
-
-const connection = await connectRealtime({
-  channel: 'live-chat',
-  onConnect: (channel) => {
-    console.log(`Connected to ${channel}`);
-    // Update UI to show connected state
-    setIsConnected(true);
-  },
-  onDisconnect: (channel) => {
-    console.log(`Disconnected from ${channel}`);
-    // Update UI to show disconnected state
-    setIsConnected(false);
-  },
-  onMessage: (data) => {
-    // Process chat messages
-    addMessageToChat(data);
-  },
-});
-```
-
-### Server-side: sending messages
-
-```tsx
-import { realtime } from '@devvit/web/server';
-
-// Send a simple message
-await realtime.send('notifications', 'New user joined!');
-
-// Send a structured message
-await realtime.send('game-updates', {
-  type: 'score-update',
-  playerId: 'user123',
-  score: 1500,
-  timestamp: Date.now(),
-});
 ```
 
 
@@ -6035,6 +5707,334 @@ Here’s a way to set up in-app caching instead of using scheduler or interval t
     ```
   </TabItem>
 </Tabs>
+
+
+---
+
+# Realtime in Devvit Blocks
+
+This guide walks through step-by-step instructions on how to set up [Realtime](./overview.md) in a [Devvit Blocks](../blocks/overview.md) application
+
+## Create a live interactive post
+
+#### 1. Configure realtime
+
+```tsx
+Devvit.configure({
+  realtime: true,
+});
+```
+
+#### 2. Create and subscribe to a channel
+
+`useChannel` hook allows interactive posts to subscribe and send to an event stream.
+
+A new channel can be setup with function handlers containing custom logic to update state:
+
+- `onMessage` - called every time a message is received on a channel
+- `onSubscribed` - optional hook to be informed when channel has connected
+- `onUnsubscribed` - optional hook to be informed when channel has disconnected
+
+```tsx
+import { Devvit, useChannel } from '@devvit/public-api';
+
+// Defined within render function of an interactive post
+
+// Choose a channel name that works for you
+
+// You have the flexibility to define the message data shape to be published
+// via channel.send - same shape will be received in the onMessage handler
+
+const channel = useChannel({
+  name: 'events',
+  onMessage: (data) => {
+    // modify local state
+  },
+  onSubscribed: () => {
+    // handle connection setup
+  },
+  onUnsubscribed: () => {
+    // handle network degradation with fallback scenarios
+  },
+});
+
+// subscribe to the channel to receive messages
+channel.subscribe();
+```
+
+#### 3. Send messages to a channel
+
+`channel.send` is recommended for peer-to-peer synchronization across clients. See [Mini Place](#mini-place) and [Snoo Club](#snoo-club)
+
+```tsx
+<button
+  icon="add-fill"
+  width={50}
+  onPress={async () => {
+    const newProgress = Math.max(progress + 10, 0);
+    const message: RealtimeMessage = {
+      payload: { progress: newProgress },
+      session: UUID,
+    };
+    setProgress(newProgress); // set local state
+    await channel.send(message); // publish message to the channel
+  }}
+/>
+```
+
+`realtime.send` is recommended for re-rendering interactive posts based on server events. This can be invoked on an event trigger, scheduled job, or after a HTTP fetch call. [Server-Push](#server-push) example illustrates how to compose scheduler and realtime together.
+
+```tsx
+// During app installation, we create a scheduled job 'publish_to_channel' that runs
+// every minute - it uses realtime plugin to publish events to an arbitrary channel
+
+Devvit.addTrigger({
+  event: 'AppInstall',
+  onEvent: async (_event, context) => {
+    await context.scheduler.runJob({
+      name: 'publish_to_channel',
+      cron: '* * * * *',
+    });
+  },
+});
+
+// Interactive posts subscribed to the 'events' channel via useChannel hook will start
+// receiving messages which can processed in the onMessage handler to update local state.
+Devvit.addSchedulerJob({
+  name: 'publish_to_channel',
+  onRun: async (_event, context) => {
+    await context.realtime.send('events', {
+      message: payload,
+    });
+  },
+});
+```
+
+## Limits and quotas
+
+- Messages/sec per installation: 100
+- Maximum message payload: 1 MB
+- Channels per app installation: 5
+
+## Examples
+
+:::note
+Try the demos with multiple browser windows and see local changes sync across sessions without any lag.
+:::
+
+### Mini place
+
+![mini_place_high](../../assets/realtime/mini_place_high.gif)
+
+**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bumd7e/mini_place/)**,
+**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/mini-place)**
+
+### Snoo club
+
+![snoo_club](../../assets/realtime/snoo_club.gif)
+
+**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bunpzv/interactive_snooclub/)**,
+**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/snooclub)**
+
+### Synced progress bar
+
+![synced_progress_bar](../../assets/realtime/synced_progress_bar.gif)
+
+**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1b3ccp9/synced_progress_bar/),**
+**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/synced-progress-bar)**
+
+### Devvit emoji chat
+
+![devvit_emoji_chat](../../assets/realtime/devvit_emoji_chat.gif)
+
+**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bvf6if/emoji_chat/),**
+**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/devvit-emoji-chat)**
+
+### Server push
+
+![server_push](../../assets/realtime/server_push.gif)
+
+**[Demo](https://sh.reddit.com/r/devvit_sandbox/comments/1bnnc60/server_push/),**
+**[Source Code](https://github.com/reddit/devvit/tree/main/packages/apps/server-push)**
+
+
+---
+
+# Overview
+
+Create live and event-driven interactive posts. Realtime provides a set of primitives that lets you build interactive posts that are:
+
+- **Live**. Users engaging with the same interactive post see each others’ changes without any observable lag.
+- **Event-driven**. Posts render automatically in response to server events.
+- **Synced**. Using realtime with [Redis](../server/redis.mdx) lets you build persistent community experiences that are backed by high performance data synchronization.
+
+Realtime is supported in both [Devvit Web](../devvit-web/devvit_web_overview.mdx) and [Devvit Blocks](../blocks/overview.md) applications.
+
+Follow this guide, [Realtime in Devvit Blocks](./realtime_in_devvit_blocks.md), for instructions on using realtime in Devvit Blocks.
+
+# Realtime in Devvit Web
+
+This guide walks through step-by-step instructions on how to set up [Realtime](./overview.md) in a [Devvit Web](../devvit-web/devvit_web_overview.mdx) application
+
+## Overview
+
+The realtime client allows you to:
+
+- **Connect** to realtime channels for receiving messages
+- **Handle** connection lifecycle events (connect/disconnect)
+- **Process** incoming messages with custom logic
+- **Manage** multiple channel subscriptions
+- **Disconnect** from channels when no longer needed
+
+## Architecture
+
+Realtime functionality in Devvit follows a client/server architecture:
+
+- **Client-side** (connectRealtime): Subscribe to channels and receive messages
+- **Server-side** (realtime.send): Send messages to channels
+
+This separation ensures that message sending is controlled by server-side logic while clients can freely subscribe to channels they're interested in.
+
+## Client-side API reference
+
+### connectRealtime
+
+Connects to a realtime channel for receiving messages.
+
+```tsx
+import { connectRealtime } from '@devvit/web/client';
+
+const connection = await connectRealtime({
+  channel: 'my-channel',
+  onConnect: (channel) => {
+    console.log(`Connected to ${channel}`);
+  },
+  onDisconnect: (channel) => {
+    console.log(`Disconnected from ${channel}`);
+  },
+  onMessage: (data) => {
+    console.log('Received message:', data);
+  },
+});
+```
+
+#### Parameters
+
+- `opts` - Connection options object
+  - `channel` (string) - The name of the channel to connect to
+  - `onConnect?` (function) - Optional callback called when connection is established
+  - `onDisconnect?` (function) - Optional callback called when connection is lost
+  - `onMessage` (function) - Required callback called when a message is received
+
+#### Returns
+
+A `Connection` object with a `disconnect()` method.
+
+### Connection
+
+A connection object returned by `connectRealtime()`.
+
+#### Methods
+
+##### disconnect()
+
+Disconnects from the realtime channel.
+
+```tsx
+await connection.disconnect();
+```
+
+This method:
+
+- Removes the channel from active subscriptions
+- Cleans up event listeners
+- Calls the `onDisconnect` callback if provided
+
+## Server-side API reference
+
+### Realtime plugin
+
+The server-side plugin for sending messages to realtime channels.
+
+```tsx
+import { realtime } from '@devvit/web/server';
+
+// Send a message to a channel
+await realtime.send('my-channel', {
+  type: 'user-joined',
+  userId: '123',
+});
+```
+
+#### Methods
+
+##### send(channel: string, msg: JSONValue): Promise<void>
+
+Sends a message to a specific channel.
+
+- `channel` (string) - The name of the channel to send the message to
+- `msg` (JSONValue) - The message data to send
+
+## Usage examples
+
+### Client-side: basic channel connection
+
+```tsx
+import { connectRealtime } from '@devvit/web/client';
+
+// Connect to a channel
+const connection = await connectRealtime({
+  channel: 'user-updates',
+  onMessage: (data) => {
+    // Handle incoming messages
+    console.log('User update:', data);
+  },
+});
+
+// Later, disconnect when done
+await connection.disconnect();
+```
+
+### Client-side: connection lifecycle management
+
+```tsx
+import { connectRealtime } from '@devvit/web/client';
+
+const connection = await connectRealtime({
+  channel: 'live-chat',
+  onConnect: (channel) => {
+    console.log(`Connected to ${channel}`);
+    // Update UI to show connected state
+    setIsConnected(true);
+  },
+  onDisconnect: (channel) => {
+    console.log(`Disconnected from ${channel}`);
+    // Update UI to show disconnected state
+    setIsConnected(false);
+  },
+  onMessage: (data) => {
+    // Process chat messages
+    addMessageToChat(data);
+  },
+});
+```
+
+### Server-side: sending messages
+
+```tsx
+import { realtime } from '@devvit/web/server';
+
+// Send a simple message
+await realtime.send('notifications', 'New user joined!');
+
+// Send a structured message
+await realtime.send('game-updates', {
+  type: 'score-update',
+  playerId: 'user123',
+  score: 1500,
+  timestamp: Date.now(),
+});
+```
 
 
 ---
