@@ -1,19 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "friday"
-      time: "17:00"
-      timezone: "Asia/Kolkata"
+      time: "11:30"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
     versioning-strategy: increase
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "friday"
-      time: "17:00"
-      timezone: "Asia/Kolkata"
-
-
