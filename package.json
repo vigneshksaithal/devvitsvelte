@@ -32,7 +32,7 @@
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
     "concurrently": "^9.2.1",
     "dotenv-cli": "^10.0.0",
-    "svelte": "^5.41.2",
+    "svelte": "^5.41.3",
     "svelte-check": "^4.3.3",
     "typescript": "^5.9.3",
     "ultracite": "5.6.4",
