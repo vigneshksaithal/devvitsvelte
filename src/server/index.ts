@@ -8,7 +8,7 @@ import {
 import { serve } from '@hono/node-server'
 import type { Context } from 'hono'
 import { Hono } from 'hono'
-import { createPost } from './core/post'
+import { createPost } from './post'
 
 const app = new Hono()
 
