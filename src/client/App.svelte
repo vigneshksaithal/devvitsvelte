@@ -1,9 +1,9 @@
 <script lang="ts">
-import Counter from './lib/Counter.svelte'
+  import Counter from './lib/Counter.svelte'
 </script>
 
 <main>
-	<h1>Devvit + Svelte</h1>
+  <h1>Devvit + Svelte</h1>
 
-	<Counter />
+  <Counter/>
 </main>

@@ -9,9 +9,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "**/*.svelte"
-      ],
+      "includes": ["**/*.svelte"],
       "linter": {
         "rules": {
           "correctness": {
@@ -27,8 +25,5 @@
       }
     }
   ],
-  "extends": [
-    "ultracite/core",
-    "ultracite/svelte"
-  ]
+  "extends": ["ultracite/core", "ultracite/svelte"]
 }

@@ -1,9 +1,9 @@
 import {
-	context,
-	createServer,
-	getServerPort,
-	reddit,
-	redis
+  context,
+  createServer,
+  getServerPort,
+  reddit,
+  redis
 } from '@devvit/web/server'
 import { serve } from '@hono/node-server'
 import type { Context } from 'hono'
@@ -13,57 +13,57 @@ import { createPost } from './post'
 const app = new Hono()
 
 app.get('/api/init', async (c) => {
-	const { postId } = context
+  const { postId } = context
 
-	if (!postId) {
-		return c.json(
-			{
-				status: 'error',
-				message: 'postId is required but missing from context'
-			},
-			400
-		)
-	}
+  if (!postId) {
+    return c.json(
+      {
+        status: 'error',
+        message: 'postId is required but missing from context'
+      },
+      400
+    )
+  }
 
-	try {
-		const [count, username] = await Promise.all([
-			redis.get('count'),
-			reddit.getCurrentUsername()
-		])
+  try {
+    const [count, username] = await Promise.all([
+      redis.get('count'),
+      reddit.getCurrentUsername()
+    ])
 
-		return c.json({
-			type: 'init',
-			postId,
-			count: count ? Number.parseInt(count, 10) : 0,
-			username: username ?? 'anonymous'
-		})
-	} catch (error) {
-		console.error(`API Init Error for post ${postId}:`, error)
-		let errorMessage = 'Unknown error during initialization'
-		if (error instanceof Error) {
-			errorMessage = `Initialization failed: ${error.message}`
-		}
-		return c.json({ status: 'error', message: errorMessage }, 400)
-	}
+    return c.json({
+      type: 'init',
+      postId,
+      count: count ? Number.parseInt(count, 10) : 0,
+      username: username ?? 'anonymous'
+    })
+  } catch (error) {
+    console.error(`API Init Error for post ${postId}:`, error)
+    let errorMessage = 'Unknown error during initialization'
+    if (error instanceof Error) {
+      errorMessage = `Initialization failed: ${error.message}`
+    }
+    return c.json({ status: 'error', message: errorMessage }, 400)
+  }
 })
 
 const handleCreatePost = async (c: Context) => {
-	try {
-		const post = await createPost()
+  try {
+    const post = await createPost()
 
-		return c.json({
-			navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
-		})
-	} catch (error) {
-		console.error(`Error creating post: ${error}`)
-		return c.json(
-			{
-				status: 'error',
-				message: 'Failed to create post'
-			},
-			400
-		)
-	}
+    return c.json({
+      navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
+    })
+  } catch (error) {
+    console.error(`Error creating post: ${error}`)
+    return c.json(
+      {
+        status: 'error',
+        message: 'Failed to create post'
+      },
+      400
+    )
+  }
 }
 
 app.post('/internal/on-app-install', handleCreatePost)
