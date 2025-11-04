@@ -84,7 +84,6 @@ Executes search over all of Devvit documentation. This is preferable to pasting 
 
 ```text
 assets/           # Public assets (images, sprites, audio, fonts)
-docs/             # Project and Devvit documentation
 dist/             # Build output
 src/
   client/         # Svelte frontend; use `fetch(/my/api/endpoint)` to access server APIs in `/src/server`
