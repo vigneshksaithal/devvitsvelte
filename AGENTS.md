@@ -72,6 +72,14 @@ You MUST use this tool whenever writing Svelte code before sending it to the use
 Generates a Svelte Playground link with the provided code.
 After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
 
+### Devvit MCP Server: Available Tools
+
+You are able to use the Devvit MCP server, where you have access to comprehensive Devvit documentation. Here's how to use the available tools effectively.
+
+#### 1. devvit_search
+
+Executes search over all of Devvit documentation. This is preferable to pasting in tons of docs since it can be more specific and lowers the risk of polluting your context.
+
 ## File Structure
 
 ```text
