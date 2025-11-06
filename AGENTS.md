@@ -123,10 +123,8 @@ pnpm fix            # Format and lint code
 
 ### General
 
-- Use strict TypeScript with ES modules.
 - Omit semicolons unless syntactically required.
 - Favor functional programming patterns.
-- Use arrow functions by default.
 - Sort imports: packages, shared modules, then relative paths.
 - Prefer named exports (tree-shaking) over default exports.
 
@@ -146,7 +144,7 @@ pnpm fix            # Format and lint code
 - Do not install libraries requiring restricted modules.
 - Websockets and HTTP streaming are not supported.
 - Redis is accessible via `import { redis } from '@devvit/web/server'`.
-- Persist puzzle progress via the `/api/puzzle/progress` routes, which write to Redis keys shaped like `user:{userId}:puzzle:{puzzleId}`; clients must not rely on `localStorage`.
+- Clients must not rely on `localStorage`.
 
 ### Shared
 
