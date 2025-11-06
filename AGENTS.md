@@ -8,11 +8,11 @@
 
 ### Frontend
 
-- [Devvit](https://developers.reddit.com/docs/) (v0.12.1) — Reddit App Platform
-- [Svelte](https://svelte.dev/) (v5, runes) — UI framework
-- [TypeScript](https://www.typescriptlang.org/) — Programming language
-- [Tailwind CSS](https://tailwindcss.com/) (v4) — CSS framework
-- [Lucide Svelte](https://lucide.dev/) — Icon library
+- Devvit (v0.12.1) — Reddit App Platform
+- Svelte (v5, runes) — UI framework
+- TypeScript (v5) — Programming language
+- Tailwind CSS (v4) — CSS framework
+- Lucide Svelte — Icon library
 
 <!-- TODO: UPDATE THIS SECTION -->
 
@@ -21,23 +21,23 @@
 
 ### Backend
 
-- [Hono JS](https://hono.dev/) — Backend framework
-- [Redis](https://redis.io/) — Database
-- [TypeScript](https://www.typescriptlang.org/) — Programming language
+- Hono JS — Backend framework
+- Redis — Database
+- TypeScript — Programming language
 
 <!-- TODO: UPDATE THIS SECTION -->
 
 ### Testing
 
-- [Vitest](https://vitest.dev/) — Testing framework
-- [Google Chrome](https://www.google.com/chrome/) — Browser
+- Vitest — Testing framework
+- Google Chrome — Browser
 
 ### Tools
 
-- [Vite](https://vite.dev/) — Build tool
-- [pnpm](https://pnpm.io/) — Package manager
-- [Biome JS](https://biomejs.dev) — Linter and formatter
-- [Ultracite](https://www.ultracite.ai) — Linter and formatter
+- Vite — Build tool
+- Pnpm — Package manager
+- Biome JS — Linter and formatter
+- Ultracite — Linter and formatter
 
 > **IMPORTANT NOTE:**
 >
