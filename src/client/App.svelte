@@ -1,9 +1,7 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
+	const title = $state('Devvit + Svelte')
 </script>
 
 <main>
-  <h1>Devvit + Svelte</h1>
-
-  <Counter/>
+	<h1>{title}</h1>
 </main>
