@@ -232,11 +232,11 @@ Biome (the underlying engine) provides extremely fast Rust-based linting and for
 
 ### Core Principles
 
-Write code that is **accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
+Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
 
 ### Type Safety & Explicitness
 
-- Use explicit types for function parameters and return values when they enhance clarity
+- Use explicit types for function parameters and return values when they enhance clarity and readability
 - Prefer `unknown` over `any` when the type is genuinely unknown
 - Use const assertions (`as const`) for immutable values and literal types
 - Leverage TypeScript's type narrowing instead of type assertions
