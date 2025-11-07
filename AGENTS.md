@@ -138,20 +138,14 @@ pnpm fix            # Format and lint code
 
 ### General
 
+- Follow the DRY (Don't Repeat Yourself) principles.
+- Keep functions small (SHOULD target <= 20–30 lines) and single-purpose.
 - Omit semicolons unless syntactically required.
-- Favor functional programming patterns.
+- Favor functional programming patterns over object-oriented programming patterns.
 - Sort imports: packages, shared modules, then relative paths.
 - Prefer named exports (tree-shaking) over default exports.
-
-### TypeScript/ JavaScript
-
-- Use arrow functions by default.
-- Use const by default, let only when reassignment is needed, never var.
-- Use explicit types for function parameters and return values when they enhance clarity and readability
-- Prefer `unknown` over `any` when the type is genuinely unknown
-- Use const assertions (`as const`) for immutable values and literal types
-- Leverage TypeScript's type narrowing instead of type assertions
 - Use meaningful variable names instead of magic numbers - extract constants with descriptive names
+- Use descriptive function names instead of generic names like `handle` or `process`.
 
 ### Svelte
 
