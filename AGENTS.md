@@ -158,6 +158,9 @@ pnpm fix            # Format and lint code
 - Svelte components: PascalCase filenames, export props via `$props()` rune, keep markup declarative.
 - Favor Tailwind utility classes and existing design tokens.
 - Create reusable components in `src/client/components` before duplicating markup.
+- Use Tailwind CSS classes and existing design tokens. **DO NOT use style blocks in Svelte components unless absolutely necessary.**
+- Use arrow functions for event handlers and short functions.
+- Write short, focused components with a single responsibility.
 
 ### Server
 
