@@ -98,11 +98,26 @@ devvit.json       # Devvit config
 
 ## Guiding Principles
 
-- Clarity and Reuse: Make every component and page modular and reusable; abstract repeated UI patterns into components.
+- Follow DRY (Don't Repeat Yourself) principles. Keep code simple and intention-revealing. Small functions, clear names, no duplication, and it passes tests.
+- Make code review a first-class practice. Optimize for readability, small CLs, and respectful, actionable feedback.
 - Consistency: Maintain a unified design system (color tokens, typography, spacing, components).
 - Simplicity: Prefer small, focused components and avoid unnecessary complexity.
-- Demo-Oriented: Enable quick prototyping to showcase streaming, multi-turn conversations, and tool integrations.
 - Visual Quality: Uphold a high standard of visual polish per OSS guidelines (spacing, padding, hover states, etc.).
+
+### Review Criteria
+
+- The code is well-designed.
+- The functionality is good for the users of the code.
+- Any UI changes are sensible and look good.
+- Any parallel programming is done safely.
+- The code isn't more complex than it needs to be.
+- The developer isn't implementing things they might need in the future but don't know they need now.
+- Code has appropriate unit tests.
+- Tests are well-designed.
+- The developer used clear names for everything.
+- Comments are clear and useful, and mostly explain why instead of what.
+- Code is appropriately documented.
+- The code conforms to the style guides.
 
 ---
 
@@ -127,6 +142,16 @@ pnpm fix            # Format and lint code
 - Favor functional programming patterns.
 - Sort imports: packages, shared modules, then relative paths.
 - Prefer named exports (tree-shaking) over default exports.
+
+### TypeScript/ JavaScript
+
+- Use arrow functions by default.
+- Use const by default, let only when reassignment is needed, never var.
+- Use explicit types for function parameters and return values when they enhance clarity and readability
+- Prefer `unknown` over `any` when the type is genuinely unknown
+- Use const assertions (`as const`) for immutable values and literal types
+- Leverage TypeScript's type narrowing instead of type assertions
+- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
 
 ### Svelte
 
@@ -162,12 +187,17 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 
 ## Development Workflow
 
+Follow the following workflow:
+1. Explore → Plan → Code → Commit
+2. Test-First Workflow (TDD)
+3. Start Development
+
 ### 1. Explore → Plan → Code → Commit
 
 - Begin with a concise checklist (3–7 bullets) of what you will do; keep items conceptual, not implementation-level.
-- Read the code; do not begin coding immediately.
-- Plan your approach.
-- Ask questions if unclear—do not assume.
+- Read the code; DO NOT begin coding immediately.
+- Plan your approach; write a detailed plan of what you will do.
+- Ask questions if unclear — **DO NOT ASSUME**.
 - Break tasks into smaller steps.
 - Request user approval for your plan before coding.
 - Iterate: Review → Approve → Code → Verify → Commit.
@@ -234,14 +264,6 @@ Biome (the underlying engine) provides extremely fast Rust-based linting and for
 
 Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
 
-### Type Safety & Explicitness
-
-- Use explicit types for function parameters and return values when they enhance clarity and readability
-- Prefer `unknown` over `any` when the type is genuinely unknown
-- Use const assertions (`as const`) for immutable values and literal types
-- Leverage TypeScript's type narrowing instead of type assertions
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
-
 ### Modern JavaScript/TypeScript
 
 - Use arrow functions for callbacks and short functions
@@ -250,6 +272,11 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Prefer template literals over string concatenation
 - Use destructuring for object and array assignments
 - Use `const` by default, `let` only when reassignment is needed, never `var`
+- Use explicit types for function parameters and return values when they enhance clarity and readability
+- Prefer `unknown` over `any` when the type is genuinely unknown
+- Use const assertions (`as const`) for immutable values and literal types
+- Leverage TypeScript's type narrowing instead of type assertions
+- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
 
 ### Async & Promises
 
