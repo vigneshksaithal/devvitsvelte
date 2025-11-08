@@ -150,7 +150,7 @@ pnpm fix            # Format and lint code
 - Favor Tailwind utility classes and existing design tokens.
 - Create reusable components in `src/client/components` before duplicating markup.
 - Use Tailwind CSS classes and existing design tokens. **DO NOT use style blocks in Svelte components unless absolutely necessary.**
-- Use arrow functions for event handlers and short functions.
+- Use arrow functions for all functions.
 - Write short, focused components with a single responsibility.
 
 ### Server
