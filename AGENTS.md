@@ -18,6 +18,8 @@
 
 >**IMPORTANT NOTE:**
 >For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
+> - Use Svelte v5 runes syntax ONLY.
+> - Use Tailwind CSS v4 syntax ONLY.
 
 ### Backend
 
@@ -38,11 +40,6 @@
 - Pnpm — Package manager
 - Biome JS — Linter and formatter
 - Ultracite — Linter and formatter
-
-> **IMPORTANT NOTE:**
->
-> - Use Svelte v5 runes syntax ONLY.
-> - Use Tailwind CSS v4 syntax ONLY.
 
 ---
 
