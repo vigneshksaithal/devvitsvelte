@@ -18,8 +18,8 @@
 
 >**IMPORTANT NOTE:**
 >For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
-> - Use Svelte v5 runes syntax ONLY.
-> - Use Tailwind CSS v4 syntax ONLY.
+> Use Svelte v5 runes syntax ONLY.
+> Use Tailwind CSS v4 syntax ONLY.
 
 ### Backend
 
@@ -182,6 +182,7 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 ## Development Workflow
 
 Follow the following workflow:
+
 1. Explore → Plan → Code → Commit
 2. Test-First Workflow (TDD)
 3. Start Development
@@ -310,9 +311,10 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 ### Framework-Specific Guidance
 
 **Svelte:**
+
 - Use `class` and `for` attributes (not `className` or `htmlFor`)
 
-### Testing
+### Tests
 
 - Write assertions inside `it()` or `test()` blocks
 - Avoid done callbacks in async tests - use async/await instead
