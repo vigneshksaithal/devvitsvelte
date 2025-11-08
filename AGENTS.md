@@ -229,9 +229,8 @@ Follow the following workflow:
 - Never commit secrets or local settings.
 - After updates, write a detailed changelog in `CHANGELOG.md`.
 
-> This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change.
-
-> REMEMBER: After coding you need to update the CHANGELOG.md file with a detailed summary of changes made.
+> **NOTE:** This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change.
+> **REMEMBER:** After coding you need to update the CHANGELOG.md file with a detailed summary of changes made.
 
 ---
 
