@@ -38,7 +38,6 @@ app.get('/api/init', async (c) => {
       username: username ?? 'anonymous'
     })
   } catch (error) {
-    // biome-ignore lint/suspicious/noConsole: We need to log the error to the console
     console.error(`API Init Error for post ${postId}:`, error)
     let errorMessage = 'Unknown error during initialization'
     if (error instanceof Error) {
@@ -56,7 +55,6 @@ const handleCreatePost = async (c: Context) => {
       navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
     })
   } catch (error) {
-    // biome-ignore lint/suspicious/noConsole: We need to log the error to the console
     console.error(`Error creating post: ${error}`)
     return c.json(
       {
