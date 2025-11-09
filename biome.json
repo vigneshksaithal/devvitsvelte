@@ -13,13 +13,11 @@
       "linter": {
         "rules": {
           "correctness": {
-            "noUnusedVariables": "off",
             "noUnusedImports": "off",
             "noUndeclaredVariables": "off"
           },
           "style": {
-            "useConst": "off",
-            "useImportType": "off"
+            "useFilenamingConvention": "off"
           }
         }
       }
