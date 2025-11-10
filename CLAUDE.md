@@ -38,8 +38,6 @@
 
 - Vite — Build tool
 - Pnpm — Package manager
-- Biome JS — Linter and formatter
-- Ultracite — Linter and formatter
 
 ---
 
@@ -125,8 +123,6 @@ pnpm install        # Install dependencies
 pnpm dev            # Start development server
 pnpm build          # Build the project
 pnpm test           # Run tests
-pnpm type-check     # Check types
-pnpm fix            # Format and lint code
 ```
 
 ---
@@ -208,8 +204,6 @@ Follow the following workflow:
 - Run `pnpm dev` to start development.
 - Modify code as needed in client/server/shared.
 - Test with `pnpm test`.
-- Type-check with `pnpm type-check`.
-- Format and lint with `pnpm fix`.
 
 ---
 
@@ -220,7 +214,6 @@ Follow the following workflow:
 - Use rebase as the default merge method; avoid force-pushing to `main`.
 - Commit messages:
   - Start with an imperative verb.
-  - Always type-check before committing.
   - Example: `feat(auth): add token validation`
 
 ## Repository Etiquette
@@ -235,7 +228,7 @@ Follow the following workflow:
 
 ---
 
-## Ultracite Linter and Formatter Rules
+## Linter and Formatter Rules
 
 ### Before Writing Code
 
@@ -243,20 +236,6 @@ Follow the following workflow:
 2. Consider edge cases and errors
 3. Apply all rules strictly
 4. Validate accessibility
-
-This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
-
-### Quick Reference
-
-- **Format code**: `npx ultracite fix`
-- **Check for issues**: `npx ultracite check`
-- **Diagnose setup**: `npx ultracite doctor`
-
-Biome (the underlying engine) provides extremely fast Rust-based linting and formatting. Most issues are automatically fixable.
-
-### Core Principles
-
-Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
 
 ### Modern JavaScript/TypeScript
 
@@ -321,15 +300,3 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Don't use `.only` or `.skip` in committed code
 - Keep test suites reasonably flat - avoid excessive `describe` nesting
 
-### When Biome Can't Help
-
-Biome's linter will catch most issues automatically. Focus your attention on:
-
-1. **Business logic correctness** - Biome can't validate your algorithms
-2. **Meaningful naming** - Use descriptive names for functions, variables, and types
-3. **Architecture decisions** - Component structure, data flow, and API design
-4. **Edge cases** - Handle boundary conditions and error states
-5. **User experience** - Accessibility, performance, and usability considerations
-6. **Documentation** - Add comments for complex logic, but prefer self-documenting code
-
-Most formatting and common issues are automatically fixed by Biome. Run `npx ultracite fix` before committing to ensure compliance.
