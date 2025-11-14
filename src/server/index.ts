@@ -8,11 +8,14 @@ import {
 import { serve } from '@hono/node-server'
 import type { Context } from 'hono'
 import { Hono } from 'hono'
+
 import { createPost } from './post'
+
+const HTTP_STATUS_BAD_REQUEST = 400
 
 const app = new Hono()
 
-app.get('/api/init', async (c) => {
+const initializeApp = async (c: Context) => {
   const { postId } = context
 
   if (!postId) {
@@ -21,7 +24,7 @@ app.get('/api/init', async (c) => {
         status: 'error',
         message: 'postId is required but missing from context'
       },
-      400
+      HTTP_STATUS_BAD_REQUEST
     )
   }
 
@@ -38,16 +41,14 @@ app.get('/api/init', async (c) => {
       username: username ?? 'anonymous'
     })
   } catch (error) {
-    console.error(`API Init Error for post ${postId}:`, error)
-    let errorMessage = 'Unknown error during initialization'
-    if (error instanceof Error) {
-      errorMessage = `Initialization failed: ${error.message}`
-    }
-    return c.json({ status: 'error', message: errorMessage }, 400)
+    const errorMessage = error instanceof Error
+      ? `Initialization failed: ${error.message}`
+      : 'Unknown error during initialization'
+    return c.json({ status: 'error', message: errorMessage }, HTTP_STATUS_BAD_REQUEST)
   }
-})
+}
 
-const handleCreatePost = async (c: Context) => {
+const createPostHandler = async (c: Context) => {
   try {
     const post = await createPost()
 
@@ -55,19 +56,22 @@ const handleCreatePost = async (c: Context) => {
       navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`
     })
   } catch (error) {
-    console.error(`Error creating post: ${error}`)
+    const errorMessage = error instanceof Error
+      ? error.message
+      : 'Failed to create post'
     return c.json(
       {
         status: 'error',
-        message: 'Failed to create post'
+        message: errorMessage
       },
-      400
+      HTTP_STATUS_BAD_REQUEST
     )
   }
 }
 
-app.post('/internal/on-app-install', handleCreatePost)
-app.post('/internal/menu/post-create', handleCreatePost)
+app.get('/api/init', initializeApp)
+app.post('/internal/on-app-install', createPostHandler)
+app.post('/internal/menu/post-create', createPostHandler)
 
 // Start the Devvit-wrapped server so context (reddit, redis, etc.) is available
 serve({ fetch: app.fetch, port: getServerPort(), createServer })
