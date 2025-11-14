@@ -8,7 +8,7 @@
 
 ### Frontend
 
-- Devvit (v0.12.1) — Reddit App Platform
+- Devvit (v0.12.2) — Reddit App Platform
 - Svelte (v5, runes) — UI framework
 - TypeScript (v5) — Programming language
 - Tailwind CSS (v4) — CSS framework
