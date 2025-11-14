@@ -2,11 +2,8 @@
 	const title = $state('Devvit + Svelte')
 </script>
 
-<main>
-	<h1>{title}</h1>
-	{#if title === 'Devvit + Svelte'}
-		<p>This is a test</p>
-	{:else}
-		<p>This is not a test</p>
-	{/if}
+<main class="flex min-h-screen min-w-[320px] items-center justify-center">
+	<div class="mx-auto max-w-5xl px-8 text-center">
+		<h1 class="text-4xl font-bold">{title}</h1>
+	</div>
 </main>
