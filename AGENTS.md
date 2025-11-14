@@ -17,9 +17,9 @@
 <!-- TODO: UPDATE THIS SECTION -->
 
 >**IMPORTANT NOTE:**
->For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
-> Use Svelte v5 runes syntax ONLY.
-> Use Tailwind CSS v4 syntax ONLY.
+> - For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
+> - Use Svelte v5 runes syntax ONLY.
+> - Use Tailwind CSS v4 syntax ONLY.
 
 ### Backend
 
