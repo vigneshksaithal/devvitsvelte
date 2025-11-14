@@ -19,7 +19,7 @@
     "type-check": "tsc --build"
   },
   "dependencies": {
-    "@devvit/web": "0.12.1",
+    "@devvit/web": "0.12.2",
     "@hono/node-server": "^1.19.6",
     "@tailwindcss/vite": "^4.1.17",
     "devvit": "0.12.2",
