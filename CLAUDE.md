@@ -8,7 +8,7 @@
 
 ### Frontend
 
-- Devvit (v0.12.1) — Reddit App Platform
+- Devvit (v0.12.2) — Reddit App Platform
 - Svelte (v5, runes) — UI framework
 - TypeScript (v5) — Programming language
 - Tailwind CSS (v4) — CSS framework
@@ -16,7 +16,7 @@
 
 <!-- TODO: UPDATE THIS SECTION -->
 
-> **IMPORTANT NOTE:**
+>**IMPORTANT NOTE:**
 > - For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
 > - Use Svelte v5 runes syntax ONLY.
 > - Use Tailwind CSS v4 syntax ONLY.
