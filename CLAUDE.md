@@ -16,7 +16,7 @@
 
 <!-- TODO: UPDATE THIS SECTION -->
 
->**IMPORTANT NOTE:**
+> **IMPORTANT NOTE:**
 > - For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
 > - Use Svelte v5 runes syntax ONLY.
 > - Use Tailwind CSS v4 syntax ONLY.
@@ -38,6 +38,7 @@
 
 - Vite — Build tool
 - Pnpm — Package manager
+- Biome JS — Linter and formatter
 
 ---
 
@@ -87,13 +88,16 @@ src/
   server/         # Hono external API service (serverless backend in Node.js, with Redis access)
   shared/         # Shared code for devvit app, client, server, and webview (e.g., shared types)
 devvit.json       # Devvit config
+CHANGELOG.md      # Changelog
 ```
 
 ---
 
 ## Guiding Principles
 
-- Follow DRY (Don't Repeat Yourself) principles. Keep code simple and intention-revealing. Small functions, clear names, no duplication, and it passes tests.
+- Follow DRY (Don't Repeat Yourself) principles.
+- Keep code simple and intention-revealing. 
+- Keep functions small (SHOULD target <= 20–30 lines) and single-purpose.
 - Make code review a first-class practice. Optimize for readability, small CLs, and respectful, actionable feedback.
 - Consistency: Maintain a unified design system (color tokens, typography, spacing, components).
 - Simplicity: Prefer small, focused components and avoid unnecessary complexity.
@@ -123,6 +127,8 @@ pnpm install        # Install dependencies
 pnpm dev            # Start development server
 pnpm build          # Build the project
 pnpm test           # Run tests
+pnpm type-check     # Check types
+pnpm fix            # Format and lint code
 ```
 
 ---
@@ -131,8 +137,6 @@ pnpm test           # Run tests
 
 ### General
 
-- Follow the DRY (Don't Repeat Yourself) principles.
-- Keep functions small (SHOULD target <= 20–30 lines) and single-purpose.
 - Omit semicolons unless syntactically required.
 - Favor functional programming patterns over object-oriented programming patterns.
 - Sort imports: packages, shared modules, then relative paths.
@@ -143,11 +147,13 @@ pnpm test           # Run tests
 ### Svelte
 
 - Svelte components: PascalCase filenames, export props via `$props()` rune, keep markup declarative.
-- Favor Tailwind utility classes and existing design tokens.
 - Create reusable components in `src/client/components` before duplicating markup.
-- Use Tailwind CSS classes and existing design tokens. **DO NOT use style blocks in Svelte components unless absolutely necessary.**
 - Use arrow functions for all functions.
 - Write short, focused components with a single responsibility.
+
+> **IMPORTANT:**
+> - DO NOT use style blocks in Svelte components unless absolutely necessary.
+> - Use Tailwind CSS classes and existing design tokens.
 
 ### Server
 
@@ -171,7 +177,8 @@ pnpm test           # Run tests
 Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 
 > **IMPORTANT:**
-> This is a serverless runtime (like AWS Lambda); do not run SQLite or stateful in-memory processes. For real-time use cases, see `devvit_search` docs regarding the real-time service.
+> This is a serverless runtime (like AWS Lambda); do not run SQLite or stateful in-memory processes. 
+> For real-time use cases, see `devvit_search` docs regarding the real-time service.
 
 ---
 
@@ -187,6 +194,7 @@ Follow the following workflow:
 
 - Begin with a concise checklist (3–7 bullets) of what you will do; keep items conceptual, not implementation-level.
 - Read the code; DO NOT begin coding immediately.
+- Proceed to code ONLY if you are >90% sure about the approach.
 - Plan your approach; write a detailed plan of what you will do.
 - Ask questions if unclear — **DO NOT ASSUME**.
 - Break tasks into smaller steps.
@@ -204,6 +212,8 @@ Follow the following workflow:
 - Run `pnpm dev` to start development.
 - Modify code as needed in client/server/shared.
 - Test with `pnpm test`.
+- Type-check with `pnpm type-check`.
+- Format and lint with `pnpm fix`.
 
 ---
 
@@ -214,6 +224,7 @@ Follow the following workflow:
 - Use rebase as the default merge method; avoid force-pushing to `main`.
 - Commit messages:
   - Start with an imperative verb.
+  - Always type-check before committing.
   - Example: `feat(auth): add token validation`
 
 ## Repository Etiquette
@@ -236,6 +247,20 @@ Follow the following workflow:
 2. Consider edge cases and errors
 3. Apply all rules strictly
 4. Validate accessibility
+
+This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
+
+### Quick Reference
+
+- **Format code**: `npx ultracite fix`
+- **Check for issues**: `npx ultracite check`
+- **Diagnose setup**: `npx ultracite doctor`
+
+Biome (the underlying engine) provides extremely fast Rust-based linting and formatting. Most issues are automatically fixable.
+
+### Core Principles
+
+Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
 
 ### Modern JavaScript/TypeScript
 
@@ -293,10 +318,22 @@ Follow the following workflow:
 
 - Use `class` and `for` attributes (not `className` or `htmlFor`)
 
-### Tests
+### Testing
 
 - Write assertions inside `it()` or `test()` blocks
 - Avoid done callbacks in async tests - use async/await instead
 - Don't use `.only` or `.skip` in committed code
 - Keep test suites reasonably flat - avoid excessive `describe` nesting
 
+### When Biome Can't Help
+
+Biome's linter will catch most issues automatically. Focus your attention on:
+
+1. **Business logic correctness** - Biome can't validate your algorithms
+2. **Meaningful naming** - Use descriptive names for functions, variables, and types
+3. **Architecture decisions** - Component structure, data flow, and API design
+4. **Edge cases** - Handle boundary conditions and error states
+5. **User experience** - Accessibility, performance, and usability considerations
+6. **Documentation** - Add comments for complex logic, but prefer self-documenting code
+
+Most formatting and common issues are automatically fixed by Biome. Run `npx ultracite fix` before committing to ensure compliance.
