@@ -14,8 +14,6 @@
 - Tailwind CSS (v4) — CSS framework
 - Lucide Svelte — Icon library
 
-<!-- TODO: UPDATE THIS SECTION -->
-
 > **IMPORTANT NOTE:**
 > - For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
 > - Use Svelte v5 runes syntax ONLY.
@@ -27,8 +25,6 @@
 - Redis — Database
 - TypeScript — Programming language
 
-<!-- TODO: UPDATE THIS SECTION -->
-
 ### Testing
 
 - Vitest — Testing framework
@@ -38,7 +34,6 @@
 
 - Vite — Build tool
 - Pnpm — Package manager
-- Biome JS — Linter and formatter
 
 ---
 
@@ -248,16 +243,6 @@ Follow the following workflow:
 3. Apply all rules strictly
 4. Validate accessibility
 
-This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
-
-### Quick Reference
-
-- **Format code**: `npx ultracite fix`
-- **Check for issues**: `npx ultracite check`
-- **Diagnose setup**: `npx ultracite doctor`
-
-Biome (the underlying engine) provides extremely fast Rust-based linting and formatting. Most issues are automatically fixable.
-
 ### Core Principles
 
 Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
@@ -324,16 +309,3 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Avoid done callbacks in async tests - use async/await instead
 - Don't use `.only` or `.skip` in committed code
 - Keep test suites reasonably flat - avoid excessive `describe` nesting
-
-### When Biome Can't Help
-
-Biome's linter will catch most issues automatically. Focus your attention on:
-
-1. **Business logic correctness** - Biome can't validate your algorithms
-2. **Meaningful naming** - Use descriptive names for functions, variables, and types
-3. **Architecture decisions** - Component structure, data flow, and API design
-4. **Edge cases** - Handle boundary conditions and error states
-5. **User experience** - Accessibility, performance, and usability considerations
-6. **Documentation** - Add comments for complex logic, but prefer self-documenting code
-
-Most formatting and common issues are automatically fixed by Biome. Run `npx ultracite fix` before committing to ensure compliance.
