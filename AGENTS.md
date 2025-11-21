@@ -25,17 +25,22 @@
 - Redis — Database
 - TypeScript — Programming language
 
-### Testing
-
-- Vitest — Testing framework
-- Google Chrome — Browser
+> **IMPORTANT NOTE:**
+> Redis is accessible via `import { redis } from '@devvit/web/server'`.
 
 ### Tools
 
+- Vitest — Testing framework
+- Google Chrome — Browser
 - Vite — Build tool
 - Pnpm — Package manager
 
 ---
+
+## App Specific Rules
+
+- You are supposed to write code for dark and light mode.
+- You are supposed to write code for both desktop and mobile.
 
 ## MCP Servers
 
@@ -90,6 +95,13 @@ CHANGELOG.md      # Changelog
 
 ## Guiding Principles
 
+### Before Writing Code
+
+1. Analyze codebase patterns
+2. Consider edge cases and errors
+3. Apply all rules strictly
+4. Validate accessibility
+
 - Follow DRY (Don't Repeat Yourself) principles.
 - Keep code simple and intention-revealing. 
 - Keep functions small (SHOULD target <= 20–30 lines) and single-purpose.
@@ -132,12 +144,21 @@ pnpm fix            # Format and lint code
 
 ### General
 
+Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
+
 - Omit semicolons unless syntactically required.
 - Favor functional programming patterns over object-oriented programming patterns.
 - Sort imports: packages, shared modules, then relative paths.
 - Prefer named exports (tree-shaking) over default exports.
 - Use meaningful variable names instead of magic numbers - extract constants with descriptive names. e.g. `HTTP_STATUS_BAD_REQUEST`, `MAX_POST_COMMENTS`, etc.
 - Use descriptive function names instead of generic names like `handle` or `process`. e.g. `createPost`, `postComment`, `getPostComments`, etc.
+
+### TypeScript
+
+- Use `const` by default, `let` only when reassignment is needed, never `var`.
+- Use `unknown` over `any` when the type is genuinely unknown.
+- Use `const` assertions (`as const`) for immutable values and literal types.
+- Leverage TypeScript's type narrowing instead of type assertions.
 
 ### Svelte
 
@@ -174,6 +195,20 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 > **IMPORTANT:**
 > This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes. 
 > For real-time use cases, refer to the `devvit_search` documentation for the real-time service.
+
+### Error Handling & Debugging
+
+- Remove `console.log`, `debugger`, and `alert` statements from production code
+- Throw `Error` objects with descriptive messages, not strings or other values
+- Use `try-catch` blocks meaningfully - don't catch errors just to rethrow them
+- Prefer early returns over nested conditionals for error cases
+
+### Testing
+
+- Write assertions inside `it()` or `test()` blocks
+- Avoid done callbacks in async tests - use async/await instead
+- Don't use `.only` or `.skip` in committed code
+- Keep test suites reasonably flat - avoid excessive `describe` nesting
 
 ---
 
@@ -236,45 +271,6 @@ Follow the following workflow:
 
 ## Linter and Formatter Rules
 
-### Before Writing Code
-
-1. Analyze codebase patterns
-2. Consider edge cases and errors
-3. Apply all rules strictly
-4. Validate accessibility
-
-### Core Principles
-
-Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
-
-### Modern JavaScript/TypeScript
-
-- Use arrow functions for callbacks and short functions
-- Prefer `for...of` loops over `.forEach()` and indexed `for` loops
-- Use optional chaining (`?.`) and nullish coalescing (`??`) for safer property access
-- Prefer template literals over string concatenation
-- Use destructuring for object and array assignments
-- Use `const` by default, `let` only when reassignment is needed, never `var`
-- Use explicit types for function parameters and return values when they enhance clarity and readability
-- Prefer `unknown` over `any` when the type is genuinely unknown
-- Use const assertions (`as const`) for immutable values and literal types
-- Leverage TypeScript's type narrowing instead of type assertions
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
-
-### Async & Promises
-
-- Always `await` promises in async functions - don't forget to use the return value
-- Use `async/await` syntax instead of promise chains for better readability
-- Handle errors appropriately in async code with try-catch blocks
-- Don't use async functions as Promise executors
-
-### Error Handling & Debugging
-
-- Remove `console.log`, `debugger`, and `alert` statements from production code
-- Throw `Error` objects with descriptive messages, not strings or other values
-- Use `try-catch` blocks meaningfully - don't catch errors just to rethrow them
-- Prefer early returns over nested conditionals for error cases
-
 ### Code Organization
 
 - Keep functions focused and under reasonable cognitive complexity limits
@@ -297,15 +293,8 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Prefer specific imports over namespace imports
 - Avoid barrel files (index files that re-export everything)
 
-### Framework-Specific Guidance
+## Tasks to Do After Coding
 
-**Svelte:**
-
-- Use `class` and `for` attributes (not `className` or `htmlFor`)
-
-### Testing
-
-- Write assertions inside `it()` or `test()` blocks
-- Avoid done callbacks in async tests - use async/await instead
-- Don't use `.only` or `.skip` in committed code
-- Keep test suites reasonably flat - avoid excessive `describe` nesting
+- Update the CHANGELOG.md file with a detailed summary of changes made.
+- Update the AGENTS.md file with any new workflow or major tool.
+- Update the README.md file with any new information.
