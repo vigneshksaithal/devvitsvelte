@@ -15,9 +15,9 @@
 - Lucide Svelte — Icon library
 
 > **IMPORTANT NOTE:**
-> For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
-> Use Svelte v5 runes syntax ONLY.
-> Use Tailwind CSS v4 syntax ONLY.
+> For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking
+> Use Svelte v5 runes syntax ONLY
+> Use Tailwind CSS v4 syntax ONLY
 
 ### Backend
 
@@ -26,7 +26,7 @@
 - TypeScript — Programming language
 
 > **IMPORTANT NOTE:**
-> Redis is accessible via `import { redis } from '@devvit/web/server'`.
+> Redis is accessible via `import { redis } from '@devvit/web/server'`
 
 ### Tools
 
@@ -64,14 +64,14 @@
 
 ## App Specific Rules
 
-- You are supposed to write code for dark and light mode.
-- You are supposed to write code for both desktop and mobile.
+- You are supposed to write code for dark and light mode
+- You are supposed to write code for both desktop and mobile
 
 ## MCP Servers
 
 ### Svelte MCP Server: Available Tools
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use it effectively.
+You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use it effectively
 
 1. Start: `list-sections` → find relevant docs
 2. Read: `get-documentation` → get implementation details  
@@ -80,7 +80,7 @@ You are able to use the Svelte MCP server, where you have access to comprehensiv
 
 ### Devvit MCP Server: Available Tools
 
-You are able to use the Devvit MCP server, where you have access to comprehensive Devvit API documentation.
+You are able to use the Devvit MCP server, where you have access to comprehensive Devvit API documentation
 
 1. Search: `devvit_search "your query"` → find specific answers
 
@@ -119,28 +119,28 @@ CHANGELOG.md      # Changelog
 3. Apply all rules strictly
 4. Validate accessibility
 
-- Follow DRY (Don't Repeat Yourself) principles.
-- Keep code simple and intention-revealing. 
-- Keep functions small (SHOULD target <= 20–30 lines) and single-purpose.
-- Make code review a first-class practice. Optimize for readability, small CLs, and respectful, actionable feedback.
-- Consistency: Maintain a unified design system (color tokens, typography, spacing, components).
-- Simplicity: Prefer small, focused components and avoid unnecessary complexity.
-- Visual Quality: Uphold a high standard of visual polish per OSS guidelines (spacing, padding, hover states, etc.).
+- Follow DRY (Don't Repeat Yourself) principles
+- Keep code simple and intention-revealing 
+- Keep functions small (SHOULD target <= 20–30 lines) and single-purpose
+- Make code review a first-class practice. Optimize for readability, small CLs, and respectful, actionable feedback
+- Consistency: Maintain a unified design system (color tokens, typography, spacing, components)
+- Simplicity: Prefer small, focused components and avoid unnecessary complexity
+- Visual Quality: Uphold a high standard of visual polish per OSS guidelines (spacing, padding, hover states, etc.)
 
 ### Review Criteria
 
-- The code is well-designed.
-- The functionality is good for the users of the code.
-- Any UI changes are sensible and look good.
-- Any parallel programming is done safely.
-- The code isn't more complex than it needs to be.
-- The developer isn't implementing things they might need in the future but don't know they need now.
-- Code has appropriate unit tests.
-- Tests are well-designed.
-- The developer used clear names for everything.
-- Comments are clear and useful, and mostly explain why instead of what.
-- Code is appropriately documented.
-- The code conforms to the style guides.
+- The code is well-designed
+- The functionality is good for the users of the code
+- Any UI changes are sensible and look good
+- Any parallel programming is done safely
+- The code isn't more complex than it needs to be
+- The developer isn't implementing things they might need in the future but don't know they need now
+- Code has appropriate unit tests
+- Tests are well-designed
+- The developer used clear names for everything
+- Comments are clear and useful, and mostly explain why instead of what
+- Code is appropriately documented
+- The code conforms to the style guides
 
 ---
 
@@ -161,43 +161,43 @@ pnpm fix            # Format and lint code
 
 ### General
 
-Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
+Write code that is **clean, readable, accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity
 
-- Omit semicolons unless syntactically required.
-- Favor functional programming patterns over object-oriented programming patterns.
-- Sort imports: packages, shared modules, then relative paths.
-- Prefer named exports (tree-shaking) over default exports.
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names. e.g. `HTTP_STATUS_BAD_REQUEST`, `MAX_POST_COMMENTS`, etc.
-- Use descriptive function names instead of generic names like `handle` or `process`. e.g. `createPost`, `postComment`, `getPostComments`, etc.
+- Omit semicolons unless syntactically required
+- Favor functional programming patterns over object-oriented programming patterns
+- Sort imports: packages, shared modules, then relative paths
+- Prefer named exports (tree-shaking) over default exports
+- Use meaningful variable names instead of magic numbers - extract constants with descriptive names. e.g. `HTTP_STATUS_BAD_REQUEST`, `MAX_POST_COMMENTS`, etc
+- Use descriptive function names instead of generic names like `handle` or `process`. e.g. `createPost`, `postComment`, `getPostComments`, etc
 
 ### TypeScript
 
-- Use `const` by default, `let` only when reassignment is needed, never `var`.
-- Use `unknown` over `any` when the type is genuinely unknown.
-- Use `const` assertions (`as const`) for immutable values and literal types.
-- Leverage TypeScript's type narrowing instead of type assertions.
+- Use `const` by default, `let` only when reassignment is needed, never `var`
+- Use `unknown` over `any` when the type is genuinely unknown
+- Use `const` assertions (`as const`) for immutable values and literal types
+- Leverage TypeScript's type narrowing instead of type assertions
 
 ### Svelte
 
-- Svelte components: PascalCase filenames, export props via `$props()` rune, keep markup declarative.
-- Create reusable components in `src/client/components` before duplicating markup.
-- Use arrow functions for all functions e.g. `const createPost = async () => { ... }`.
-- Write short, focused components with a single responsibility.
+- Svelte components: PascalCase filenames, export props via `$props()` rune, keep markup declarative
+- Create reusable components in `src/client/components` before duplicating markup
+- Use arrow functions for all functions e.g. `const createPost = async () => { ... }`
+- Write short, focused components with a single responsibility
 
 > **IMPORTANT:**
-> DO NOT use style blocks in Svelte components unless absolutely necessary.
-> Use Tailwind CSS classes and existing design tokens.
+> DO NOT use style blocks in Svelte components unless absolutely necessary
+> Use Tailwind CSS classes and existing design tokens
 
 ### Server
 
-- Server handlers: Small, pure functions registered on shared `Hono` instance.
-- Validate external input using `src/shared/validator.ts` before mutating state.
-- Serverless Node.js: all Node globals except `fs`, `http`, `https`, and `net` are available.
-- Use `fetch` instead of `http`/`https`.
-- File system is read-only; you cannot write files.
-- Do not install libraries requiring restricted modules.
-- Websockets and HTTP streaming are not supported.
-- Redis is accessible via `import { redis } from '@devvit/web/server'`.
+- Server handlers: Small, pure functions registered on shared `Hono` instance
+- Validate external input using `src/shared/validator.ts` before mutating state
+- Serverless Node.js: all Node globals except `fs`, `http`, `https`, and `net` are available
+- Use `fetch` instead of `http`/`https`
+- File system is read-only; you cannot write files
+- Do not install libraries requiring restricted modules
+- Websockets and HTTP streaming are not supported
+- Redis is accessible via `import { redis } from '@devvit/web/server'`
 
 
 > **IMPORTANT:**
@@ -207,16 +207,16 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 
 ### Shared
 
-- Shared utilities must be framework-agnostic and deterministic; no side-effects. They must be testable from both client and server.
-- Colocate Vitest test files next to the module under test (e.g. `generator.test.ts`, `validator.test.ts`). Use lightweight fakes over live services.
+- Shared utilities must be framework-agnostic and deterministic; no side-effects. They must be testable from both client and server
+- Colocate Vitest test files next to the module under test (e.g. `generator.test.ts`, `validator.test.ts`). Use lightweight fakes over live services
 
 ### Devvit
 
-Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
+Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 
 > **IMPORTANT:**
-> This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes. 
-> For real-time use cases, refer to the `devvit_search` documentation for the real-time service.
+> This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes 
+> For real-time use cases, refer to the `devvit_search` documentation for the real-time service
 
 ### Error Handling & Debugging
 
@@ -265,7 +265,7 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 
 ## Development Workflow
 
-Follow the following workflow:
+Follow the following workflow
 
 1. Explore → Plan → Code → Commit
 2. Test-First Workflow (TDD)
@@ -273,26 +273,26 @@ Follow the following workflow:
 
 ### 1. Explore → Plan → Code → Commit
 
-- Begin with a concise checklist (3–7 bullets) of what you will do; keep items conceptual, not implementation-level.
-- Read the code; **DO NOT begin coding immediately**.
-- Proceed to code ONLY if you are >90% sure about the approach.
-- Plan your approach; write a detailed plan of what you will do.
-- Ask questions if unclear — **DO NOT ASSUME**.
-- Break tasks into smaller steps.
-- Request user approval for your plan before coding.
-- Iterate: Review → Approve → Code → Verify → Commit.
+- Begin with a concise checklist (3–7 bullets) of what you will do; keep items conceptual, not implementation-level
+- Read the code; **DO NOT begin coding immediately**
+- Proceed to code ONLY if you are >90% sure about the approach
+- Plan your approach; write a detailed plan of what you will do
+- Ask questions if unclear — **DO NOT ASSUME**
+- Break tasks into smaller steps
+- Request user approval for your plan before coding
+- Iterate: Review → Approve → Code → Verify → Commit
 
 ### 2. Test-First Workflow (TDD)
 
-- Write failing tests first.
-- Implement until tests pass.
-- Guard against overfitting.
+- Write failing tests first
+- Implement until tests pass
+- Guard against overfitting
 
 ### 3. Start Development
 
-- Run `pnpm dev` to start development.
-- Modify code as needed in client/server/shared.
-- Test with `pnpm test`.
+- Run `pnpm dev` to start development
+- Modify code as needed in client/server/shared
+- Test with `pnpm test`
 - Type-check with `pnpm type-check`
 - Format and lint with `pnpm fix`
 
@@ -317,32 +317,32 @@ Follow the following workflow:
 ### Redis Best Practices
 ```typescript
 // ❌ Multiple round trips
-const user1 = await redis.get('user:1');
-const user2 = await redis.get('user:2');
+const user1 = await redis.get('user:1')
+const user2 = await redis.get('user:2')
 
 // ✅ Single batch operation
-const [user1, user2] = await redis.mGet(['user:1', 'user2']);
+const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 ```
 
 ## Git Workflows
 
-- Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, etc.), limiting the subject to 72 characters. Add context in the body for non-trivial changes.
+- Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, etc.), limiting the subject to 72 characters. Add context in the body for non-trivial changes
 - Branches: `feat/`, `fix/`, `chore/`, `docs/`
-- Use rebase as the default merge method; avoid force-pushing to `main`.
+- Use rebase as the default merge method; avoid force-pushing to `main`
 - Commit messages:
-  - Start with an imperative verb.
-  - Always type-check before committing.
+  - Start with an imperative verb
+  - Always type-check before committing
   - Example: `feat(auth): add token validation`
 
 ## Repository Etiquette
 
-- Keep commits small and descriptive.
-- Update `AGENTS.md` with every new workflow or major tool.
-- Never commit secrets or local settings.
-- After updates, write a detailed changelog in `CHANGELOG.md`.
+- Keep commits small and descriptive
+- Update `AGENTS.md` with every new workflow or major tool
+- Never commit secrets or local settings
+- After updates, write a detailed changelog in `CHANGELOG.md`
 
-> **NOTE:** This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change.
-> **REMEMBER:** After coding you need to update the CHANGELOG.md file with a detailed summary of changes made.
+> **NOTE:** This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change
+> **REMEMBER:** After coding you need to update the CHANGELOG.md file with a detailed summary of changes made
 
 ---
 
@@ -372,6 +372,6 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2']);
 
 ## Tasks to Do After Coding
 
-- Update the CHANGELOG.md file with a detailed summary of changes made.
-- Update the AGENTS.md file with any new workflow or major tool.
-- Update the README.md file with any new information.
+- Update the CHANGELOG.md file with a detailed summary of changes made
+- Update the AGENTS.md file with any new workflow or major tool
+- Update the README.md file with any new information
