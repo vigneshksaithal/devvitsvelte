@@ -15,9 +15,9 @@
 - Lucide Svelte — Icon library
 
 > **IMPORTANT NOTE:**
-> - For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
-> - Use Svelte v5 runes syntax ONLY.
-> - Use Tailwind CSS v4 syntax ONLY.
+> For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking.
+> Use Svelte v5 runes syntax ONLY.
+> Use Tailwind CSS v4 syntax ONLY.
 
 ### Backend
 
@@ -147,8 +147,8 @@ pnpm fix            # Format and lint code
 - Write short, focused components with a single responsibility.
 
 > **IMPORTANT:**
-> - DO NOT use style blocks in Svelte components unless absolutely necessary.
-> - Use Tailwind CSS classes and existing design tokens.
+> DO NOT use style blocks in Svelte components unless absolutely necessary.
+> Use Tailwind CSS classes and existing design tokens.
 
 ### Server
 
@@ -172,8 +172,8 @@ pnpm fix            # Format and lint code
 Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 
 > **IMPORTANT:**
-> This is a serverless runtime (like AWS Lambda); do not run SQLite or stateful in-memory processes. 
-> For real-time use cases, see `devvit_search` docs regarding the real-time service.
+> This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes. 
+> For real-time use cases, refer to the `devvit_search` documentation for the real-time service.
 
 ---
 
@@ -188,7 +188,7 @@ Follow the following workflow:
 ### 1. Explore → Plan → Code → Commit
 
 - Begin with a concise checklist (3–7 bullets) of what you will do; keep items conceptual, not implementation-level.
-- Read the code; DO NOT begin coding immediately.
+- Read the code; **DO NOT begin coding immediately**.
 - Proceed to code ONLY if you are >90% sure about the approach.
 - Plan your approach; write a detailed plan of what you will do.
 - Ask questions if unclear — **DO NOT ASSUME**.
