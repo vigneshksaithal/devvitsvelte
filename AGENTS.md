@@ -37,6 +37,31 @@
 
 ---
 
+## Devvit Platform Features
+
+### Server Capabilities
+- **Redis**: Key-value storage (500MB limit, 1000 commands/sec)
+- **Scheduler**: Cron jobs and one-time tasks (max 10 recurring per install)
+- **Triggers**: Event-driven actions (onPostCreate, onCommentSubmit, etc.)
+- **Reddit API**: Full access to posts, comments, moderation
+- **HTTP Fetch**: External API calls (requires domain allowlisting)
+- **Media Uploads**: Runtime image uploads to Reddit CDN
+
+### Client Capabilities
+- **Post Data**: 2KB JSON attached to posts (client-accessible)
+- **Realtime**: Live sync between users (100 msg/sec, 5 channels/install)
+- **Forms**: User input collection with validation
+- **Navigation**: Redirect to posts/comments/URLs
+- **Toasts**: Temporary notifications
+
+### Key Limitations
+- Max request time: 30s
+- Max payload: 4MB
+- Max response: 10MB
+- No localStorage/sessionStorage in client
+- No streaming/websockets
+- Serverless execution (no long-running processes)
+
 ## App Specific Rules
 
 - You are supposed to write code for dark and light mode.
@@ -46,47 +71,39 @@
 
 ### Svelte MCP Server: Available Tools
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively.
+You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use it effectively.
 
-#### 1. list-sections
-
-Use this FIRST to discover all available documentation sections. Returns a structured list with titles, use_cases, and paths.
-When asked about Svelte or SvelteKit topics, ALWAYS use this tool at the start of the chat to find relevant sections.
-
-#### 2. get-documentation
-
-Retrieves full documentation content for specific sections. Accepts single or multiple sections.
-After calling the list-sections tool, you MUST analyze the returned documentation sections (especially the use_cases field) and then use the get-documentation tool to fetch ALL documentation sections that are relevant for the user's task.
-
-#### 3. svelte-autofixer
-
-Analyzes Svelte code and returns issues and suggestions.
-You MUST use this tool whenever writing Svelte code before sending it to the user. Keep calling it until no issues or suggestions are returned.
-
-#### 4. playground-link
-
-Generates a Svelte Playground link with the provided code.
-After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
+1. Start: `list-sections` → find relevant docs
+2. Read: `get-documentation` → get implementation details  
+3. Validate: `svelte-autofixer` → fix issues before shipping
+4. Share: `playground-link` → only after user approval
 
 ### Devvit MCP Server: Available Tools
 
-You are able to use the Devvit MCP server, where you have access to comprehensive Devvit documentation. Here's how to use the available tools effectively.
+You are able to use the Devvit MCP server, where you have access to comprehensive Devvit API documentation.
 
-#### 1. devvit_search
-
-Executes search over all of Devvit documentation. This is preferable to pasting in tons of docs since it can be more specific and lowers the risk of polluting your context.
+1. Search: `devvit_search "your query"` → find specific answers
 
 ## File Structure
 
 ```text
-assets/           # Public assets (images, sprites, audio, fonts)
-dist/             # Build output
+assets/           # Static media (must be < 20MB per file)
+  ├── images/     # PNG/JPEG for splash screens
+  └── icons/      # SVG icons (bundle with `devvit create icons`)
+dist/
+  ├── client/     # Built webview (HTML/CSS/JS only)
+  └── server/     # Node.js bundle (CommonJS)
 src/
-  client/         # Svelte frontend; use `fetch(/my/api/endpoint)` to access server APIs in `/src/server`
-    components/   # Reusable Svelte components
-    index.html    # Entry point
-  server/         # Hono external API service (serverless backend in Node.js, with Redis access)
-  shared/         # Shared code for devvit app, client, server, and webview (e.g., shared types)
+  client/         # Svelte frontend
+    ├── components/
+    ├── lib/      # Client utilities
+    └── index.html
+  server/         # Hono backend
+    ├── routes/   # API endpoints (must start with /api/)
+    └── index.ts  # Entry point
+  shared/         # Shared types/utils
+    ├── types.ts
+    └── constants.ts
 devvit.json       # Devvit config
 CHANGELOG.md      # Changelog
 ```
@@ -181,7 +198,12 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Do not install libraries requiring restricted modules.
 - Websockets and HTTP streaming are not supported.
 - Redis is accessible via `import { redis } from '@devvit/web/server'`.
-- Clients must not rely on `localStorage`.
+
+
+> **IMPORTANT:**
+> Server endpoints for API must start with `/api/`
+> Internal endpoints (triggers/scheduler) must start with `/internal/`
+> All triggers/scheduler receive POST requests with JSON
 
 ### Shared
 
@@ -211,6 +233,35 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`).
 - Keep test suites reasonably flat - avoid excessive `describe` nesting
 
 ---
+
+## Common Devvit Pitfalls
+
+### Client-Side
+❌ **DON'T**: Use localStorage, sessionStorage, or IndexedDB
+✅ **DO**: Store state in Redis via server endpoints
+
+❌ **DON'T**: Make external fetch calls from client
+✅ **DO**: Create server endpoints that fetch and return data
+
+❌ **DON'T**: Use CSS-in-JS or style blocks extensively
+✅ **DO**: Use Tailwind classes and design tokens
+
+### Server-Side
+❌ **DON'T**: Run long-lived processes or setInterval
+✅ **DO**: Use scheduler for recurring tasks
+
+❌ **DON'T**: Install packages with native dependencies (ffmpeg, sharp)
+✅ **DO**: Use external services (StreamPot, Cloudinary)
+
+❌ **DON'T**: Use fs to write files
+✅ **DO**: Upload to Reddit CDN via media.upload()
+
+### Post Data
+❌ **DON'T**: Store large data (>2KB) in post data
+✅ **DO**: Use Redis for large datasets, post data for UI state
+
+❌ **DON'T**: Store sensitive information in post data
+✅ **DO**: Keep secrets server-side only
 
 ## Development Workflow
 
@@ -242,10 +293,36 @@ Follow the following workflow:
 - Run `pnpm dev` to start development.
 - Modify code as needed in client/server/shared.
 - Test with `pnpm test`.
-- Type-check with `pnpm type-check`.
-- Format and lint with `pnpm fix`.
+- Type-check with `pnpm type-check`
+- Format and lint with `pnpm fix`
 
 ---
+
+## Performance Optimization
+
+### Client-Side
+- Minimize bundle size (target < 500KB)
+- Use code splitting for large features
+- Lazy load images with native `loading="lazy"`
+- Avoid heavy JavaScript libraries
+- Use CSS containment for complex layouts
+
+### Server-Side
+- Cache expensive Reddit API calls (use cache helper)
+- Batch Redis operations when possible
+- Set appropriate TTLs on cached data
+- Use Redis sorted sets for leaderboards (not arrays)
+- Limit external fetch calls (rate limits apply)
+
+### Redis Best Practices
+```typescript
+// ❌ Multiple round trips
+const user1 = await redis.get('user:1');
+const user2 = await redis.get('user:2');
+
+// ✅ Single batch operation
+const [user1, user2] = await redis.mGet(['user:1', 'user2']);
+```
 
 ## Git Workflows
 
