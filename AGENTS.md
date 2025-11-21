@@ -136,14 +136,14 @@ pnpm fix            # Format and lint code
 - Favor functional programming patterns over object-oriented programming patterns.
 - Sort imports: packages, shared modules, then relative paths.
 - Prefer named exports (tree-shaking) over default exports.
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
-- Use descriptive function names instead of generic names like `handle` or `process`.
+- Use meaningful variable names instead of magic numbers - extract constants with descriptive names. e.g. `HTTP_STATUS_BAD_REQUEST`, `MAX_POST_COMMENTS`, etc.
+- Use descriptive function names instead of generic names like `handle` or `process`. e.g. `createPost`, `postComment`, `getPostComments`, etc.
 
 ### Svelte
 
 - Svelte components: PascalCase filenames, export props via `$props()` rune, keep markup declarative.
 - Create reusable components in `src/client/components` before duplicating markup.
-- Use arrow functions for all functions.
+- Use arrow functions for all functions e.g. `const createPost = async () => { ... }`.
 - Write short, focused components with a single responsibility.
 
 > **IMPORTANT:**
