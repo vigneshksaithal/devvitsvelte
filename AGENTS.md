@@ -15,7 +15,7 @@
 - Lucide Svelte — Icon library
 
 > **IMPORTANT NOTE:**
-> For Lucide Icons use `@lucide/svelte/icons/{icon-name}` imports to enable tree-shaking
+> For Lucide Icons use `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times
 > Use Svelte v5 runes syntax ONLY
 > Use Tailwind CSS v4 syntax ONLY
 
@@ -33,7 +33,7 @@
 - Vitest — Testing framework
 - Google Chrome — Browser
 - Vite — Build tool
-- Pnpm — Package manager
+- PNPM — Package manager
 
 ---
 
