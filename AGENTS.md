@@ -5,7 +5,7 @@
 <!-- TODO: UPDATE THIS SECTION -->
 
 ## Tech Stack
-
+<!-- TODO: UPDATE THIS SECTION WITH THE LATEST TECH STACK -->
 ### Frontend
 
 - Devvit (v0.12.3) — Reddit App Platform
