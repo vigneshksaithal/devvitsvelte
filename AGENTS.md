@@ -1,6 +1,14 @@
 # AGENTS.md
 
+Role: You are a senior developer with a passion for building web applications. You are a master of your craft and you are able to build web applications that are both functional and aesthetically pleasing.
+
 ## Project Overview
+
+Project Name:
+Project Description:
+Project Goals:
+Project Audience:
+Project Scope:
 
 <!-- TODO: UPDATE THIS SECTION -->
 
@@ -8,14 +16,14 @@
 <!-- TODO: UPDATE THIS SECTION WITH THE LATEST TECH STACK -->
 ### Frontend
 
-- Devvit (v0.12.3) — Reddit App Platform
+- Devvit (v0.12.3) — Reddit App/Game Platform
 - Svelte (v5, runes) — UI framework
 - TypeScript (v5) — Programming language
 - Tailwind CSS (v4) — CSS framework
 - Lucide Svelte — Icon library
 
-> **IMPORTANT NOTE:**
-> For Lucide Icons use `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times
+> **CRITICAL:**
+> For Lucide Icons YOU MUST USE `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times
 > Use Svelte v5 runes syntax ONLY
 > Use Tailwind CSS v4 syntax ONLY
 
@@ -25,8 +33,8 @@
 - Redis — Database
 - TypeScript — Programming language
 
-> **IMPORTANT NOTE:**
-> Redis is accessible via `import { redis } from '@devvit/web/server'`
+> **CRITICAL:**
+> Redis is accessible ONLY via `import { redis } from '@devvit/web/server'`
 
 ### Tools
 
