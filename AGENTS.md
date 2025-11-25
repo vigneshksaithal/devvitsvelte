@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Role: You are a senior developer with a passion for building web applications. You are a master of your craft and you are able to build web applications that are both functional and aesthetically pleasing.
+Role: You are a senior developer. You are a master of your craft and you are able to build web applications that are both functional and aesthetically pleasing.
 
 ## Project Overview
 
@@ -33,9 +33,6 @@ Project Scope:
 - Redis — Database
 - TypeScript — Programming language
 
-> **CRITICAL:**
-> Redis is accessible ONLY via `import { redis } from '@devvit/web/server'`
-
 ### Tools
 
 - Vitest — Testing framework
@@ -44,36 +41,6 @@ Project Scope:
 - PNPM — Package manager
 
 ---
-
-## Devvit Platform Features
-
-### Server Capabilities
-- **Redis**: Key-value storage (500MB limit, 1000 commands/sec)
-- **Scheduler**: Cron jobs and one-time tasks (max 10 recurring per install)
-- **Triggers**: Event-driven actions (onPostCreate, onCommentSubmit, etc.)
-- **Reddit API**: Full access to posts, comments, moderation
-- **HTTP Fetch**: External API calls (requires domain allowlisting)
-- **Media Uploads**: Runtime image uploads to Reddit CDN
-
-### Client Capabilities
-- **Post Data**: 2KB JSON attached to posts (client-accessible)
-- **Realtime**: Live sync between users (100 msg/sec, 5 channels/install)
-- **Forms**: User input collection with validation
-- **Navigation**: Redirect to posts/comments/URLs
-- **Toasts**: Temporary notifications
-
-### Key Limitations
-- Max request time: 30s
-- Max payload: 4MB
-- Max response: 10MB
-- No localStorage/sessionStorage in client
-- No streaming/websockets
-- Serverless execution (no long-running processes)
-
-## App Specific Rules
-
-- You are supposed to write code for dark and light mode
-- You are supposed to write code for both desktop and mobile
 
 ## MCP Servers
 
@@ -86,11 +53,15 @@ You are able to use the Svelte MCP server, where you have access to comprehensiv
 3. Validate: `svelte-autofixer` → fix issues before shipping
 4. Share: `playground-link` → only after user approval
 
+Example: `list-sections "svelte props"` → find relevant docs
+Example: `get-documentation "how to create a component"`
+
 ### Devvit MCP Server: Available Tools
 
 You are able to use the Devvit MCP server, where you have access to comprehensive Devvit API documentation
 
 1. Search: `devvit_search "your query"` → find specific answers
+Example: `devvit_search "how to use redis"`
 
 ## File Structure
 
@@ -115,6 +86,159 @@ src/
 devvit.json       # Devvit config
 CHANGELOG.md      # Changelog
 ```
+
+---
+
+## Devvit Platform Features
+
+Devvit is Reddit's developer platform that lets you build interactive apps and games that live inside Reddit posts. Think of it as building a web app, but instead of hosting it on your own server, it runs directly within Reddit.
+
+| Concept | What It Means | Your Equivalent Experience |
+|---------|---------------|----------------------------|
+| Interactive Post | A Reddit post that contains your game/app | Like embedding a Svelte component in a webpage |
+| Devvit Web | Build with standard web tech (React, etc.) | Very similar to your Svelte/Hono experience |
+| Devvit Blocks | Reddit's own UI framework | Like a simpler, Reddit-specific Svelte |
+| Redis | Built-in database (free!) | Like having a free hosted database |
+| Reddit API | Access posts, comments, users | RESTful API you're familiar with |
+
+> **CRITICAL:**
+> You are NOT allowed to use Devvit Blocks. You are only allowed to use Devvit Web.
+
+### What Makes Devvit Special
+
+- **Zero hosting costs** - Reddit hosts everything for free
+- **Instant distribution** - Your game appears in Reddit feeds
+- **Cross-platform** - Works on web, iOS, and Android automatically
+
+### Server Capabilities
+- **Redis**: Key-value storage (500MB limit, 1000 commands/sec)
+- **Scheduler**: Cron jobs and one-time tasks (max 10 recurring per install)
+- **Triggers**: Event-driven actions (onPostCreate, onCommentSubmit, etc.)
+- **Reddit API**: Full access to posts, comments, moderation
+- **HTTP Fetch**: External API calls (requires domain allowlisting)
+- **Media Uploads**: Runtime image uploads to Reddit CDN
+
+### Client Capabilities
+- **Post Data**: 2KB JSON attached to posts (client-accessible)
+- **Realtime**: Live sync between users (100 msg/sec, 5 channels/install)
+- **Forms**: User input collection with validation
+- **Navigation**: Redirect to posts/comments/URLs
+- **Toasts**: Temporary notifications
+
+### Key Limitations
+- Max request time: 30s
+- Max payload: 4MB
+- Max response: 10MB
+- No localStorage/sessionStorage in client
+- No streaming/websockets
+- Serverless execution (no long-running processes)
+
+---
+
+## Core Capabilities
+
+### Redis (Database)
+
+Redis is a fast, in-memory database. In Devvit, it's free and pre-configured. Here's how to use Redis effectively:
+
+```typescript
+import { redis } from '@devvit/web/server';
+
+// Strings
+await redis.set('key', 'value');
+const value = await redis.get('key');
+
+// Numbers
+await redis.incrBy('counter', 1);
+await redis.incrBy('counter', -1); // decrement
+
+// Hashes (like objects)
+await redis.hSet('user:123', {
+  name: 'Alice',
+  score: '100',
+  level: '5'
+});
+const user = await redis.hGetAll('user:123');
+// { name: 'Alice', score: '100', level: '5' }
+
+// Sorted Sets (leaderboards!)
+await redis.zAdd('leaderboard', 
+  { member: 'alice', score: 100 },
+  { member: 'bob', score: 85 }
+);
+const topPlayers = await redis.zRange('leaderboard', 0, 9, { 
+  by: 'score',
+  reverse: true  // highest first
+});
+
+// Key expiration
+await redis.set('session', 'data');
+await redis.expire('session', 3600); // expires in 1 hour
+```
+
+> **CRITICAL:**
+> Redis is accessible ONLY via `import { redis } from '@devvit/web/server'`
+
+> **IMPORTANT:**
+> To use additional Redis commands, or to see implementation details, you can use the Devvit MCP Server with the `devvit_search "your query"` command.
+> Example: `devvit_search "how to use redis"`
+
+### Reddit API
+
+Access Reddit data like users, posts, and comments. Here's how to use the Reddit API effectively:
+
+```typescript
+import { reddit, context } from '@devvit/web/server';
+
+// Get current user's username
+const user = await reddit.getCurrentUser();
+console.log(user.username);
+
+// Get current subreddit
+const subreddit = await reddit.getCurrentSubreddit();
+console.log(subreddit.name);
+
+// Get a post
+const post = await reddit.getPostById(context.postId);
+console.log(post.title);
+
+// Create a comment
+await reddit.submitComment({
+  postId: context.postId,
+  text: 'Great game!'
+});
+
+// Set user flair
+await reddit.setUserFlair({
+  subredditName: context.subredditName,
+  username: user.username,
+  text: 'High Scorer 🏆'
+});
+```
+
+> **IMPORTANT:**
+> To use additional Reddit API commands, or to see implementation details, you can use the Devvit MCP Server with the `devvit_search "your query"` command.
+> Example: `devvit_search "how to use reddit api"`
+
+### Context
+
+Context gives you information about who's using your app and where. Here's how to use the context effectively:
+
+```typescript
+import { context } from '@devvit/web/server';
+
+// Available in every request
+const { 
+  userId,        // Current user's ID (t2_xxxxx)
+  postId,        // Current post's ID (t3_xxxxx)
+  subredditId,   // Current subreddit's ID (t5_xxxxx)
+  subredditName, // Subreddit name (e.g., "gaming")
+} = context;
+```
+
+> **IMPORTANT:**
+> To use additional Context commands, or to see implementation details, you can use the Devvit MCP Server with the `devvit_search "your query"` command.
+> Example: `devvit_search "how to use context"`
 
 ---
 
