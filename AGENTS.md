@@ -348,14 +348,6 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 
 ## Linter and Formatter Rules
 
-### Code Organization
-
-- Keep functions focused and under reasonable cognitive complexity limits
-- Extract complex conditions into well-named boolean variables
-- Use early returns to reduce nesting
-- Prefer simple conditionals over nested ternary operators
-- Group related code together and separate concerns
-
 ### Security
 
 - Add `rel="noopener"` when using `target="_blank"` on links
@@ -374,4 +366,3 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 
 - Update the CHANGELOG.md file with a detailed summary of changes made
 - Update the AGENTS.md file with any new workflow or major tool
-- Update the README.md file with any new information
