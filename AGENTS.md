@@ -396,7 +396,8 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 ❌ **DON'T**: Store sensitive information in post data
 ✅ **DO**: Keep secrets server-side only
 
-## Development Workflow
+<!-- TODO: UPDATE THIS SECTION -->
+## Development Workflow 
 
 Follow the following workflow
 
