@@ -316,9 +316,9 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Use arrow functions for all functions e.g. `const createPost = async () => { ... }`
 - Write short, focused components with a single responsibility
 
-> **IMPORTANT:**
+> **CRITICAL:**
 > DO NOT use style blocks in Svelte components unless absolutely necessary
-> Use Tailwind CSS classes and existing design tokens
+> You MUST use Tailwind CSS classes and existing design tokens
 
 ### Server
 
@@ -332,7 +332,7 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Redis is accessible via `import { redis } from '@devvit/web/server'`
 
 
-> **IMPORTANT:**
+> **CRITICAL:**
 > Server endpoints for API must start with `/api/`
 > Internal endpoints (triggers/scheduler) must start with `/internal/`
 > All triggers/scheduler receive POST requests with JSON
@@ -346,7 +346,7 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 
 Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 
-> **IMPORTANT:**
+> **CRITICAL:**
 > This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes 
 > For real-time use cases, refer to the `devvit_search` documentation for the real-time service
 
