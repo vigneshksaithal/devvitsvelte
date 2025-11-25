@@ -89,6 +89,19 @@ CHANGELOG.md      # Changelog
 
 ---
 
+## Setup Commands
+
+```zsh
+pnpm install        # Install dependencies
+pnpm dev            # Start development server
+pnpm build          # Build the project
+pnpm test           # Run tests
+pnpm type-check     # Check types
+pnpm fix            # Format and lint code
+```
+
+---
+
 ## Devvit Platform Features
 
 Devvit is Reddit's developer platform that lets you build interactive apps and games that live inside Reddit posts. Think of it as building a web app, but instead of hosting it on your own server, it runs directly within Reddit.
@@ -254,7 +267,8 @@ const {
 - Follow DRY (Don't Repeat Yourself) principles
 - Keep code simple and intention-revealing 
 - Keep functions small (SHOULD target <= 20–30 lines) and single-purpose
-- Make code review a first-class practice. Optimize for readability, small CLs, and respectful, actionable feedback
+- Make code review a first-class practice
+- Optimize for readability, small CLs, and respectful, actionable feedback
 - Consistency: Maintain a unified design system (color tokens, typography, spacing, components)
 - Simplicity: Prefer small, focused components and avoid unnecessary complexity
 - Visual Quality: Uphold a high standard of visual polish per OSS guidelines (spacing, padding, hover states, etc.)
@@ -273,19 +287,6 @@ const {
 - Comments are clear and useful, and mostly explain why instead of what
 - Code is appropriately documented
 - The code conforms to the style guides
-
----
-
-## Setup Commands
-
-```zsh
-pnpm install        # Install dependencies
-pnpm dev            # Start development server
-pnpm build          # Build the project
-pnpm test           # Run tests
-pnpm type-check     # Check types
-pnpm fix            # Format and lint code
-```
 
 ---
 
