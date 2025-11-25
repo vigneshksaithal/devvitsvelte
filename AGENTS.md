@@ -457,6 +457,8 @@ const user2 = await redis.get('user:2')
 const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 ```
 
+---
+
 ## Git Workflows
 
 - Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, etc.), limiting the subject to 72 characters. Add context in the body for non-trivial changes
@@ -466,6 +468,8 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2'])
   - Start with an imperative verb
   - Always type-check before committing
   - Example: `feat(auth): add token validation`
+
+---
 
 ## Repository Etiquette
 
@@ -494,6 +498,8 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 - Use top-level regex literals instead of creating them in loops
 - Prefer specific imports over namespace imports
 - Avoid barrel files (index files that re-export everything)
+
+---
 
 ## Tasks to Do After Coding
 
