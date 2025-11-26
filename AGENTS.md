@@ -6,6 +6,7 @@ Role: You are a senior developer. You are a master of your craft and you are abl
 
 - Dark / light mode using Tailwind CSS
 - Responsive design
+- Hono API routes using individual files for each route.
 
 ## Project Overview
 <!-- TODO: UPDATE THIS SECTION -->
@@ -349,8 +350,6 @@ Automatic Namespacing: Each app installation (per subreddit) gets its own isolat
 - 1,000 commands/second
 - 5MB max request size
 
-### Core Naming Philosophy
-
 I recommend entity-first, colon-delimited hierarchical keys for three reasons:
 
 - Scannable: Pattern matching like game:*:state becomes trivial
@@ -402,7 +401,7 @@ leaderboard:weekly:{YYYY-Www}    → Sorted Set (weekly leaders)
 leaderboard:game:{postId}        → Sorted Set (per-game rankings)
 ```
 
-### Complete Key Schema for a Typical Game
+#### Complete Key Schema for a Typical Game
 
 Here's a full schema for a word-guessing game (like Wordle):
 
@@ -432,9 +431,10 @@ Here's a full schema for a word-guessing game (like Wordle):
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Quick Reference: Choosing the Right Structure
+#### Quick Reference: Choosing the Right Structure
 
 Use Case | Structure | Key Pattern
+
 |---------|-----------|----------------
 | Game state | Hash | game:{postId}:state
 | Player list | Set | game:{postId}:players
@@ -443,6 +443,12 @@ Use Case | Structure | Key Pattern
 | Counters | String (number) | stats:{metric}:{scope}
 | Temporary session | String + TTL | session:{id}
 | Rate limiting | String + TTL | ratelimit:{userId}:{action}
+
+### CSS Styling
+
+- Every game should contains light and dark mode.
+- Use themes which are maintainable and easy to change.
+- All colors should be defined in the `src/client/app.css` file.
 
 ## Code Style
 
@@ -473,7 +479,8 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 
 > **CRITICAL:**
 > DO NOT use style blocks in Svelte components unless absolutely necessary.
-> YOU MUST use Tailwind CSS classes and existing design tokens
+> YOU MUST use Tailwind CSS classes and existing design tokens.
+> Styles for that component should be scoped to the component unless it's a global style.
 
 ### Server
 
@@ -484,7 +491,6 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - File system is read-only; you cannot write files
 - DO NOT install libraries requiring restricted modules
 - Websockets and HTTP streaming are not supported
-- Redis is accessible via `import { redis } from '@devvit/web/server'`
 
 > **CRITICAL:**
 > Server endpoints for API must start with `/api/`.
@@ -495,10 +501,6 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 
 - Shared utilities must be framework-agnostic and deterministic; no side-effects. They must be testable from both client and server
 - Colocate Vitest test files next to the module under test (e.g. `generator.test.ts`, `validator.test.ts`). Use lightweight fakes over live services
-
-### Devvit
-
-Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 
 > **CRITICAL:**
 > This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes
