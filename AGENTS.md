@@ -149,6 +149,7 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 ```
 
 ### Server Capabilities
+
 - **Redis**: Key-value storage (500MB limit, 1000 commands/sec)
 - **Scheduler**: Cron jobs and one-time tasks (max 10 recurring per install)
 - **Triggers**: Event-driven actions (onPostCreate, onCommentSubmit, etc.)
@@ -157,6 +158,7 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 - **Media Uploads**: Runtime image uploads to Reddit CDN
 
 ### Client Capabilities
+
 - **Post Data**: 2KB JSON attached to posts (client-accessible)
 - **Realtime**: Live sync between users (100 msg/sec, 5 channels/install)
 - **Forms**: User input collection with validation
@@ -164,6 +166,7 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 - **Toasts**: Temporary notifications
 
 ### Key Limitations
+
 - Max request time: 30s
 - Max payload: 4MB
 - Max response: 10MB
@@ -178,6 +181,7 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 3. Auth is Free, Context is Given
 
 **Mobile-First, Always:**
+
 - Test at 375px width first
 - Touch targets: 44px minimum
 - No hover states for core interactions
@@ -309,7 +313,7 @@ const {
 4. Validate accessibility
 
 - Follow DRY (Don't Repeat Yourself) principles
-- Keep code simple and intention-revealing 
+- Keep code simple and intention-revealing
 - Keep functions small (SHOULD target <= 20–30 lines) and single-purpose
 - Make code review a first-class practice
 - Optimize for readability, small CLs, and respectful, actionable feedback
@@ -376,7 +380,6 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Websockets and HTTP streaming are not supported
 - Redis is accessible via `import { redis } from '@devvit/web/server'`
 
-
 > **CRITICAL:**
 > Server endpoints for API must start with `/api/`.
 > Internal endpoints (triggers/scheduler) must start with `/internal/`.
@@ -392,7 +395,7 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 
 > **CRITICAL:**
-> This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes 
+> This is a serverless runtime (like AWS Lambda); DO NOT run SQLite or stateful in-memory processes
 > For real-time use cases, refer to the `devvit_search` documentation for the real-time service
 
 ### Error Handling & Debugging
@@ -413,7 +416,8 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 
 ## Common Devvit Pitfalls
 
-### Client-Side
+### Client
+
 ❌ **DON'T**: Use localStorage, sessionStorage, or IndexedDB
 ✅ **DO**: Store state in Redis via server endpoints
 
@@ -423,7 +427,8 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 ❌ **DON'T**: Use CSS-in-JS or style blocks extensively
 ✅ **DO**: Use Tailwind classes and design tokens
 
-### Server-Side
+### Server
+
 ❌ **DON'T**: Run long-lived processes or setInterval
 ✅ **DO**: Use scheduler for recurring tasks
 
@@ -434,14 +439,14 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 ✅ **DO**: Upload to Reddit CDN via media.upload()
 
 ### Post Data
+
 ❌ **DON'T**: Store large data (>2KB) in post data
 ✅ **DO**: Use Redis for large datasets, post data for UI state
 
 ❌ **DON'T**: Store sensitive information in post data
 ✅ **DO**: Keep secrets server-side only
 
-
-## Development Workflow 
+## Development Workflow
 <!-- TODO: UPDATE THIS SECTION -->
 Follow the following workflow
 
@@ -479,6 +484,7 @@ Follow the following workflow
 ## Performance Optimization
 
 ### Client-Side
+
 - Minimize bundle size (target < 500KB)
 - Use code splitting for large features
 - Lazy load images with native `loading="lazy"`
@@ -486,6 +492,7 @@ Follow the following workflow
 - Use CSS containment for complex layouts
 
 ### Server-Side
+
 - Cache expensive Reddit API calls (use cache helper)
 - Batch Redis operations when possible
 - Set appropriate TTLs on cached data
@@ -493,6 +500,7 @@ Follow the following workflow
 - Limit external fetch calls (rate limits apply)
 
 ### Redis Best Practices
+
 ```typescript
 // ❌ Multiple round trips
 const user1 = await redis.get('user:1')
@@ -523,7 +531,7 @@ const [user1, user2] = await redis.mGet(['user:1', 'user2'])
 - Never commit secrets or local settings
 - After updates, write a detailed changelog in `CHANGELOG.md`
 
-> **NOTE:** This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change
+> **NOTE:** This file is the single source of truth for project workflows, tools, and conventions. Keep it current with every addition or change.
 > **REMEMBER:** After coding you need to update the CHANGELOG.md file with a detailed summary of changes made
 
 ---
