@@ -4,19 +4,17 @@ Role: You are a senior developer. You are a master of your craft and you are abl
 
 <!-- TODO: ADD THESE SECTIONS -->
 
-- Redis Key Naming Conventions
 - Dark / light mode using Tailwind CSS
 - Responsive design
 
 ## Project Overview
+<!-- TODO: UPDATE THIS SECTION -->
 
 Project Name:
 Project Description:
 Project Goals:
 Project Audience:
 Project Scope:
-
-<!-- TODO: UPDATE THIS SECTION -->
 
 ## Tech Stack
 <!-- TODO: UPDATE THIS SECTION WITH THE LATEST TECH STACK -->
@@ -190,7 +188,7 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 
 Compress images. Paginate data. Don't fetch everything at once.
 
-**One Install = One Database**
+**One Install = One Database:**
 
 Each subreddit installation has isolated Redis storage. Data doesn't sync across subreddits.
 
@@ -238,8 +236,7 @@ await redis.expire('session', 3600); // expires in 1 hour
 ```
 
 > **CRITICAL:**
-> Redis is accessible ONLY via `import { redis } from '@devvit/web/server'`
-
+> Redis is accessible ONLY via `import { redis } from '@devvit/web/server'`.
 > **IMPORTANT:**
 > To use additional Redis commands, or to see implementation details, you can use the Devvit MCP Server with the `devvit_search "your query"` command.
 > Example: `devvit_search "how to use redis"`
@@ -303,6 +300,8 @@ const {
 
 ---
 
+## How to Build Games in Reddit
+
 ## Guiding Principles
 
 ### Before Writing Code
@@ -337,6 +336,113 @@ const {
 - The code conforms to the style guides
 
 ---
+
+## Techniques & Best Practices
+
+### Redis Keynaming Conventions
+
+Automatic Namespacing: Each app installation (per subreddit) gets its own isolated Redis namespace. You never need to include the subreddit name in your keys—it's handled for you.
+
+**Constraints to design around:**
+
+- 500MB storage per installation
+- 1,000 commands/second
+- 5MB max request size
+
+### Core Naming Philosophy
+
+I recommend entity-first, colon-delimited hierarchical keys for three reasons:
+
+- Scannable: Pattern matching like game:*:state becomes trivial
+- Debuggable: You can read keys and understand what they store
+- Collision-proof: Structured prefixes prevent accidental overwrites
+
+```text
+{entity}:{identifier}:{attribute}
+```
+
+#### Pattern 1: Game Instance State
+
+For data tied to a specific game post (puzzle, match, challenge):
+
+```text
+game:{postId}:state          → Hash or String (core game state)
+game:{postId}:players        → Set (participating user IDs)
+game:{postId}:config         → Hash (game settings)
+game:{postId}:meta           → Hash (created_at, status, etc.)
+```
+
+#### Pattern 2: User State
+
+For user-specific data, consider two scopes:
+
+**Global User Data (across all games):**
+
+```text
+user:{userId}:profile        → Hash (preferences, display name)
+user:{userId}:stats          → Hash (total games, wins, streak)
+user:{userId}:achievements   → Set (unlocked achievement IDs)
+```
+
+**Per-Game User Data:**
+
+```text
+user:{userId}:game:{postId}:progress   → Hash (their state in this game)
+user:{userId}:game:{postId}:attempts   → Number (guess count)
+```
+
+#### Pattern 3: Leaderboards
+
+This is where Redis sorted sets shine. Design keys for different time windows:
+
+```text
+leaderboard:alltime              → Sorted Set (all-time high scores)
+leaderboard:daily:{YYYY-MM-DD}   → Sorted Set (daily leaders)
+leaderboard:weekly:{YYYY-Www}    → Sorted Set (weekly leaders)
+leaderboard:game:{postId}        → Sorted Set (per-game rankings)
+```
+
+### Complete Key Schema for a Typical Game
+
+Here's a full schema for a word-guessing game (like Wordle):
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│ GAME INSTANCE DATA                                              │
+├─────────────────────────────────────────────────────────────────┤
+│ game:{postId}:state          Hash   puzzle, solution, status    │
+│ game:{postId}:players        Set    user IDs who participated   │
+│ game:{postId}:winner         String first solver's userId       │
+├─────────────────────────────────────────────────────────────────┤
+│ USER DATA                                                       │
+├─────────────────────────────────────────────────────────────────┤
+│ user:{userId}:stats          Hash   totalGames, wins, streak    │
+│ user:{userId}:game:{postId}  Hash   guesses, completed, time    │
+├─────────────────────────────────────────────────────────────────┤
+│ LEADERBOARDS                                                    │
+├─────────────────────────────────────────────────────────────────┤
+│ leaderboard:wins:alltime     ZSet   userId → win count          │
+│ leaderboard:wins:daily:{d}   ZSet   userId → daily wins         │
+│ leaderboard:streak           ZSet   userId → current streak     │
+├─────────────────────────────────────────────────────────────────┤
+│ ANALYTICS                                                       │
+├─────────────────────────────────────────────────────────────────┤
+│ stats:games:total            Number total games created         │
+│ stats:solves:daily:{date}    Number solves per day              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Quick Reference: Choosing the Right Structure
+
+Use Case | Structure | Key Pattern
+|---------|-----------|----------------
+| Game state | Hash | game:{postId}:state
+| Player list | Set | game:{postId}:players
+| Leaderboard | Sorted Set | leaderboard:{scope}:{timeframe}
+| User preferences | Hash | user:{userId}:profile
+| Counters | String (number) | stats:{metric}:{scope}
+| Temporary session | String + TTL | session:{id}
+| Rate limiting | String + TTL | ratelimit:{userId}:{action}
 
 ## Code Style
 
