@@ -29,9 +29,9 @@ Project Scope:
 - Lucide Svelte — Icon library
 
 > **CRITICAL:**
-> For Lucide Icons YOU MUST USE `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times
-> YOU MUST USE Svelte v5 runes syntax ONLY
-> YOU MUST USE Tailwind CSS v4 syntax ONLY
+> For Lucide Icons YOU MUST USE `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times.
+> YOU MUST USE Svelte v5 runes syntax ONLY.
+> YOU MUST USE Tailwind CSS v4 syntax ONLY.
 
 ### Backend
 
@@ -52,7 +52,7 @@ Project Scope:
 
 ### Svelte MCP Server: Available Tools
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use it effectively
+You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use it effectively:
 
 1. Start: `list-sections` → find relevant docs
 2. Read: `get-documentation` → get implementation details  
@@ -324,8 +324,8 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Write short, focused components with a single responsibility
 
 > **CRITICAL:**
-> DO NOT use style blocks in Svelte components unless absolutely necessary
-> You MUST use Tailwind CSS classes and existing design tokens
+> DO NOT use style blocks in Svelte components unless absolutely necessary.
+> YOU MUST use Tailwind CSS classes and existing design tokens
 
 ### Server
 
@@ -334,14 +334,14 @@ Write code that is **clean, readable, accessible, performant, type-safe, and mai
 - Serverless Node.js: all Node globals except `fs`, `http`, `https`, and `net` are available
 - Use `fetch` instead of `http`/`https`
 - File system is read-only; you cannot write files
-- Do not install libraries requiring restricted modules
+- DO NOT install libraries requiring restricted modules
 - Websockets and HTTP streaming are not supported
 - Redis is accessible via `import { redis } from '@devvit/web/server'`
 
 
 > **CRITICAL:**
-> Server endpoints for API must start with `/api/`
-> Internal endpoints (triggers/scheduler) must start with `/internal/`
+> Server endpoints for API must start with `/api/`.
+> Internal endpoints (triggers/scheduler) must start with `/internal/`.
 > All triggers/scheduler receive POST requests with JSON
 
 ### Shared
