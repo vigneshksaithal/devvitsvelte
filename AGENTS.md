@@ -129,6 +129,25 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 - **Instant distribution** - Your game appears in Reddit feeds
 - **Cross-platform** - Works on web, iOS, and Android automatically
 
+```text
+┌─────────────────────────────────────────┐
+│           Reddit Post (Your Game)       │
+├─────────────────────────────────────────┤
+│  CLIENT (src/client/)                   │
+│  - Svelte, Tailwind CSS, TypeScript     │
+│  - Runs in a webview inside the post    │
+├─────────────────────────────────────────┤
+│  SERVER (src/server/)                   │
+│  - Node.js (Express, etc.)              │
+│  - Redis for data storage               │
+│  - Reddit API access                    │
+│  - Realtime messaging                   │
+├─────────────────────────────────────────┤
+│  CONFIG (devvit.json)                   │
+│  - Permissions, triggers, menu actions  │
+└─────────────────────────────────────────┘
+```
+
 ### Server Capabilities
 - **Redis**: Key-value storage (500MB limit, 1000 commands/sec)
 - **Scheduler**: Cron jobs and one-time tasks (max 10 recurring per install)
@@ -151,6 +170,25 @@ Devvit is Reddit's developer platform that lets you build interactive apps and g
 - No localStorage/sessionStorage in client
 - No streaming/websockets
 - Serverless execution (no long-running processes)
+
+### Technical Mindset
+
+1. It's a Webview, Not a Browser
+2. Redis is Your Database
+3. Auth is Free, Context is Given
+
+**Mobile-First, Always:**
+- Test at 375px width first
+- Touch targets: 44px minimum
+- No hover states for core interactions
+- Vertical layouts > horizontal
+- Fast load times (users are scrolling past)
+
+Compress images. Paginate data. Don't fetch everything at once.
+
+**One Install = One Database**
+
+Each subreddit installation has isolated Redis storage. Data doesn't sync across subreddits.
 
 ---
 
