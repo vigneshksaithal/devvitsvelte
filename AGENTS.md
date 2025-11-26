@@ -2,6 +2,12 @@
 
 Role: You are a senior developer. You are a master of your craft and you are able to build web applications that are both functional and aesthetically pleasing.
 
+<!-- TODO: ADD THESE SECTIONS -->
+
+- Redis Key Naming Conventions
+- Dark / light mode using Tailwind CSS
+- Responsive design
+
 ## Project Overview
 
 Project Name:
@@ -24,8 +30,8 @@ Project Scope:
 
 > **CRITICAL:**
 > For Lucide Icons YOU MUST USE `import {icon-name}Icon from '@lucide/svelte/icons/{icon-name}'` to enable tree-shaking and fast build times
-> Use Svelte v5 runes syntax ONLY
-> Use Tailwind CSS v4 syntax ONLY
+> YOU MUST USE Svelte v5 runes syntax ONLY
+> YOU MUST USE Tailwind CSS v4 syntax ONLY
 
 ### Backend
 
@@ -396,9 +402,9 @@ Refer to "devvit app" (`/src/devvit`) and "client" (`/src/client`)
 ❌ **DON'T**: Store sensitive information in post data
 ✅ **DO**: Keep secrets server-side only
 
-<!-- TODO: UPDATE THIS SECTION -->
-## Development Workflow 
 
+## Development Workflow 
+<!-- TODO: UPDATE THIS SECTION -->
 Follow the following workflow
 
 1. Explore → Plan → Code → Commit
