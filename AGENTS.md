@@ -1056,6 +1056,45 @@ Before every PR, verify:
 
 ---
 
+### 8.6 NO-SCROLL RULES
+
+| Rule | Implementation |
+|------|----------------|
+| **Never use `overflow-y-auto` or `overflow-scroll`** | Content must fit, period |
+| **Never use `min-h-screen` or `h-screen`** | Use `h-full` relative to container |
+| **Always use `h-full` on root container** | Fills available space without exceeding |
+| **Use `flex` + `flex-shrink` for adaptive layouts** | Elements shrink to fit |
+| **Test at MINIMUM viewport** | 320px × 320px is your worst case |
+| **Use `overflow-hidden` on root** | Prevents any accidental scroll |
+
+#### Root Layout Pattern (REQUIRED)
+
+```svelte
+<!-- App.svelte - Root component -->
+<div class="
+  h-full w-full 
+  overflow-hidden
+  flex flex-col
+  bg-[var(--bg-primary)]
+  p-2 sm:p-4
+">
+  <!-- Header: Fixed size, won't shrink -->
+  <header class="flex-none h-10 flex items-center justify-between">
+    <!-- header content -->
+  </header>
+  
+  <!-- Main: Takes remaining space, content must fit -->
+  <main class="flex-1 min-h-0 flex flex-col items-center justify-center">
+    <!-- game content -->
+  </main>
+  
+  <!-- Footer: Fixed size, won't shrink -->
+  <footer class="flex-none">
+    <!-- controls -->
+  </footer>
+</div>
+```
+
 ## 9. Troubleshooting
 
 ### Common Errors & Fixes
