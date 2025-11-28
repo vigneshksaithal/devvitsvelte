@@ -24,6 +24,7 @@ You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit
 | 4 | No `localStorage`/`sessionStorage` in client | Will fail silently |
 | 5 | Named exports only (no `export default`) | Tree-shaking breaks |
 | 6 | Lucide icons: `import {Name}Icon from '@lucide/svelte/icons/{name}'` | Bundle size explodes |
+| 7 | **NO SCROLLING in inline views** — all content must fit viewport | Broken UX, content cut off, unprofessional |
 
 ### Tech Stack
 
