@@ -16,7 +16,7 @@ importers:
         version: 1.19.6(hono@4.10.7)
       '@tailwindcss/vite':
         specifier: ^4.1.17
-        version: 4.1.17(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))
+        version: 4.1.17(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))
       devvit:
         specifier: 0.12.4
         version: 0.12.4(@devvit/server@0.12.4(twirp-ts@2.5.0))(@devvit/shared@0.12.4(twirp-ts@2.5.0))(@types/node@24.10.1)(google-protobuf@3.21.4)(typescript@5.9.3)
@@ -29,7 +29,7 @@ importers:
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
-        version: 6.2.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2)
+        version: 6.2.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3)
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
@@ -37,17 +37,17 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       svelte:
-        specifier: ^5.45.2
-        version: 5.45.2
+        specifier: ^5.45.3
+        version: 5.45.3
       svelte-check:
         specifier: ^4.3.4
-        version: 4.3.4(picomatch@4.0.3)(svelte@5.45.2)(typescript@5.9.3)
+        version: 4.3.4(picomatch@4.0.3)(svelte@5.45.3)(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: npm:rolldown-vite@^7.2.8
-        version: rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
+        specifier: npm:rolldown-vite@^7.2.9
+        version: rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
 
 packages:
 
@@ -695,8 +695,8 @@ packages:
   '@rolldown/pluginutils@1.0.0-beta.52':
     resolution: {integrity: sha512-/L0htLJZbaZFL1g9OHOblTxbCYIGefErJjtYOwgl9ZqNx27P3L0SDfjhhHIss32gu5NWgnxuT2a2Hnnv6QGHKA==}
 
-  '@sveltejs/acorn-typescript@1.0.7':
-    resolution: {integrity: sha512-znp1A/Y1Jj4l/Zy7PX5DZKBE0ZNY+5QBngiE21NJkfSTyzzC5iKNWOtwFXKtIrn7MXEFBck4jD95iBNkGjK92Q==}
+  '@sveltejs/acorn-typescript@1.0.8':
+    resolution: {integrity: sha512-esgN+54+q0NjB0Y/4BomT9samII7jGwNy/2a3wNZbT2A2RpmXsXwUt24LvLhx6jUq2gVk4cWEvcRO6MFQbOfNA==}
     peerDependencies:
       acorn: ^8.9.0
 
@@ -1257,8 +1257,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  esrap@2.2.0:
-    resolution: {integrity: sha512-WBmtxe7R9C5mvL4n2le8nMUe4mD5V9oiK2vJpQ9I3y20ENPUomPcphBXE8D1x/Bm84oN1V+lOfgXxtqmxTp3Xg==}
+  esrap@2.2.1:
+    resolution: {integrity: sha512-GiYWG34AN/4CUyaWAgunGt0Rxvr1PTMlGC0vvEov/uOQYWne2bpN03Um+k8jT+q3op33mKouP2zeJ6OlM+qeUg==}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -1930,8 +1930,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-vite@7.2.8:
-    resolution: {integrity: sha512-8wKihlF6EDF8grimwd7GPOhLkQkSIgj6Hlcp0CXhtO3HAXeUUqhgZmJmn07OF8e4PbTusMX6Yxmy1BptVRZsdw==}
+  rolldown-vite@7.2.9:
+    resolution: {integrity: sha512-Y+Q1FpIgAkK2RiAdeS1SxcvDsJaru1JUANFo1aiFFtuGCckhltIowoC/JMU740tFZDTJA5vg5CAl1RzHExNR/w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -2126,8 +2126,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
-  svelte@5.45.2:
-    resolution: {integrity: sha512-yyXdW2u3H0H/zxxWoGwJoQlRgaSJLp+Vhktv12iRw2WRDlKqUPT54Fi0K/PkXqrdkcQ98aBazpy0AH4BCBVfoA==}
+  svelte@5.45.3:
+    resolution: {integrity: sha512-ngKXNhNvwPzF43QqEhDOue7TQTrG09em1sd4HBxVF0Wr2gopAmdEWan+rgbdgK4fhBtSOTJO8bYU4chUG7VXZQ==}
     engines: {node: '>=18'}
 
   symbol-tree@3.2.4:
@@ -3026,28 +3026,28 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-beta.52': {}
 
-  '@sveltejs/acorn-typescript@1.0.7(acorn@8.15.0)':
+  '@sveltejs/acorn-typescript@1.0.8(acorn@8.15.0)':
     dependencies:
       acorn: 8.15.0
 
-  '@sveltejs/vite-plugin-svelte-inspector@5.0.1(@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2))(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2)':
+  '@sveltejs/vite-plugin-svelte-inspector@5.0.1(@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3))(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3)':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 6.2.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2)
+      '@sveltejs/vite-plugin-svelte': 6.2.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3)
       debug: 4.4.3(supports-color@8.1.1)
-      svelte: 5.45.2
-      vite: rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
+      svelte: 5.45.3
+      vite: rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2)':
+  '@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3)':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 5.0.1(@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2))(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.2)
+      '@sveltejs/vite-plugin-svelte-inspector': 5.0.1(@sveltejs/vite-plugin-svelte@6.2.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3))(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))(svelte@5.45.3)
       debug: 4.4.3(supports-color@8.1.1)
       deepmerge: 4.3.1
       magic-string: 0.30.21
-      svelte: 5.45.2
-      vite: rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
-      vitefu: 1.1.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))
+      svelte: 5.45.3
+      vite: rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
+      vitefu: 1.1.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -3112,12 +3112,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.17
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.17
 
-  '@tailwindcss/vite@4.1.17(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))':
+  '@tailwindcss/vite@4.1.17(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1))':
     dependencies:
       '@tailwindcss/node': 4.1.17
       '@tailwindcss/oxide': 4.1.17
       tailwindcss: 4.1.17
-      vite: rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
+      vite: rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
 
   '@tokenizer/token@0.3.0': {}
 
@@ -3582,7 +3582,7 @@ snapshots:
 
   esprima@4.0.1: {}
 
-  esrap@2.2.0:
+  esrap@2.2.1:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
@@ -4249,7 +4249,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1):
+  rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1):
     dependencies:
       '@oxc-project/runtime': 0.99.0
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4426,23 +4426,23 @@ snapshots:
       has-flag: 4.0.0
       supports-color: 7.2.0
 
-  svelte-check@4.3.4(picomatch@4.0.3)(svelte@5.45.2)(typescript@5.9.3):
+  svelte-check@4.3.4(picomatch@4.0.3)(svelte@5.45.3)(typescript@5.9.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       chokidar: 4.0.3
       fdir: 6.5.0(picomatch@4.0.3)
       picocolors: 1.1.1
       sade: 1.8.1
-      svelte: 5.45.2
+      svelte: 5.45.3
       typescript: 5.9.3
     transitivePeerDependencies:
       - picomatch
 
-  svelte@5.45.2:
+  svelte@5.45.3:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
-      '@sveltejs/acorn-typescript': 1.0.7(acorn@8.15.0)
+      '@sveltejs/acorn-typescript': 1.0.8(acorn@8.15.0)
       '@types/estree': 1.0.8
       acorn: 8.15.0
       aria-query: 5.3.2
@@ -4450,7 +4450,7 @@ snapshots:
       clsx: 2.1.1
       devalue: 5.5.0
       esm-env: 1.2.2
-      esrap: 2.2.0
+      esrap: 2.2.1
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
@@ -4579,9 +4579,9 @@ snapshots:
 
   v8-compile-cache-lib@3.0.1: {}
 
-  vitefu@1.1.1(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)):
+  vitefu@1.1.1(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)):
     optionalDependencies:
-      vite: rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
+      vite: rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.10)(jiti@2.6.1)
 
   w3c-xmlserializer@5.0.0:
     dependencies:
