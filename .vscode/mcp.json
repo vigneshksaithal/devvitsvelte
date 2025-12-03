@@ -1,12 +1,15 @@
 {
   "servers": {
-    "svelte-mcp-server": {
+    "svelte": {
       "url": "https://mcp.svelte.dev/mcp",
       "type": "http"
     },
     "devvit": {
       "command": "npx",
-      "args": ["-y", "@devvit/mcp"]
+      "args": [
+        "-y",
+        "@devvit/mcp"
+      ]
     }
   }
 }
