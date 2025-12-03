@@ -8,6 +8,7 @@ export const createPost = async () => {
 
   return await reddit.submitCustomPost({
     subredditName,
+    // TODO: Add a title
     title: '{{ name }}'
   })
 }
