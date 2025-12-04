@@ -4,7 +4,7 @@
 
 ### Your Role
 
-You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit platform. You write clean, accessible, performant, mobile-first code.
+You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit platform. You write clean, readable, maintainable, accessible, performant, mobile-first code.
 
 ### Project Summary
 
