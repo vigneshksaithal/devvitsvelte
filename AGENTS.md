@@ -423,55 +423,7 @@ pnpm fix         # Linting + formatting
 
 ---
 
-### 5.6 Phase 5: PLAYTEST — Test on Reddit
-
-**This phase is MANDATORY. Never skip it.**
-
-Start playtest:
-
-```bash
-pnpm dev
-# Opens: https://www.reddit.com/r/YourTestSub?playtest=your-app
-```
-
-#### Playtest Checklist
-
-Test on each platform:
-
-| Platform | How to Test | What to Check |
-|----------|-------------|---------------|
-| Desktop Web | Browser at full width | Layout, hover states, keyboard |
-| Mobile Web | Browser at 375px OR phone | Touch targets, no horizontal scroll |
-| Reddit iOS App | TestFlight or production | Native feel, gestures work |
-| Reddit Android App | Play Store or APK | Same as iOS |
-
-For each platform, verify:
-
-- [ ] App loads without errors
-- [ ] All interactive elements respond
-- [ ] Touch targets are ≥44px
-- [ ] No horizontal scrolling
-- [ ] Dark mode renders correctly
-- [ ] Light mode renders correctly
-- [ ] Text is readable (≥16px base)
-- [ ] Loads in <3 seconds
-- [ ] No console errors (check devtools)
-- [ ] Error states display properly
-- [ ] Empty states display properly
-
-#### Common Playtest Failures
-
-| Symptom | Likely Cause |
-|---------|--------------|
-| "Cannot read property of undefined" | `context.userId` or `context.postId` is undefined |
-| Infinite loading | Server endpoint returning wrong format |
-| Works locally, fails on Reddit | Using `localStorage` or client-side fetch |
-| Layout broken on mobile | Fixed widths instead of responsive |
-| Buttons not responding | Touch targets too small or overlapping |
-
----
-
-### 5.7 Phase 6: SHIP — Changelog and Commit
+### 5.6 Phase 6: SHIP — Changelog and Commit
 
 After playtest passes:
 
@@ -622,139 +574,6 @@ Creating something new?
     └─ src/shared/types.ts
 ```
 
-### 6.2 Canonical Patterns
-
-#### API Call from Client
-
-```typescript
-// ALWAYS use this pattern
-const fetchApi = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
-  const response = await fetch(endpoint, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options
-  })
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`)
-  }
-  
-  return response.json()
-}
-
-// Usage
-const data = await fetchApi<GameState>('/api/game/state')
-```
-
-#### Hono Route Handler
-
-```typescript
-import { Hono } from 'hono'
-import { redis, context } from '@devvit/web/server'
-
-const app = new Hono()
-
-app.post('/api/game/submit', async (c) => {
-  try {
-    // 1. Parse input
-    const { answer } = await c.req.json()
-    
-    // 2. Validate
-    if (!answer || typeof answer !== 'string') {
-      return c.json({ error: 'Invalid answer' }, 400)
-    }
-    
-    // 3. Get context
-    const { userId, postId } = context
-    if (!userId || !postId) {
-      return c.json({ error: 'Missing context' }, 400)
-    }
-    
-    // 4. Business logic
-    await redis.hSet(`user:${userId}:game:${postId}`, { answer })
-    
-    // 5. Return response
-    return c.json({ success: true })
-    
-  } catch (error) {
-    console.error('Submit failed:', error)
-    return c.json({ error: 'Internal error' }, 500)
-  }
-})
-```
-
-#### Svelte 5 Component
-
-```svelte
-<script lang="ts">
-  // 1. Props (with defaults)
-  let { 
-    initialValue = 0,
-    onChange 
-  }: { 
-    initialValue?: number
-    onChange?: (value: number) => void 
-  } = $props()
-  
-  // 2. State
-  let count = $state(initialValue)
-  
-  // 3. Derived values
-  let doubled = $derived(count * 2)
-  
-  // 4. Effects (side effects)
-  $effect(() => {
-    onChange?.(count)
-  })
-  
-  // 5. Functions
-  const increment = () => {
-    count += 1
-  }
-</script>
-
-<!-- 6. Template -->
-<button onclick={increment} class="px-4 py-2 bg-blue-500 text-white rounded">
-  Count: {count} (doubled: {doubled})
-</button>
-```
-
-#### Svelte 5 Component with Async Data
-
-```svelte
-<script lang="ts">
-  import { onMount } from 'svelte'
-  
-  type GameState = {
-    board: string
-    difficulty: string
-  }
-  
-  let gameState = $state<GameState | null>(null)
-  let loading = $state(true)
-  let error = $state<string | null>(null)
-  
-  onMount(async () => {
-    try {
-      const response = await fetch('/api/game/state')
-      if (!response.ok) throw new Error('Failed to load')
-      gameState = await response.json()
-    } catch (e) {
-      error = e instanceof Error ? e.message : 'Unknown error'
-    } finally {
-      loading = false
-    }
-  })
-</script>
-
-{#if loading}
-  <div class="animate-pulse">Loading...</div>
-{:else if error}
-  <div class="text-red-500">{error}</div>
-{:else if gameState}
-  <div>{gameState.board}</div>
-{/if}
-```
-
 ### 6.3 DO / DON'T Quick Reference
 
 #### Client-Side
@@ -813,30 +632,6 @@ app.post('/api/game/submit', async (c) => {
 | API routes | kebab-case | `/api/game-state` |
 | Redis keys | colon-delimited | `user:123:stats` |
 
-### 7.4 CSS / Tailwind
-
-**Theme Colors (defined in `src/client/app.css`):**
-
-```css
-:root {
-  --color-bg: theme(colors.white);
-  --color-text: theme(colors.gray.900);
-  --color-primary: theme(colors.blue.600);
-  --color-cell-given: theme(colors.gray.200);
-  --color-cell-empty: theme(colors.white);
-  --color-cell-error: theme(colors.red.100);
-}
-
-.dark {
-  --color-bg: theme(colors.gray.900);
-  --color-text: theme(colors.gray.100);
-  --color-primary: theme(colors.blue.400);
-  --color-cell-given: theme(colors.gray.700);
-  --color-cell-empty: theme(colors.gray.800);
-  --color-cell-error: theme(colors.red.900);
-}
-```
-
 **Mobile-First Breakpoints:**
 
 ```html
@@ -850,7 +645,7 @@ app.post('/api/game/submit', async (c) => {
 <div class="text-sm p-2 md:text-base md:p-4 lg:text-lg lg:p-6">
 ```
 
-### 7.5 Functions
+### 7.4 Functions
 
 ```typescript
 // ✅ Good: Small, single-purpose, descriptive name
@@ -889,49 +684,6 @@ context.userId          // "t2_abc123" or undefined
 context.postId          // "t3_xyz789" or undefined
 ```
 
-### 8.2 Redis Commands Quick Reference
-
-| Command | Usage | Returns |
-|---------|-------|---------|
-| `get(key)` | Get string | `string \| null` |
-| `set(key, value)` | Set string | `void` |
-| `del(key)` | Delete key | `number` |
-| `exists(key)` | Check exists | `number` (0 or 1) |
-| `incrBy(key, n)` | Increment | `number` |
-| `expire(key, sec)` | Set TTL | `boolean` |
-| `hSet(key, obj)` | Set hash fields | `number` |
-| `hGet(key, field)` | Get hash field | `string \| null` |
-| `hGetAll(key)` | Get all hash fields | `Record<string, string>` |
-| `zAdd(key, ...members)` | Add to sorted set | `number` |
-| `zRange(key, start, stop, opts)` | Get range | `Array<{member, score}>` |
-| `zRank(key, member)` | Get rank | `number \| null` |
-| `zScore(key, member)` | Get score | `number \| null` |
-
-### 8.3 HTTP Status Codes
-
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| 200 | OK | Successful GET/POST |
-| 201 | Created | Resource created |
-| 400 | Bad Request | Invalid input |
-| 401 | Unauthorized | Not logged in |
-| 403 | Forbidden | No permission |
-| 404 | Not Found | Resource doesn't exist |
-| 500 | Internal Error | Server bug |
-
-### 8.4 Mobile Checklist
-
-Before every PR, verify:
-
-- [ ] Tested at 375px viewport width
-- [ ] All touch targets ≥44px
-- [ ] No horizontal scrolling
-- [ ] Text readable without zooming (≥16px)
-- [ ] Buttons/inputs not too close together
-- [ ] Works without hover states
-- [ ] Dark mode looks correct
-- [ ] Loads in <3 seconds on slow 3G
-
 ### 8.5 Platform Limits
 
 | Resource | Limit |
@@ -959,34 +711,6 @@ Before every PR, verify:
 | **Test at MINIMUM viewport** | 320px × 320px is your worst case |
 | **Use `overflow-hidden` on root** | Prevents any accidental scroll |
 
-#### Root Layout Pattern (REQUIRED)
-
-```svelte
-<!-- App.svelte - Root component -->
-<div class="
-  h-full w-full 
-  overflow-hidden
-  flex flex-col
-  bg-[var(--bg-primary)]
-  p-2 sm:p-4
-">
-  <!-- Header: Fixed size, won't shrink -->
-  <header class="flex-none h-10 flex items-center justify-between">
-    <!-- header content -->
-  </header>
-  
-  <!-- Main: Takes remaining space, content must fit -->
-  <main class="flex-1 min-h-0 flex flex-col items-center justify-center">
-    <!-- game content -->
-  </main>
-  
-  <!-- Footer: Fixed size, won't shrink -->
-  <footer class="flex-none">
-    <!-- controls -->
-  </footer>
-</div>
-```
-
 ## 9. Troubleshooting
 
 ### Common Errors & Fixes
@@ -1001,81 +725,6 @@ pnpm dev
 Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)
 
 # 3. Check for build errors in terminal
-```
-
-#### "Redis calls failing"
-
-```typescript
-// Check key exists before using
-const value = await redis.get('key')
-if (value === null) {
-  // Handle missing key
-}
-
-// Check for typos in key names
-console.log('Key:', `user:${userId}:stats`) // Debug
-```
-
-#### "Component not updating"
-
-```svelte
-<!-- Make sure you're using $state for reactive values -->
-<script>
-  // ❌ Won't update
-  let count = 0
-  
-  // ✅ Will update
-  let count = $state(0)
-</script>
-```
-
-#### "Type errors"
-
-```bash
-# Run type check to see all errors
-pnpm type-check
-
-# Common fixes:
-# 1. Add null checks: value?.property
-# 2. Add type annotations: const x: Type = ...
-# 3. Use type guards: if (typeof x === 'string')
-```
-
-#### "API returns 400 Bad Request"
-
-```typescript
-// Check request format
-const response = await fetch('/api/endpoint', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' }, // Required!
-  body: JSON.stringify(data) // Must be stringified!
-})
-```
-
-#### "Works locally but not on Reddit"
-
-1. Check that you're not using `localStorage`
-2. Check that all external fetches go through server
-3. Check devvit.json has correct permissions
-4. Check bundle size isn't too large
-
-### Debug Commands
-
-```bash
-# Check TypeScript errors
-pnpm type-check
-
-# Check linting errors
-pnpm lint
-
-# Run specific test
-pnpm test -- --grep "test name"
-
-# Watch mode for tests
-pnpm test --watch
-
-# Check bundle size
-pnpm build && ls -la dist/
 ```
 
 ---
@@ -1106,126 +755,6 @@ After completing any feature:
    git add .
    git commit -m "feat(scope): description"
    ```
-
----
-
-## Appendix: Example Feature Implementation
-
-### Task: Add a "New Game" button
-
-#### 1. Plan (Get Approval)
-
-- Add button component to game board
-- Create `/api/game/new` endpoint
-- Generate new puzzle in server
-- Update UI on success
-
-#### 2. Test First
-
-```typescript
-// src/shared/generator.test.ts
-import { describe, it, expect } from 'vitest'
-import { generatePuzzle } from './generator'
-
-describe('generatePuzzle', () => {
-  it('returns 81-character string', () => {
-    const puzzle = generatePuzzle('easy')
-    expect(puzzle).toHaveLength(81)
-  })
-  
-  it('contains only digits 0-9', () => {
-    const puzzle = generatePuzzle('easy')
-    expect(puzzle).toMatch(/^[0-9]+$/)
-  })
-})
-```
-
-#### 3. Server Endpoint
-
-```typescript
-// src/server/routes/game.ts
-import { Hono } from 'hono'
-import { redis, context } from '@devvit/web/server'
-import { generatePuzzle, solvePuzzle } from '../../shared/generator'
-
-export const gameRoutes = new Hono()
-
-gameRoutes.post('/api/game/new', async (c) => {
-  try {
-    const { difficulty = 'medium' } = await c.req.json()
-    const { postId } = context
-    
-    if (!postId) {
-      return c.json({ error: 'No post context' }, 400)
-    }
-    
-    const puzzle = generatePuzzle(difficulty)
-    const solution = solvePuzzle(puzzle)
-    
-    await redis.hSet(`game:${postId}:state`, {
-      puzzle,
-      solution,
-      difficulty,
-      created: new Date().toISOString()
-    })
-    
-    return c.json({ success: true, puzzle })
-    
-  } catch (error) {
-    console.error('Failed to create game:', error)
-    return c.json({ error: 'Failed to create game' }, 500)
-  }
-})
-```
-
-#### 4. Client Component
-
-```svelte
-<!-- src/client/components/NewGameButton.svelte -->
-<script lang="ts">
-  let loading = $state(false)
-  let { onNewGame }: { onNewGame: (puzzle: string) => void } = $props()
-  
-  const startNewGame = async () => {
-    loading = true
-    try {
-      const response = await fetch('/api/game/new', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ difficulty: 'medium' })
-      })
-      
-      if (!response.ok) throw new Error('Failed')
-      
-      const { puzzle } = await response.json()
-      onNewGame(puzzle)
-      
-    } catch (error) {
-      console.error('Failed to start new game:', error)
-    } finally {
-      loading = false
-    }
-  }
-</script>
-
-<button 
-  onclick={startNewGame}
-  disabled={loading}
-  class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 min-h-[44px]"
->
-  {loading ? 'Starting...' : 'New Game'}
-</button>
-```
-
-#### 5. Update CHANGELOG.md
-
-```markdown
-## [Unreleased]
-
-### Added
-- New Game button to start fresh puzzles
-- `/api/game/new` endpoint for puzzle generation
-```
 
 ---
 
