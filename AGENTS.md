@@ -1,10 +1,6 @@
 # AGENTS.md
 
-> **Last Updated:** 2025-11-27 | **Version:** 3.0
-
----
-
-## 1. Overview (READ THIS FIRST)
+## 1. Overview
 
 ### Your Role
 
@@ -36,7 +32,7 @@ You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit
 | **Frontend** | Lucide Svelte | latest | Icons |
 | **Backend** | Hono | latest | HTTP routing |
 | **Backend** | Redis | (Devvit) | Database |
-| **Platform** | Devvit | 0.12.4 | Reddit integration |
+| **Platform** | Devvit | 0.12.5 | Reddit integration |
 | **Testing** | Vitest | latest | Unit tests |
 | **Build** | Vite | latest | Bundler |
 | **Package** | pnpm | latest | Dependencies |
@@ -617,14 +613,6 @@ refactor/extract-validation-logic
 
 #### Commit Messages
 
-```text
-feat(game): add difficulty selector dropdown
-fix(timer): stop timer when puzzle completed
-chore(deps): update svelte to 5.x
-docs(readme): add installation instructions
-refactor(validation): extract isValidMove function
-```
-
 **Rules:**
 
 - Start with type: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`
@@ -634,34 +622,14 @@ refactor(validation): extract isValidMove function
 - Reference issue: `Closes #42` or `Fixes #42`
 - Run `pnpm type-check` before every commit
 
----
-
-### 5.10 When to Spike
-
-For uncertain features, add a **spike** (throwaway prototype) before planning:
-
 ```text
-CHECK → SPIKE → PLAN → BUILD → TEST → PLAYTEST → SHIP
-           ↓
-    Timeboxed prototype
-    (1-2 hours max)
-    Learn, then discard
+examples:
+feat(game): add difficulty selector dropdown
+fix(timer): stop timer when puzzle completed
+chore(deps): update svelte to 5.x
+docs(readme): add installation instructions
+refactor(validation): extract isValidMove function
 ```
-
-**When to spike:**
-
-- Using a Devvit API for the first time
-- Complex Redis data structures
-- Real-time synchronization
-- Integrating external services
-- Anything you're <70% confident about
-
-**Spike rules:**
-
-- Timebox strictly (1-2 hours)
-- Goal is LEARNING, not shipping
-- Delete the code after — don't polish it
-- Document what you learned in the PLAN
 
 ---
 
@@ -901,25 +869,6 @@ app.post('/api/game/submit', async (c) => {
 | Files (non-component) | kebab-case | `game-logic.ts` |
 | API routes | kebab-case | `/api/game-state` |
 | Redis keys | colon-delimited | `user:123:stats` |
-
-### 7.3 Imports Order
-
-```typescript
-// 1. External packages
-import { Hono } from 'hono'
-import { onMount } from 'svelte'
-
-// 2. Devvit imports
-import { redis, context } from '@devvit/web/server'
-
-// 3. Shared modules
-import { validateBoard } from '../shared/validator'
-import type { GameState } from '../shared/types'
-
-// 4. Relative imports
-import { formatTime } from './lib/utils'
-import GameBoard from './components/GameBoard.svelte'
-```
 
 ### 7.4 CSS / Tailwind
 
