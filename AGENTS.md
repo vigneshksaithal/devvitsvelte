@@ -10,18 +10,6 @@ You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit
 
 <!-- TODO: Add a summary of the project -->
 
-### Hard Constraints (CANNOT VIOLATE)
-
-| # | Rule | Consequence if Violated |
-|---|------|------------------------|
-| 1 | Use Svelte 5 runes syntax ONLY | App won't compile |
-| 2 | Use Tailwind CSS ONLY (no `<style>` blocks) | Inconsistent styling, larger bundle |
-| 3 | Server endpoints: `/api/*` (public) or `/internal/*` (triggers) | Routes won't work |
-| 4 | No `localStorage`/`sessionStorage` in client | Will fail silently |
-| 5 | Named exports only (no `export default`) | Tree-shaking breaks |
-| 6 | Lucide icons: `import {Name}Icon from '@lucide/svelte/icons/{name}'` | Bundle size explodes |
-| 7 | **NO SCROLLING in inline views** — all content must fit viewport | Broken UX, content cut off, unprofessional |
-
 ### Tech Stack
 
 | Layer | Technology | Version | Purpose |
@@ -36,6 +24,18 @@ You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit
 | **Testing** | Vitest | latest | Unit tests |
 | **Build** | Vite | latest | Bundler |
 | **Package** | pnpm | latest | Dependencies |
+
+### Hard Constraints (CANNOT VIOLATE)
+
+| # | Rule | Consequence if Violated |
+|---|------|------------------------|
+| 1 | Use Svelte 5 runes syntax ONLY | App won't compile |
+| 2 | Use Tailwind CSS ONLY (no `<style>` blocks) | Inconsistent styling, larger bundle |
+| 3 | Server endpoints: `/api/*` (public) or `/internal/*` (triggers) | Routes won't work |
+| 4 | No `localStorage`/`sessionStorage` in client | Will fail silently |
+| 5 | Named exports only (no `export default`) | Tree-shaking breaks |
+| 6 | Lucide icons: `import {Name}Icon from '@lucide/svelte/icons/{name}'` | Bundle size explodes |
+| 7 | **NO SCROLLING in inline views** — all content must fit viewport | Broken UX, content cut off, unprofessional |
 
 ---
 
@@ -129,7 +129,7 @@ pnpm type-check && pnpm fix && pnpm test
 
 ```text
 project-root/
-├── assets/                    # Static media (<20MB per file)
+├── assets/                   # Static media (<20MB per file)
 │   ├── images/               # PNG/JPEG for splash screens
 │   └── icons/                # SVG icons
 ├── dist/                      # Build output (git-ignored)
@@ -224,6 +224,8 @@ const top10 = await redis.zRange('leaderboard', 0, 9, { by: 'score', reverse: tr
 // Expiration
 await redis.expire('session:abc', 3600) // 1 hour
 ```
+
+To access all the available Redis commands use devvit_search "redis commands" in the MCP server.
 
 #### Redis Key Naming Convention
 
