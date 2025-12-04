@@ -201,103 +201,44 @@ app.get('/api/whoami', async (c) => {
 
 ### 4.3 Redis (Database)
 
-Redis is your database. It's fast, free, and pre-configured.
+Redis is your database. It's fast, free, and pre-configured. Each installation gets 500MB storage and 1,000 commands/second.
+
+**Quick Example:**
 
 ```typescript
 import { redis } from '@devvit/web/server'
 
-// Basic operations
-await redis.set('key', 'value')
-const value = await redis.get('key')
-
-// Numbers
-await redis.incrBy('counter', 1)
-
-// Hashes (objects)
+// Store and retrieve data
 await redis.hSet('user:123', { name: 'Alice', score: '100' })
 const user = await redis.hGetAll('user:123')
 
-// Sorted Sets (leaderboards)
+// Leaderboards with sorted sets
 await redis.zAdd('leaderboard', { member: 'alice', score: 100 })
 const top10 = await redis.zRange('leaderboard', 0, 9, { by: 'score', reverse: true })
-
-// Expiration
-await redis.expire('session:abc', 3600) // 1 hour
 ```
 
-To access all the available Redis commands use devvit_search "redis commands" in the MCP server.
+**Key Naming Pattern:** Use colon-delimited hierarchical keys like `user:{userId}:stats` or `game:{postId}:state`.
 
-#### Redis Key Naming Convention
-
-Use hierarchical, colon-delimited keys:
-
-```text
-{entity}:{identifier}:{attribute}
-```
-
-| Use Case | Pattern | Example |
-|----------|---------|---------|
-| Game state | `game:{postId}:state` | `game:t3_abc:state` |
-| User stats | `user:{userId}:stats` | `user:t2_xyz:stats` |
-| Per-game user data | `user:{userId}:game:{postId}` | `user:t2_xyz:game:t3_abc` |
-| Leaderboard | `leaderboard:{scope}:{timeframe}` | `leaderboard:wins:daily:2025-01-15` |
-| Global counter | `stats:{metric}` | `stats:totalGames` |
-
-#### Example Schema for a Game
-
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│ GAME INSTANCE                                                   │
-├─────────────────────────────────────────────────────────────────┤
-│ game:{postId}:puzzle      String   The puzzle (81 chars)        │
-│ game:{postId}:solution    String   The solution (81 chars)      │
-│ game:{postId}:difficulty  String   easy|medium|hard|expert      │
-│ game:{postId}:created     String   ISO timestamp                │
-├─────────────────────────────────────────────────────────────────┤
-│ USER PROGRESS                                                   │
-├─────────────────────────────────────────────────────────────────┤
-│ user:{uId}:game:{pId}:board     String   Current state (81)     │
-│ user:{uId}:game:{pId}:time      Number   Seconds elapsed        │
-│ user:{uId}:game:{pId}:complete  String   "true" or absent       │
-├─────────────────────────────────────────────────────────────────┤
-│ USER STATS (GLOBAL)                                             │
-├─────────────────────────────────────────────────────────────────┤
-│ user:{userId}:stats       Hash     {solved, bestTime, streak}   │
-├─────────────────────────────────────────────────────────────────┤
-│ LEADERBOARDS                                                    │
-├─────────────────────────────────────────────────────────────────┤
-│ leaderboard:solved        ZSet     userId → solve count         │
-│ leaderboard:speed:{diff}  ZSet     `${uId}:${pId}` → time       │
-└─────────────────────────────────────────────────────────────────┘
-```
+**For complete documentation:** See [agent_docs/database.md](agent_docs/database.md) for Redis operations, key naming conventions, and example schemas. Use devvit MCP server for additional help: `devvit_search "redis commands"`.
 
 ### 4.4 Reddit API
 
-Access Reddit data for users, posts, and moderation.
+Access Reddit data for users, posts, comments, and moderation from server-side code.
+
+**Quick Example:**
 
 ```typescript
 import { reddit, context } from '@devvit/web/server'
 
-// Get current user
+// Get current user and post comments
 const user = await reddit.getCurrentUser()
-console.log(user?.username)
-
-// Get current subreddit
-const subreddit = await reddit.getCurrentSubreddit()
-
-// Submit a comment
 await reddit.submitComment({
   postId: context.postId!,
   text: 'Great solve! 🎉'
 })
-
-// Set user flair
-await reddit.setUserFlair({
-  subredditName: context.subredditName!,
-  username: user!.username,
-  text: 'Game Master 🏆'
-})
 ```
+
+**For complete documentation:** See [agent_docs/reddit.md](agent_docs/reddit.md) for all Reddit API operations and examples. Use devvit MCP server for additional help: `devvit_search "reddit api"`.
 
 ### 4.5 MCP Servers (AI Tools)
 
