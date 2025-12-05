@@ -9,6 +9,9 @@
         "-y",
         "@devvit/mcp"
       ]
+    },
+    "playwright": {
+      "command": "npx @playwright/mcp@latest"
     }
   }
 }
