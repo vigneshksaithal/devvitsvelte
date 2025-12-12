@@ -24,7 +24,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "devvit": "0.12.5",
     "hono": "^4.10.7",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
