@@ -20,7 +20,7 @@ You are a senior Svelte/TypeScript developer building a game for Reddit's Devvit
 | **Frontend** | Lucide Svelte | latest | Icons |
 | **Backend** | Hono | latest | HTTP routing |
 | **Backend** | Redis | (Devvit) | Database |
-| **Platform** | Devvit | 0.12.5 | Reddit integration |
+| **Platform** | Devvit | 0.12.7 | Reddit integration |
 | **Testing** | Vitest | latest | Unit tests |
 | **Build** | Vite | latest | Bundler |
 | **Package** | pnpm | latest | Dependencies |
