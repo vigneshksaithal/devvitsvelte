@@ -27,6 +27,9 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
     devDependencies:
+      '@devvit/start':
+        specifier: 0.12.8
+        version: 0.12.8(twirp-ts@2.5.0)(vite@8.0.0-beta.8(@types/node@25.0.9)(jiti@2.6.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
         version: 6.2.4(svelte@5.47.0)(vite@8.0.0-beta.8(@types/node@25.0.9)(jiti@2.6.1))
@@ -167,6 +170,11 @@ packages:
 
   '@devvit/splash@0.12.8':
     resolution: {integrity: sha512-iuTJ4CXEKvNnmVRrZuanr6o1o0Xs4NXhBXsFOSGEddgaKd0aSZJz6WlBQ4boicBa93U1yZzh/XDTYkSdeYD6wQ==}
+
+  '@devvit/start@0.12.8':
+    resolution: {integrity: sha512-Pm0YiQo+QWsXD76L7gAa5lu87PYHyxf2yJ9cnNTL5b+2pqa35t3efGpfLcnLJ/NcfvZwgZLFSsdhxYiE0uxSzg==}
+    peerDependencies:
+      vite: '>=6.0.0'
 
   '@devvit/web@0.12.8':
     resolution: {integrity: sha512-BIgo80s59GdNoB23sfCodjt1v9WOHKPm2iM6EHqUzZV9X0UMwwPCuyRE8W7ubom1vDfof0KaA4DOtHpk1wMqEQ==}
@@ -2516,6 +2524,14 @@ snapshots:
   '@devvit/splash@0.12.8(twirp-ts@2.5.0)':
     dependencies:
       '@devvit/public-api': 0.12.8(twirp-ts@2.5.0)
+    transitivePeerDependencies:
+      - twirp-ts
+
+  '@devvit/start@0.12.8(twirp-ts@2.5.0)(vite@8.0.0-beta.8(@types/node@25.0.9)(jiti@2.6.1))':
+    dependencies:
+      '@devvit/shared-types': 0.12.8(twirp-ts@2.5.0)
+      chalk: 4.1.2
+      vite: 8.0.0-beta.8(@types/node@25.0.9)(jiti@2.6.1)
     transitivePeerDependencies:
       - twirp-ts
 
