@@ -711,24 +711,6 @@ context.postId          // "t3_xyz789" or undefined
 | **Test at MINIMUM viewport** | 320px × 320px is your worst case |
 | **Use `overflow-hidden` on root** | Prevents any accidental scroll |
 
-## 9. Troubleshooting
-
-### Common Errors & Fixes
-
-#### "Changes not appearing"
-
-```bash
-# 1. Check dev server is running
-pnpm dev
-
-# 2. Hard refresh in browser
-Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)
-
-# 3. Check for build errors in terminal
-```
-
----
-
 ## 10. Post-Coding Checklist
 
 After completing any feature:
