@@ -24,7 +24,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "@devvit/start": "0.12.9",
+    "@devvit/start": "0.12.11",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "concurrently": "^9.2.1",
     "dotenv-cli": "^11.0.0",
