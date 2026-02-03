@@ -32,7 +32,7 @@ importers:
         version: 0.12.11(twirp-ts@2.5.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.4
-        version: 6.2.4(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
+        version: 6.2.4(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
@@ -40,11 +40,11 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       svelte:
-        specifier: ^5.48.0
-        version: 5.48.0
+        specifier: ^5.49.1
+        version: 5.49.1
       svelte-check:
         specifier: ^4.3.5
-        version: 4.3.5(picomatch@4.0.3)(svelte@5.48.0)(typescript@5.9.3)
+        version: 4.3.5(picomatch@4.0.3)(svelte@5.49.1)(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -2102,8 +2102,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
-  svelte@5.48.0:
-    resolution: {integrity: sha512-+NUe82VoFP1RQViZI/esojx70eazGF4u0O/9ucqZ4rPcOZD+n5EVp17uYsqwdzjUjZyTpGKunHbDziW6AIAVkQ==}
+  svelte@5.49.1:
+    resolution: {integrity: sha512-jj95WnbKbXsXXngYj28a4zx8jeZx50CN/J4r0CEeax2pbfdsETv/J1K8V9Hbu3DCXnpHz5qAikICuxEooi7eNQ==}
     engines: {node: '>=18'}
 
   symbol-tree@3.2.4:
@@ -3071,20 +3071,20 @@ snapshots:
     dependencies:
       acorn: 8.15.0
 
-  '@sveltejs/vite-plugin-svelte-inspector@5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)))(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))':
+  '@sveltejs/vite-plugin-svelte-inspector@5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)))(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
+      '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
       obug: 2.1.1
-      svelte: 5.48.0
+      svelte: 5.49.1
       vite: 8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)
 
-  '@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))':
+  '@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)))(svelte@5.48.0)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
+      '@sveltejs/vite-plugin-svelte-inspector': 5.0.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)))(svelte@5.49.1)(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
       deepmerge: 4.3.1
       magic-string: 0.30.21
       obug: 2.1.1
-      svelte: 5.48.0
+      svelte: 5.49.1
       vite: 8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1)
       vitefu: 1.1.1(vite@8.0.0-beta.9(@types/node@25.2.0)(jiti@2.6.1))
 
@@ -4521,19 +4521,19 @@ snapshots:
       has-flag: 4.0.0
       supports-color: 7.2.0
 
-  svelte-check@4.3.5(picomatch@4.0.3)(svelte@5.48.0)(typescript@5.9.3):
+  svelte-check@4.3.5(picomatch@4.0.3)(svelte@5.49.1)(typescript@5.9.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       chokidar: 4.0.3
       fdir: 6.5.0(picomatch@4.0.3)
       picocolors: 1.1.1
       sade: 1.8.1
-      svelte: 5.48.0
+      svelte: 5.49.1
       typescript: 5.9.3
     transitivePeerDependencies:
       - picomatch
 
-  svelte@5.48.0:
+  svelte@5.49.1:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
