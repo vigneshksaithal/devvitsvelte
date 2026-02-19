@@ -4,16 +4,16 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "postinstall": "npm run build",
+        "postinstall": "bun run build",
         "build": "vite build",
-        "deploy": "npm run build && devvit upload",
+        "deploy": "bun run build && devvit upload",
         "dev": "concurrently -k -p \"[{name}]\" -n \"BUILD,DEVVIT\" -c \"blue,magenta\" \"vite build --watch\" \"dotenv -e .env -- devvit playtest\"",
         "dev:devvit": "dotenv -e .env -- devvit playtest",
         "login": "devvit login",
         "check": "svelte-check --tsconfig ./src/client/tsconfig.json",
-        "launch": "npm run build && npm run deploy && devvit publish",
+        "launch": "bun run build && bun run deploy && devvit publish",
         "type-check": "tsc --build",
-        "test": "npm test"
+        "test": "bun test"
     },
     "dependencies": {
         "@devvit/web": "0.12.13",
@@ -32,5 +32,6 @@
         "svelte-check": "^4.4.1",
         "typescript": "^5.9.3",
         "vite": "8.0.0-beta.14"
-    }
+    },
+    "packageManager": "bun@1.1.34"
 }

@@ -4,21 +4,21 @@
 
 | Command | Script | Purpose |
 |---------|--------|---------|
-| `pnpm install` | - | Install dependencies (auto-runs build via postinstall) |
-| `pnpm dev` | `concurrently` vite watch + devvit playtest | Start dev server (opens Reddit playtest URL) |
-| `pnpm build` | `vite build` | Production build to dist/ |
-| `pnpm type-check` | `tsc --build` | TypeScript composite build check (all 3 projects) |
-| `pnpm check` | `svelte-check` | Svelte-specific type checking (client only) |
-| `pnpm deploy` | `build && devvit upload` | Build and upload to Devvit |
-| `pnpm launch` | `build && deploy && devvit publish` | Full release pipeline |
+| `bun install` | - | Install dependencies (auto-runs build via postinstall) |
+| `bun run dev` | `concurrently` vite watch + devvit playtest | Start dev server (opens Reddit playtest URL) |
+| `bun run build` | `vite build` | Production build to dist/ |
+| `bun run type-check` | `tsc --build` | TypeScript composite build check (all 3 projects) |
+| `bun run check` | `svelte-check` | Svelte-specific type checking (client only) |
+| `bun run deploy` | `build && devvit upload` | Build and upload to Devvit |
+| `bun run launch` | `build && deploy && devvit publish` | Full release pipeline |
 
 **Before committing:**
 ```bash
-pnpm type-check
+bun run type-check
 ```
 
 > **Not yet configured:** No test runner (vitest/jest), linter (eslint/biome), or formatter
-> (prettier/biome) is installed. `pnpm test` is broken (circular self-reference). Do not
+> (prettier/biome) is installed. `bun run test` is broken (circular self-reference). Do not
 > add these tools without explicit instruction.
 
 ---
@@ -43,7 +43,7 @@ src/
 
 Data flow: `User Action → Svelte → fetch('/api/...') → Hono → Redis/Reddit API → Response → UI`
 
-**Key packages:** Svelte 5.x, Tailwind CSS 4.x, Hono, TypeScript 5.x, Vite 8.x-beta, @devvit/web 0.12.x, pnpm
+**Key packages:** Svelte 5.x, Tailwind CSS 4.x, Hono, TypeScript 5.x, Vite 8.x-beta, @devvit/web 0.12.x, Bun (package manager)
 
 ---
 
