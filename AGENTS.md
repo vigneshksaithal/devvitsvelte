@@ -205,4 +205,4 @@ Types: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`
 
 ## Supplemental Docs
 
-Detailed guides in `agent_docs/`: `database.md`, `reddit.md`, `code-patterns.md`, `style-guide.md`, `workflow.md`, `troubleshooting.md`
+All documentation is consolidated in `docs/DEVVIT.md`.
