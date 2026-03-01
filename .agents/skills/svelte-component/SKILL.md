@@ -1,12 +1,11 @@
 ---
 name: add-svelte-component
-description: Create a new Svelte 5 component for the client. Use when adding UI components, views, or interactive elements.
+description: Create a Svelte 5 component with optional data fetching. Use when adding UI components, views, interactive elements, or wiring client-side fetch to server endpoints.
 ---
 
 # Add Svelte Component
 
-## When to use this skill
-Use when creating any new `.svelte` file in `src/client/`.
+> All code must follow the **Coding Principles** in AGENTS.md (functional, minimal, readable, modular).
 
 ## File placement
 - Reusable UI component → `src/client/components/ComponentName.svelte`
@@ -32,28 +31,7 @@ Use when creating any new `.svelte` file in `src/client/`.
   $effect(() => {
     console.log('count changed:', count)
   })
-
-  // Async data fetch pattern
-  onMount(async () => {
-    try {
-      const res = await fetch('/api/my-endpoint')
-      if (!res.ok) throw new Error('Failed to load')
-      data = await res.json()
-    } catch (e) {
-      error = e instanceof Error ? e.message : 'Unknown error'
-    } finally {
-      loading = false
-    }
-  })
 </script>
-
-{#if loading}
-  <div class="animate-pulse text-center">Loading...</div>
-{:else if error}
-  <div class="text-red-500 text-center">{error}</div>
-{:else if data}
-  <!-- render data -->
-{/if}
 ```
 
 ## Layout rules (no scrolling — CRITICAL)
@@ -76,13 +54,89 @@ Use when creating any new `.svelte` file in `src/client/`.
 | `<style>` blocks | Tailwind classes only |
 | `localStorage` | `fetch('/api/...')` |
 | `fetch('https://...')` | Server proxy endpoint |
+| Svelte 4 syntax (`$:`, `export let`) | Svelte 5 runes |
+
+## Fetch on mount pattern
+
+```svelte
+<script lang="ts">
+  import { onMount } from 'svelte'
+
+  type MyData = { id: string; value: number }
+
+  let data = $state<MyData | null>(null)
+  let loading = $state(true)
+  let error = $state<string | null>(null)
+
+  onMount(async () => {
+    try {
+      const res = await fetch('/api/my-endpoint')
+      if (!res.ok) throw new Error('Failed to load data')
+      const json = await res.json()
+      if (json.status === 'error') throw new Error(json.message)
+      data = json.data
+    } catch (e) {
+      error = e instanceof Error ? e.message : 'Unknown error'
+    } finally {
+      loading = false
+    }
+  })
+</script>
+
+{#if loading}
+  <div class="animate-pulse text-center">Loading...</div>
+{:else if error}
+  <div class="text-red-500 text-center">{error}</div>
+{:else if data}
+  <div>{data.value}</div>
+{/if}
+```
+
+## Submit data pattern
+
+```svelte
+<script lang="ts">
+  let submitting = $state(false)
+  let error = $state<string | null>(null)
+
+  const handleSubmit = async (payload: Record<string, unknown>): Promise<void> => {
+    submitting = true
+    error = null
+    try {
+      const res = await fetch('/api/my-endpoint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      const json = await res.json()
+      if (json.status === 'error') throw new Error(json.message)
+    } catch (e) {
+      error = e instanceof Error ? e.message : 'Unknown error'
+    } finally {
+      submitting = false
+    }
+  }
+</script>
+```
+
+## Response handling
+
+```typescript
+// Server always returns one of:
+// { status: 'success', data: { ... } }
+// { status: 'error', message: 'Human-readable' }
+// Always check json.status before accessing json.data
+```
 
 ## Checklist before finishing
 - [ ] Uses `$state()`, `$derived()`, `$effect()` — no Svelte 4 syntax
 - [ ] No `<style>` blocks — Tailwind only
 - [ ] No `localStorage` / `sessionStorage`
 - [ ] No direct external `fetch()` — all through `/api/*`
-- [ ] Root container uses `h-full overflow-hidden`
-- [ ] Mobile-first classes (`text-sm md:text-base`)
-- [ ] Minimum 320×320px viewport tested
-- [ ] Default export for `.svelte` file is fine (only exception to named-exports rule)
+- [ ] Root container uses `h-full w-full overflow-hidden flex flex-col`
+- [ ] Loading, error, and success states all handled in UI
+- [ ] POST requests include `Content-Type: application/json` header
+- [ ] `finally` block resets loading/submitting state
+- [ ] Error narrowing with `instanceof Error`
+- [ ] Response `status` field checked before accessing `data`

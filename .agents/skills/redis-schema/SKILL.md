@@ -5,8 +5,7 @@ description: Design and implement Redis data storage for a new feature. Use when
 
 # Add Redis Schema
 
-## When to use this skill
-Use when a feature needs to store or retrieve data — game state, user progress, stats, leaderboards, config.
+> All code must follow the **Coding Principles** in AGENTS.md (functional, minimal, readable, modular).
 
 ## Key naming convention (always colon-delimited)
 
