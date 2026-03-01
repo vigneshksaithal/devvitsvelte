@@ -140,6 +140,36 @@ Types: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`
 
 ---
 
+## MCP Tools
+
+Two MCP servers are available. Use them proactively — they give better answers than guessing.
+
+### Svelte MCP (`svelte`)
+
+Use for any Svelte 5 / SvelteKit question, component authoring, or rune usage.
+
+| Tool | When to call |
+|------|-------------|
+| `list-sections` | First call in any Svelte task — discover available docs |
+| `get-documentation` | Fetch full docs for sections identified by `list-sections` |
+| `svelte-autofixer` | Run on every Svelte component before finishing — keep calling until zero issues |
+| `playground-link` | Only after user asks for one, and only if code was NOT written to a file |
+
+Workflow: `list-sections` → read use_cases → `get-documentation` (all relevant sections at once) → write code → `svelte-autofixer` (loop until clean).
+
+### Devvit MCP (`devvit`)
+
+Use for any Devvit platform question, Redis patterns, Reddit API, config, or constraints.
+
+| Tool | When to call |
+|------|-------------|
+| `devvit_search` | Search Devvit docs for a specific topic (redis commands, API methods, config options, constraints) |
+| `devvit_logs` | Stream logs from a deployed app on a subreddit — useful for debugging live issues |
+
+Prefer `devvit_search` over pasting large doc files into context. It's hybrid search so natural language queries work well (e.g. `"redis sorted set leaderboard"`, `"custom post height options"`).
+
+---
+
 ## Supplemental Docs
 
 All documentation is consolidated in `docs/DEVVIT.md`.

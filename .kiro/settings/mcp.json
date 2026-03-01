@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "svelte": {
+      "type": "remote",
+      "url": "https://mcp.svelte.dev/mcp"
+    },
+    "devvit": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@devvit/mcp"
+      ]
+    }
+  }
+}
