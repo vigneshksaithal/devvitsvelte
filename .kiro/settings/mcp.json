@@ -2,7 +2,10 @@
   "mcpServers": {
     "svelte": {
       "type": "remote",
-      "url": "https://mcp.svelte.dev/mcp"
+      "url": "https://mcp.svelte.dev/mcp",
+      "autoApprove": [
+        "list-sections"
+      ]
     },
     "devvit": {
       "type": "local",
@@ -10,6 +13,9 @@
       "args": [
         "-y",
         "@devvit/mcp"
+      ],
+      "autoApprove": [
+        "devvit_search"
       ]
     }
   }
