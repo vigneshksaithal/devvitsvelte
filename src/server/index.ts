@@ -11,9 +11,9 @@ import { createPost } from './post'
 
 const HTTP_STATUS_BAD_REQUEST = 400
 
-const app = new Hono()
+export const app = new Hono()
 
-const createPostHandler = async (c: Context) => {
+const createPostHandler = async (c: Context): Promise<Response> => {
   try {
     const post = await createPost()
 
