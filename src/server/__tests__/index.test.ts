@@ -6,7 +6,8 @@ import { app } from '../index'
 
 const test = createDevvitTest()
 
-test('POST /internal/on-app-install returns navigateTo on success', async ({ subredditName }) => {
+test('POST /internal/on-app-install returns navigateTo on success', async () => {
+    const { name: subredditName } = await reddit.getCurrentSubreddit()
     vi.spyOn(reddit, 'submitCustomPost').mockResolvedValue({ id: 't3_newpost' } as never)
 
     const res = await app.request('/internal/on-app-install', { method: 'POST' })
@@ -18,7 +19,8 @@ test('POST /internal/on-app-install returns navigateTo on success', async ({ sub
     )
 })
 
-test('POST /internal/menu/post-create returns navigateTo on success', async ({ subredditName }) => {
+test('POST /internal/menu/post-create returns navigateTo on success', async () => {
+    const { name: subredditName } = await reddit.getCurrentSubreddit()
     vi.spyOn(reddit, 'submitCustomPost').mockResolvedValue({ id: 't3_abc' } as never)
 
     const res = await app.request('/internal/menu/post-create', { method: 'POST' })
