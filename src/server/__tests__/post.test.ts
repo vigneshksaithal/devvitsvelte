@@ -6,7 +6,8 @@ import { createPost } from '../post'
 
 const test = createDevvitTest()
 
-test('createPost submits a custom post with correct params', async ({ subredditName }) => {
+test('createPost submits a custom post with correct params', async () => {
+    const { name: subredditName } = await reddit.getCurrentSubreddit()
     vi.spyOn(reddit, 'submitCustomPost').mockResolvedValue({ id: 't3_abc123' } as never)
 
     const result = await createPost()
