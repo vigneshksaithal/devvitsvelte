@@ -226,6 +226,8 @@ Use MCP tools proactively — they give better answers than guessing.
 
 **Devvit MCP:** `devvit_search` for any Devvit/Redis/Reddit API question. Natural language queries work well.
 
+**Sequential Thinking MCP:** `sequentialthinking` for breaking down complex problems into step-by-step reasoning chains. Use when facing multi-step logic, architectural decisions, debugging complex issues, or any task that benefits from structured thinking before acting.
+
 ### Web Search
 
 If unsure about an API, library version, or best practice — search the web first. Don't guess. Prefer official docs and recent sources.
