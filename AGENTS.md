@@ -212,7 +212,7 @@ src/
 
 Data flow: `User Action → Svelte → fetch('/api/...') → Hono → Redis/Reddit API → Response → UI`
 
-Key packages: Svelte 5.x, Tailwind CSS 4.x, Hono, TypeScript 5.x, Vite 8.x, @devvit/web 0.12.x, Bun
+Key packages: Svelte 5.x, Tailwind CSS 4.x, Hono, TypeScript 6.x, Vite 8.x, @devvit/web 0.12.x, Bun
 
 ---
 
