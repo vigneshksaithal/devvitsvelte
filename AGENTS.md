@@ -15,6 +15,8 @@ Before reasoning about the request, collect information:
 
 Available skills in `.agents/skills/`:
 
+**Platform & Infrastructure:**
+
 | Skill | When to read |
 |-------|-------------|
 | `tdd/SKILL.md` | Any task that involves writing or modifying tests |
@@ -26,6 +28,16 @@ Available skills in `.agents/skills/`:
 | `realtime/SKILL.md` | Live updates, multiplayer, event-driven features |
 | `scheduler/SKILL.md` | Cron jobs, delayed tasks, timed events |
 | `media-uploads/SKILL.md` | Uploading images to Reddit at runtime |
+| `settings-secrets/SKILL.md` | App settings, API keys, per-installation config |
+
+**Game Engagement (MANDATORY — read before building any game feature):**
+
+| Skill | When to read |
+|-------|-------------|
+| `engagement-loops/SKILL.md` | **ALWAYS** — before building any new feature, mechanic, or screen. The foundational engagement skill. |
+| `viral-mechanics/SKILL.md` | Any feature involving sharing, UGC, challenges, or community content |
+| `progression-system/SKILL.md` | Streaks, XP, levels, leagues, leaderboards, achievements, flair, or any player progress |
+| `daily-content/SKILL.md` | Daily/weekly challenges, scheduled posts, rotating events, or time-limited content |
 
 ### Step 2: Clarify Requirements
 
@@ -37,7 +49,19 @@ Ask the user questions until you are ≥90% confident in the implementation appr
 - Ask about future extensibility — what might change later?
 - Do not proceed until ≥90% confident. It is better to ask one extra question than to build the wrong thing.
 
-**Done when:** You can describe the exact changes you'll make, which files you'll touch, and what the expected behavior is — and the user confirms.
+**Engagement questions (mandatory for every game feature):**
+
+Before proceeding, answer these internally. If the answer to any is "no" or "unclear", discuss with the user:
+
+1. **Retention**: Does this feature give players a reason to come back tomorrow?
+2. **Virality**: Does this feature create content visible to non-players (feed, comments, flair)?
+3. **Investment**: Does this feature increase the player's stored value (streak, progress, identity)?
+4. **Loop closure**: Does this feature connect back to a trigger for the next session?
+5. **First experience**: If a new player encounters this, will they understand it in 3 seconds?
+
+If a feature doesn't serve retention, virality, or investment — question whether it should exist. Every feature must earn its place in the engagement ecosystem.
+
+**Done when:** You can describe the exact changes you'll make, which files you'll touch, what the expected behavior is, AND how it serves the game's engagement loops — and the user confirms.
 
 ### Step 3: Plan
 
@@ -86,7 +110,21 @@ Improve the code while keeping tests green:
 - Ensure proper error handling and edge cases
 - Verify the code is extensible — will it hold up as the codebase grows?
 
-**Done when:** `bun run test` still passes. Code meets engineering standards.
+**Engagement audit (mandatory):**
+
+Before moving to verification, review the feature against these engagement standards:
+
+- [ ] **Hook Model**: Does the feature complete at least one Trigger → Action → Variable Reward → Investment cycle?
+- [ ] **Viral surface**: Does the feature create or enhance content visible in the Reddit feed, comments, or flair?
+- [ ] **Progression impact**: Does the feature award XP, advance streaks, unlock achievements, or affect league standing?
+- [ ] **Social proof**: Does the feature display player counts, leaderboard positions, or community activity?
+- [ ] **FOMO/urgency**: If time-limited, does the feature show countdown and "what you missed" for expired content?
+- [ ] **One more round**: Does the feature end with a cliffhanger or unfinished business that pulls the player back?
+- [ ] **Reddit compliance**: No gameplay gated behind social actions, no auto-posting, all user actions explicit and manual?
+
+If any item fails, improve the feature before shipping. Not every feature needs all items, but every feature must serve at least one engagement loop.
+
+**Done when:** `bun run test` still passes. Code meets engineering standards AND engagement standards.
 
 ### Step 7: Verify
 
@@ -140,6 +178,84 @@ Write production-grade code. Not prototypes, not MVPs. Code that scales, reads w
 - No dead code, no commented-out code, no "just in case" abstractions.
 - No unused imports, variables, or parameters.
 - If you're not sure it's needed, it's not needed.
+
+---
+
+## Game Design Standards
+
+This is a Reddit game. Every line of code serves player engagement, retention, and virality. These standards are as mandatory as the engineering standards above.
+
+### The Hooked Model Is the Default Framework
+
+Every feature must complete at least one cycle of **Trigger → Action → Variable Reward → Investment**. If a feature doesn't fit this model, it needs a strong justification for existing. Read `engagement-loops/SKILL.md` before building anything.
+
+### Design for the Reddit Feed
+
+Your game lives in a social feed, not an app store. The inline post preview is your storefront.
+
+- Inline mode must show the game visual + a single CTA — never a loading screen or instructions
+- Post titles must create a curiosity gap: "Can you beat today's puzzle? 🧩"
+- Social proof must be visible: "1,247 playing today"
+- The game must be playable within 3 seconds of the first tap
+
+### Daily Content Is Not Optional
+
+Reddit posts decay within hours. Without daily fresh content, your game disappears.
+
+- Automated daily challenge posts via scheduler (non-negotiable)
+- Daily leaderboard resets give everyone a fresh start
+- Rotating difficulty across the week serves casual and hardcore players
+- Expiry countdowns create honest urgency
+
+### Every Feature Must Serve Retention
+
+Before building, ask: "Does this make someone come back tomorrow?" Retention mechanics:
+
+| Mechanic | Effect | Minimum implementation |
+|---|---|---|
+| **Streaks** | Loss aversion | Track consecutive days, show prominently, include freeze |
+| **Daily missions** | Clear goals | 3 rotating missions per day, XP rewards |
+| **Progression** | Sunk cost | XP + levels + league tiers |
+| **Leaderboards** | Competition | Daily sorted set, player rank always visible |
+| **Flair** | Identity investment | Auto-update on progression changes |
+
+### Every Feature Must Serve Virality
+
+Before building, ask: "Does this create content visible to non-players?" Viral mechanics:
+
+| Mechanic | Viral channel | Implementation |
+|---|---|---|
+| **Score sharing** | Comments | Emoji grid/visual result, reply to stickied comment |
+| **Challenges** | New posts | Player-created challenges as UGC posts |
+| **Flair** | All of Reddit | League + streak visible everywhere user posts |
+| **Daily posts** | Subreddit feed | Automated daily challenge attracts subscribers |
+| **Player of the week** | Community post | Automated recognition via scheduler |
+
+### Reddit Policy Compliance (Non-Negotiable)
+
+- ❌ Never gate gameplay behind social actions (posting, commenting, subscribing)
+- ❌ Never auto-post or auto-subscribe on behalf of users
+- ❌ Never merge gameplay actions with social actions (e.g., "Play Again & Subscribe")
+- ✅ All social actions must be explicit, manual, and clearly labeled
+- ✅ Score comments must reply to a stickied comment (not top-level, unless custom message)
+- ✅ UGC posts must use `runAs: 'USER'` with `userGeneratedContent`
+- ✅ Subscribe prompts shown after positive moments, always dismissible
+
+### Session Design
+
+- Core loop completes in under 2 minutes
+- First session guarantees a positive outcome (first-win design)
+- Sessions end with unfinished business (Zeigarnik effect)
+- Near-miss moments show what the player almost achieved
+- "One more round" pull is always present
+
+### Monetization Ethics
+
+- Core gameplay is 100% free — no pay-to-win
+- Paid features are cosmetic, convenience, or supportive
+- No loot boxes, energy systems, or fake scarcity
+- "Support this app" option available for fans
+- Monetization placed at contextually appropriate moments, never mid-gameplay
 
 ---
 
