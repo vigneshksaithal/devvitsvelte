@@ -4,6 +4,12 @@
 
 Every request — no matter how small — must follow these steps in order. Do not skip steps.
 
+### Step 0: Agent Setup
+
+1. Use Multiple Agents to do tasks.
+2. Divide tasks into sub tasks, then use sub agents to do it in parallel.
+3. Then see all the results and think and come up with the solution.
+
 ### Step 1: Gather Context
 
 Before reasoning about the request, collect information:
