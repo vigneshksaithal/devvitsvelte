@@ -1,14 +1,72 @@
 # AGENTS.md
 
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
 ## Agent Workflow — Mandatory Checklist
 
 Every request — no matter how small — must follow these steps in order. Do not skip steps.
-
-### Step 0: Agent Setup
-
-1. Use Multiple Agents to do tasks.
-2. Divide tasks into sub tasks, then use sub agents to do it in parallel.
-3. Then see all the results and think and come up with the solution.
 
 ### Step 1: Gather Context
 
@@ -21,8 +79,6 @@ Before reasoning about the request, collect information:
 
 Available skills in `.agents/skills/`:
 
-**Platform & Infrastructure:**
-
 | Skill | When to read |
 |-------|-------------|
 | `tdd/SKILL.md` | Any task that involves writing or modifying tests |
@@ -34,16 +90,6 @@ Available skills in `.agents/skills/`:
 | `realtime/SKILL.md` | Live updates, multiplayer, event-driven features |
 | `scheduler/SKILL.md` | Cron jobs, delayed tasks, timed events |
 | `media-uploads/SKILL.md` | Uploading images to Reddit at runtime |
-| `settings-secrets/SKILL.md` | App settings, API keys, per-installation config |
-
-**Game Engagement (MANDATORY — read before building any game feature):**
-
-| Skill | When to read |
-|-------|-------------|
-| `engagement-loops/SKILL.md` | **ALWAYS** — before building any new feature, mechanic, or screen. The foundational engagement skill. |
-| `viral-mechanics/SKILL.md` | Any feature involving sharing, UGC, challenges, or community content |
-| `progression-system/SKILL.md` | Streaks, XP, levels, leagues, leaderboards, achievements, flair, or any player progress |
-| `daily-content/SKILL.md` | Daily/weekly challenges, scheduled posts, rotating events, or time-limited content |
 
 ### Step 2: Clarify Requirements
 
@@ -55,19 +101,7 @@ Ask the user questions until you are ≥90% confident in the implementation appr
 - Ask about future extensibility — what might change later?
 - Do not proceed until ≥90% confident. It is better to ask one extra question than to build the wrong thing.
 
-**Engagement questions (mandatory for every game feature):**
-
-Before proceeding, answer these internally. If the answer to any is "no" or "unclear", discuss with the user:
-
-1. **Retention**: Does this feature give players a reason to come back tomorrow?
-2. **Virality**: Does this feature create content visible to non-players (feed, comments, flair)?
-3. **Investment**: Does this feature increase the player's stored value (streak, progress, identity)?
-4. **Loop closure**: Does this feature connect back to a trigger for the next session?
-5. **First experience**: If a new player encounters this, will they understand it in 3 seconds?
-
-If a feature doesn't serve retention, virality, or investment — question whether it should exist. Every feature must earn its place in the engagement ecosystem.
-
-**Done when:** You can describe the exact changes you'll make, which files you'll touch, what the expected behavior is, AND how it serves the game's engagement loops — and the user confirms.
+**Done when:** You can describe the exact changes you'll make, which files you'll touch, and what the expected behavior is — and the user confirms.
 
 ### Step 3: Plan
 
@@ -116,21 +150,7 @@ Improve the code while keeping tests green:
 - Ensure proper error handling and edge cases
 - Verify the code is extensible — will it hold up as the codebase grows?
 
-**Engagement audit (mandatory):**
-
-Before moving to verification, review the feature against these engagement standards:
-
-- [ ] **Hook Model**: Does the feature complete at least one Trigger → Action → Variable Reward → Investment cycle?
-- [ ] **Viral surface**: Does the feature create or enhance content visible in the Reddit feed, comments, or flair?
-- [ ] **Progression impact**: Does the feature award XP, advance streaks, unlock achievements, or affect league standing?
-- [ ] **Social proof**: Does the feature display player counts, leaderboard positions, or community activity?
-- [ ] **FOMO/urgency**: If time-limited, does the feature show countdown and "what you missed" for expired content?
-- [ ] **One more round**: Does the feature end with a cliffhanger or unfinished business that pulls the player back?
-- [ ] **Reddit compliance**: No gameplay gated behind social actions, no auto-posting, all user actions explicit and manual?
-
-If any item fails, improve the feature before shipping. Not every feature needs all items, but every feature must serve at least one engagement loop.
-
-**Done when:** `bun run test` still passes. Code meets engineering standards AND engagement standards.
+**Done when:** `bun run test` still passes. Code meets engineering standards.
 
 ### Step 7: Verify
 
@@ -184,84 +204,6 @@ Write production-grade code. Not prototypes, not MVPs. Code that scales, reads w
 - No dead code, no commented-out code, no "just in case" abstractions.
 - No unused imports, variables, or parameters.
 - If you're not sure it's needed, it's not needed.
-
----
-
-## Game Design Standards
-
-This is a Reddit game. Every line of code serves player engagement, retention, and virality. These standards are as mandatory as the engineering standards above.
-
-### The Hooked Model Is the Default Framework
-
-Every feature must complete at least one cycle of **Trigger → Action → Variable Reward → Investment**. If a feature doesn't fit this model, it needs a strong justification for existing. Read `engagement-loops/SKILL.md` before building anything.
-
-### Design for the Reddit Feed
-
-Your game lives in a social feed, not an app store. The inline post preview is your storefront.
-
-- Inline mode must show the game visual + a single CTA — never a loading screen or instructions
-- Post titles must create a curiosity gap: "Can you beat today's puzzle? 🧩"
-- Social proof must be visible: "1,247 playing today"
-- The game must be playable within 3 seconds of the first tap
-
-### Daily Content Is Not Optional
-
-Reddit posts decay within hours. Without daily fresh content, your game disappears.
-
-- Automated daily challenge posts via scheduler (non-negotiable)
-- Daily leaderboard resets give everyone a fresh start
-- Rotating difficulty across the week serves casual and hardcore players
-- Expiry countdowns create honest urgency
-
-### Every Feature Must Serve Retention
-
-Before building, ask: "Does this make someone come back tomorrow?" Retention mechanics:
-
-| Mechanic | Effect | Minimum implementation |
-|---|---|---|
-| **Streaks** | Loss aversion | Track consecutive days, show prominently, include freeze |
-| **Daily missions** | Clear goals | 3 rotating missions per day, XP rewards |
-| **Progression** | Sunk cost | XP + levels + league tiers |
-| **Leaderboards** | Competition | Daily sorted set, player rank always visible |
-| **Flair** | Identity investment | Auto-update on progression changes |
-
-### Every Feature Must Serve Virality
-
-Before building, ask: "Does this create content visible to non-players?" Viral mechanics:
-
-| Mechanic | Viral channel | Implementation |
-|---|---|---|
-| **Score sharing** | Comments | Emoji grid/visual result, reply to stickied comment |
-| **Challenges** | New posts | Player-created challenges as UGC posts |
-| **Flair** | All of Reddit | League + streak visible everywhere user posts |
-| **Daily posts** | Subreddit feed | Automated daily challenge attracts subscribers |
-| **Player of the week** | Community post | Automated recognition via scheduler |
-
-### Reddit Policy Compliance (Non-Negotiable)
-
-- ❌ Never gate gameplay behind social actions (posting, commenting, subscribing)
-- ❌ Never auto-post or auto-subscribe on behalf of users
-- ❌ Never merge gameplay actions with social actions (e.g., "Play Again & Subscribe")
-- ✅ All social actions must be explicit, manual, and clearly labeled
-- ✅ Score comments must reply to a stickied comment (not top-level, unless custom message)
-- ✅ UGC posts must use `runAs: 'USER'` with `userGeneratedContent`
-- ✅ Subscribe prompts shown after positive moments, always dismissible
-
-### Session Design
-
-- Core loop completes in under 2 minutes
-- First session guarantees a positive outcome (first-win design)
-- Sessions end with unfinished business (Zeigarnik effect)
-- Near-miss moments show what the player almost achieved
-- "One more round" pull is always present
-
-### Monetization Ethics
-
-- Core gameplay is 100% free — no pay-to-win
-- Paid features are cosmetic, convenience, or supportive
-- No loot boxes, energy systems, or fake scarcity
-- "Support this app" option available for fans
-- Monetization placed at contextually appropriate moments, never mid-gameplay
 
 ---
 
@@ -349,13 +291,95 @@ Use MCP tools proactively — they give better answers than guessing.
 
 **Svelte MCP:** `list-sections` → `get-documentation` → write code → `svelte-autofixer` (loop until zero issues)
 
-**Devvit MCP:** `devvit_search` for any Devvit/Redis/Reddit API question. Natural language queries work well.
+**Devvit MCP:** `devvit_search` for any Devvit/Redis/Reddit API question. Natural language queries work well. Also use `devvit_logs` to stream live server logs from a playtest subreddit.
 
 **Sequential Thinking MCP:** `sequentialthinking` for breaking down complex problems into step-by-step reasoning chains. Use when facing multi-step logic, architectural decisions, debugging complex issues, or any task that benefits from structured thinking before acting.
+
+**Playwright MCP:** Visual UI review after any Svelte component or CSS change. See [UI Review Workflow](#ui-review-workflow) below.
 
 ### Web Search
 
 If unsure about an API, library version, or best practice — search the web first. Don't guess. Prefer official docs and recent sources.
+
+---
+
+## UI Review Workflow
+
+**Trigger:** Any task that creates or modifies `.svelte` files or CSS.
+
+This workflow closes the visual feedback loop — Kiro codes, then visually inspects and iterates.
+
+### How Devvit local testing works
+
+Devvit apps **cannot run fully offline** — the backend (Redis, Reddit API) requires Reddit's infrastructure. There are two ways to test UI:
+
+**Option A — Frontend-only (Vite dev server)**
+- Runs the Svelte client at `http://localhost:4173` via `bun run local`
+- API calls to `/api/*` will 502 (no backend) — the error screen is expected
+- Good for: layout, styling, component structure, static UI states
+
+**Option B — Full playtest (requires Reddit account + subreddit)**
+- Run `bun run dev` (which runs `devvit playtest`)
+- Devvit uploads the app to Reddit's servers and opens a live test URL like:
+  `https://www.reddit.com/r/<your-subreddit>/?playtest=<app-name>`
+- Full backend (Redis, Reddit API) works here
+- Good for: end-to-end flows, game state, API integration
+
+### Prerequisites for visual review
+
+For frontend-only review (Option A):
+```bash
+bun run local   # starts Vite at http://localhost:4173
+```
+
+For full playtest (Option B):
+```bash
+bun run dev     # uploads to Reddit + opens playtest URL
+```
+
+If neither server is running, ask the user to start one before proceeding.
+
+### Steps (frontend-only review)
+
+1. Ensure `bun run local` is running at `http://localhost:4173`
+2. `browser_navigate` → `http://localhost:4173`
+3. `browser_screenshot` → capture the current state
+4. `browser_console_messages` → check for JS errors
+5. Analyze the screenshot for layout/visual issues (see checklist below)
+6. `browser_click` / `browser_type` → test interactive elements
+7. Resize to 375px width — primary Reddit webview target
+8. Fix issues in the Svelte/CSS code
+9. Re-screenshot to confirm the fix
+10. Repeat until production-quality
+
+### Steps (full playtest review)
+
+1. Ensure `bun run dev` is running and the playtest URL is active
+2. `browser_navigate` → the Reddit playtest URL
+3. Click "Launch App" on the Reddit post
+4. `browser_screenshot` → capture the webview
+5. Interact and review as above
+6. Use `devvit_logs` MCP tool to stream server logs if debugging backend issues:
+   `{ subreddit: "your-test-subreddit", since: "5m" }`
+
+### What to check per component type
+
+| Component | Key checks |
+|-----------|-----------|
+| Modals | Centered, scrollable content, backdrop, close button reachable |
+| Buttons | Consistent size, clear tap targets (≥44px), disabled state visible |
+| Game board | Grid alignment, cells don't overflow, fits narrow screens |
+| Overlays | Z-index correct, doesn't block interaction behind it |
+| Lists/leaderboards | Scrollable, items don't clip, rank numbers aligned |
+| Badges/chips | Text doesn't overflow, consistent border-radius |
+
+### Viewport sizes to test
+
+- **375×667** — iPhone SE / narrow Reddit webview (primary target)
+- **390×844** — iPhone 14
+- **768×1024** — tablet (secondary)
+
+Use `browser_snapshot` to get the accessibility tree if visual inspection isn't enough to diagnose an issue.
 
 ---
 
