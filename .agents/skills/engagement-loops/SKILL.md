@@ -1,6 +1,6 @@
 ---
 name: engagement-loops
-description: Design habit-forming game loops using the Hooked Model (Trigger → Action → Variable Reward → Investment). Covers core/meta/social loops, session design, onboarding, and feed-first UX. Read FIRST before building any new game feature, mechanic, or screen.
+description: Design habit-forming and viral Reddit game loops using the Hooked Model (Trigger → Action → Variable Reward → Investment). Covers core/meta/social loops, UGC flywheels, score sharing, challenge systems, session design, onboarding, and feed-first UX. Read FIRST before building any new game feature, mechanic, or screen.
 ---
 
 # Engagement Loop Design
@@ -40,13 +40,13 @@ Every feature must complete at least one cycle of: **Trigger → Action → Vari
 | Trigger type | Reddit/Devvit mechanism | When to use |
 |---|---|---|
 | **External — Feed** | Daily post appears in subscribed feed | Daily content, new challenges |
-| **External — Notification** | Push notification (beta) | Streak about to break, challenge received |
-| **External — Social** | Friend's score comment, flair visible | Competition, social proof |
+| **External — Notification** | Push notification (gated beta, opt-in, reviewed copy) | New daily content, live event, streak preservation |
+| **External — Social** | Score comment, share sheet, subreddit flair | Competition, social proof |
 | **Internal — FOMO** | "Today's challenge expires in 3h" | Limited-time events |
 | **Internal — Curiosity** | "Can I beat yesterday's score?" | Progression, personal bests |
 | **Internal — Boredom** | Quick, snackable game in feed | Idle moments, feed scrolling |
 
-**Implementation rule**: Every feature must have at least one external trigger that brings players back without them thinking about it.
+**Implementation rule**: Every feature needs a clear return path. Feed posts and social sharing are broadly available. Push notifications and Journeys are experimental gated beta features; use only when approved and never build custom browser push/device-token systems.
 
 ### 2. Action — What does the player do?
 
@@ -56,7 +56,7 @@ The action must be **dead simple**. Reduce friction to near-zero.
 |---|---|
 | **Zero-tap start** | Game loads playable in the feed (inline mode) |
 | **One-touch mechanic** | Core gameplay uses tap/swipe, no complex controls |
-| **No login wall** | `context.userId` is automatic — never ask users to "sign in" |
+| **No login wall** | Let logged-out users play the core loop; prompt login only at natural breakpoints |
 | **Instant feedback** | Every tap produces visible, satisfying response within 100ms |
 | **Session < 2 min** | Core loop completes in under 2 minutes |
 
@@ -92,10 +92,10 @@ Investment = stored value that makes leaving costly. The more a player invests, 
 
 | Investment type | Devvit implementation | Retention effect |
 |---|---|---|
-| **Streak** | Redis counter, daily check-in | Loss aversion — "Don't break my 30-day streak" |
-| **Profile/Flair** | Reddit flair auto-updated | Identity — "I'm a Diamond player" |
-| **Content creation** | UGC posts submitted as user | Ownership — "My puzzle got 200 plays" |
-| **Social connections** | Challenge friends, community | Obligation — "My community needs me" |
+| **Streak** | Redis bitfield completion, daily check-in | Loss aversion — "Don't break my 30-day streak" |
+| **Profile/Flair** | Subreddit flair auto-updated | Identity — "This community sees I'm a Diamond player" |
+| **Content creation** | UGC posts submitted as user after explicit action | Ownership — "My puzzle got 200 plays" |
+| **Social connections** | Challenge community via share sheet or user-created post | Obligation — "My community can beat my score" |
 | **Progression** | XP, level, unlocked content | Sunk cost — "I've earned too much to stop" |
 
 ---
@@ -122,11 +122,108 @@ Complete daily challenge → Earn XP → Level up → Unlock new content → New
 
 ### Social Loop (ongoing — the community flywheel)
 ```
-Play → Share result → Friend sees → Friend plays → Competes → Shares
+Play → Share result → Community sees → Another player tries → Competes → Shares
 ```
 - Spans the entire player community
 - Each player's action recruits/retains others
-- Example: Score comment → friend sees in feed → clicks to play → posts their score
+- Example: Score comment or share link → another player opens the post → plays → shares their own result
+
+---
+
+## Proven Game Patterns To Adapt
+
+Use these patterns as design inspiration, not as clones.
+
+### Candy Crush-style retention
+
+- Tiny session: one level/round is playable in under 2 minutes
+- Clear local goal: a level has one obvious objective and a visible move/attempt budget
+- Near miss: show exactly what was almost achieved and make retry feel plausible
+- Useful boosters: earned or purchased boosts relieve friction without replacing skill
+- Fresh content: add new levels, events, and variations regularly without changing the core mechanic
+- Low interruption: avoid ads, long waits, or aggressive monetization inside the play loop
+
+### Duolingo-style habit loops
+
+- Daily ritual: a small completion counts, so the habit has a low floor
+- Streak protection: freezes/recovery reduce rage-quit after one missed day
+- Leagues: weekly competition creates fresh starts and status without permanent exclusion
+- Timely reminders: notification copy is contextual and respectful, never spammy
+- Progress identity: levels, badges, and profile/flair turn effort into visible identity
+- Repair path: lapsed users get an easy re-entry, not shame or permanent loss
+
+### Ethical Hooked constraints
+
+- Trigger should point to real value, not anxiety alone
+- Action should be simple and reversible
+- Variable reward should be delightful but not required for core progress
+- Investment should store player value, not trap them
+- Any habit mechanic must include opt-outs, recovery, and non-punitive failure
+
+---
+
+## Viral and Social Mechanics
+
+Use the viral equation as a design check:
+
+```
+Virality = Visibility × Shareability × Convertibility
+```
+
+- **Visibility**: Can non-players see the result in feed, comments, flair, or share previews?
+- **Shareability**: Is the result one-tap, spoiler-free, compact, and visually distinctive?
+- **Convertibility**: Does the viewer understand what to do in under 3 seconds?
+
+### Reddit-native channels
+
+| Channel | Use |
+|---|---|
+| Daily posts | Passive feed discovery and fresh starts |
+| Score comments | Social proof under a stickied score thread |
+| Share sheet | Lightweight invites without creating Reddit content |
+| Subreddit flair | Community-scoped identity/status |
+| UGC posts | Player-created challenges or creations after explicit consent |
+
+Do not build mechanics that depend on upvoting, downvoting, following users, friend lists, or private subscription state. Devvit apps cannot perform those actions or read that private state.
+
+### UGC and score sharing rules
+
+- User-created posts use `runAs: 'USER'`, `userGeneratedContent`, `SUBMIT_POST`, and a clearly labeled manual action.
+- Generic score comments use `runAs: 'USER'` and reply to a single stickied score comment.
+- Top-level score comments are only appropriate when the user adds meaningful custom commentary.
+- Use `showShareSheet()` for lightweight sharing and deeplinks when a Reddit post/comment is not needed.
+- Subscribe prompts appear after positive moments, stay optional, and call `reddit.subscribeToCurrentSubreddit()` only from a separate explicit action with approval.
+- User-created content needs moderation, reporting, and deletion cleanup.
+
+### Content flywheel
+
+```
+Player plays → shares score/challenge/creation →
+Content appears in feed/comments/share preview →
+Non-player gets curious → plays →
+New player creates content
+```
+
+Good flywheels make the shared result compelling without forcing the player to post, comment, subscribe, pay, or notify.
+
+### Share format pattern
+
+Design share text like a compact scorecard:
+
+- Spoiler-free: shows effort/result, not the answer
+- Comparable: score, attempts, rank, or time
+- Visual: emoji/symbol pattern or concise image
+- Actionable: points back to the current post/challenge
+
+Example:
+
+```typescript
+const generateShareText = (score: number, maxScore: number, attempts: number): string => {
+  const percentage = Math.round((score / maxScore) * 100)
+  const stars = '*'.repeat(Math.min(Math.floor(percentage / 20), 5))
+  return `Daily Challenge ${stars} ${score}/${maxScore}\nAttempts: ${attempts}\nCan you beat it?`
+}
+```
 
 ---
 
@@ -136,7 +233,7 @@ Play → Share result → Friend sees → Friend plays → Competes → Shares
 Players remember incomplete tasks more than completed ones. Always leave something unfinished:
 - "You're 50 XP from leveling up"
 - "3 more wins for weekly mission"
-- "Your friend just beat your score"
+- "Another player just passed your score"
 
 ### Optimal session structure
 ```
@@ -151,6 +248,8 @@ Players remember incomplete tasks more than completed ones. Always leave somethi
 - ❌ Force players to wait (timers that block gameplay)
 - ❌ Punish failure harshly (losing all progress)
 - ❌ Gate core gameplay behind social actions (Reddit policy violation)
+- ❌ Merge posting/commenting/subscribing with replay, continue, or reward buttons
+- ❌ Prompt login before the player understands the value
 - ❌ Show ads or interruptions mid-gameplay
 - ❌ Require reading instructions before playing
 
@@ -170,6 +269,8 @@ If any of these fail, they scroll past.
 ### Feed Preview Design (Inline Mode)
 
 The inline post preview is your storefront. It must sell the game without the player clicking anything.
+
+Inline mode should load quickly, respect post boundaries, and use only tap/click interactions. Put full-screen play, heavy gestures, longer load states, and dense controls in expanded mode.
 
 | ✅ Show in inline mode | ❌ Never show in inline mode |
 |---|---|
@@ -240,6 +341,8 @@ const FIRST_SESSION_REWARDS = [
 ] as const
 ```
 
+For logged-out users, first-win rewards can be local/session-only until login. Prompt login only when it preserves something the player already earned, such as saving progress, joining the leaderboard, sharing, subscribing, or enabling notifications.
+
 ### Return Visit Segmentation
 
 | Segment | Behavior |
@@ -274,6 +377,8 @@ Before shipping ANY feature, answer these:
 4. **Investment**: Does this feature increase the player's stored value?
 5. **Loop closure**: Does this feature connect back to a trigger for the next session?
 6. **Social amplification**: Can this feature generate content visible to non-players?
+7. **Policy safety**: Are posting, commenting, subscribing, login, payment, and notification prompts optional, separate, and explicit?
+8. **Viral path**: Is there a spoiler-free share result or UGC path that does not gate progress?
 
 ## Checklist before finishing
 - [ ] Feature serves at least one engagement loop (Trigger → Action → Reward → Investment)
@@ -283,6 +388,12 @@ Before shipping ANY feature, answer these:
 - [ ] Player investment increases with each session
 - [ ] "One more round" pull exists (Zeigarnik effect)
 - [ ] No gameplay gated behind social actions (Reddit policy)
+- [ ] User actions (post/comment/subscribe) are separate explicit choices
+- [ ] Score sharing replies to a stickied comment unless the user adds custom commentary
+- [ ] Share sheet used where a post/comment is unnecessary
+- [ ] UGC has explicit consent plus deletion/reporting cleanup
+- [ ] Logged-out users can play the core loop before login prompts
+- [ ] Push notifications used only if approved, opted-in, copy-reviewed, and Devvit-native
 - [ ] Near-miss moments designed into the experience
 - [ ] Session ends with unfinished business (cliffhanger)
 - [ ] Inline preview shows game visual + CTA (no loading/instructions)

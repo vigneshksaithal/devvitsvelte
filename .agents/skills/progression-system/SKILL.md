@@ -19,7 +19,7 @@ Design multiple overlapping systems so there's always something to work toward:
 | **Leaderboards** | Daily/Weekly | Ranked score competition | Competition — "I need to reclaim #3" |
 | **Achievements** | Ongoing | One-time milestone badges | Completionism — "Only 3 more to collect" |
 | **Missions** | Daily/Weekly | Short-term task lists | Direction — "I know what to do next" |
-| **Flair** | Ongoing | Visible Reddit-wide status | Identity — "Everyone sees I'm a Champion" |
+| **Flair** | Ongoing | Subreddit-visible status | Identity — "This community sees I'm a Champion" |
 
 ---
 
@@ -38,14 +38,15 @@ Streaks exploit loss aversion: losing a streak feels worse than gaining one feel
 ### Streak Redis schema
 
 ```typescript
-// user:{userId}:streak — hash
+// user:{userId}:streak:meta — hash
 {
-  current: '7',
   longest: '23',
-  lastPlayedDate: '2025-01-15', // ISO date (not datetime)
   freezesAvailable: '1',
   freezesUsed: '0',
 }
+
+// user:{userId}:streak:{year} — bitfield
+// bit dayIndex = 1 when the user completed streak-worthy content for that UTC day
 
 const STREAK_MILESTONES = [
   { days: 3, reward: 'streak_badge_bronze', xp: 50 },
@@ -58,45 +59,31 @@ const STREAK_MILESTONES = [
 
 ### Streak calculation logic
 
+Record streak credit only after the server verifies completion. Do not record streaks from client-only events.
+
 ```typescript
-const updateStreak = async (userId: string): Promise<StreakResult> => {
-  const today = getDateString(new Date()) // 'YYYY-MM-DD'
-  const streakData = await redis.hGetAll(`user:${userId}:streak`)
-  const lastPlayed = streakData['lastPlayedDate']
-  const current = parseInt(streakData['current'] ?? '0', 10)
-
-  if (lastPlayed === today) {
-    return { current, extended: false, broken: false }
-  }
-
-  const yesterday = getDateString(new Date(Date.now() - 86400000))
-
-  if (lastPlayed === yesterday) {
-    const newStreak = current + 1
-    await redis.hSet(`user:${userId}:streak`, {
-      current: String(newStreak),
-      lastPlayedDate: today,
-      longest: String(Math.max(newStreak, parseInt(streakData['longest'] ?? '0', 10))),
-    })
-    return { current: newStreak, extended: true, broken: false }
-  }
-
-  // Streak broken — check for freeze
-  const freezes = parseInt(streakData['freezesAvailable'] ?? '0', 10)
-  if (freezes > 0) {
-    await redis.hSet(`user:${userId}:streak`, {
-      freezesAvailable: String(freezes - 1),
-      freezesUsed: String(parseInt(streakData['freezesUsed'] ?? '0', 10) + 1),
-      lastPlayedDate: today,
-    })
-    return { current, extended: false, broken: false, freezeUsed: true }
-  }
-
-  // Streak broken — reset
-  await redis.hSet(`user:${userId}:streak`, { current: '1', lastPlayedDate: today })
-  return { current: 1, extended: false, broken: true, previousStreak: current }
+const recordStreakCompletion = async (input: {
+  userId: string
+  contentCreatedAt: Date
+  completed?: boolean
+}): Promise<void> => {
+  if (input.completed === false) return
+  const { year, dayIndex } = getUtcYearDayIndex(input.contentCreatedAt)
+  await redis.bitfield(`user:${input.userId}:streak:${year}`, 'set', 'u1', `#${dayIndex}`, 1)
 }
 ```
+
+Current streak calculation must be forgiving:
+
+- A new user starts at streak `0`, not `1`
+- After first verified completion, streak becomes `1`
+- If the user completed today, count backward from today
+- If the user has not completed today, count backward from yesterday so the streak stays visible during the day
+- Bridge Jan 1 into the previous year's bitfield when needed
+- Correctly handle leap years
+- Anchor the day to the content's UTC creation date, not the client clock or request timestamp
+
+Ask before implementation whether archive completions should count toward streaks. Do not assume.
 
 ---
 
@@ -288,11 +275,19 @@ const DAILY_MISSION_POOL = [
 // Rotate deterministically using date-based seed (same missions for all players)
 ```
 
+### Mission design patterns
+
+- Daily missions should have a low floor: one quick completion should preserve habit value.
+- Weekly missions can ask for breadth or mastery, but should not require social posting, subscribing, payment, or notifications.
+- Add near-miss copy when a player is close to a mission, league promotion, or level-up.
+- Give lapsed players a recovery mission that restarts momentum without restoring fake progress.
+- Treat boosters/freezes as friction relief, not mandatory resources.
+
 ---
 
 ## Flair & Player Identity
 
-Reddit flair is visible everywhere the user posts — not just in your game. This makes it the most powerful social identity tool.
+Reddit user flair is subreddit-scoped. It is still powerful because it is visible in the community where the game lives, but do not claim it follows the player across all of Reddit.
 
 ### Flair composition
 
@@ -315,7 +310,7 @@ const syncFlair = async (userId: string): Promise<void> => {
 
   const [xp, streakData] = await Promise.all([
     redis.get(`user:${userId}:xp`),
-    redis.hGetAll(`user:${userId}:streak`),
+    redis.hGetAll(`user:${userId}:streak:meta`),
   ])
 
   const league = getLeagueFromXp(parseInt(xp ?? '0', 10))
@@ -393,15 +388,20 @@ app.post('/internal/cron/player-of-week', async (c) => {
 ## Checklist before finishing
 - [ ] At least 2 progression axes active (streak + XP minimum)
 - [ ] Streak includes grace mechanic (freeze)
+- [ ] Streak credit is recorded server-side after verified completion only
+- [ ] Daily streak state uses UTC content date and bitfield storage where appropriate
+- [ ] New users show streak `0` until first streak-worthy completion
 - [ ] XP curve is logarithmic (fast early, slower later)
 - [ ] At least one leaderboard type implemented (daily recommended)
 - [ ] Player's own rank always visible (even if not in top N)
 - [ ] Leaderboard includes reset countdown
 - [ ] League resets weekly with promotion/demotion
 - [ ] Flair auto-updates on progression changes
+- [ ] Flair copy treats flair as subreddit-scoped, not Reddit-wide
 - [ ] Achievements include hidden/surprise entries
 - [ ] Daily missions rotate deterministically (same for all players)
 - [ ] Progress bar visible on main game screen
 - [ ] Near-miss messaging used ("You're 50 XP from leveling up!")
 - [ ] Player count displayed for social proof
 - [ ] All progression state stored in Redis with documented schema
+- [ ] Stored user identity/progression data has account-deletion cleanup or documented retention bounds

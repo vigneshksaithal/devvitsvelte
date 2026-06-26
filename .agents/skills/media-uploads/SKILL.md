@@ -9,6 +9,8 @@ description: Upload images to Reddit at runtime. Use when users need to share sc
 
 Apps can only display images hosted on Reddit. Use `media.upload()` to upload images at runtime.
 
+Use bundled client assets for static images that ship with the app. Use `media.upload()` for runtime images, GIFs, videos, screenshots, or user-generated media that must be rendered in posts, comments, RTJSON, or the webview.
+
 ## Setup
 
 Enable the `media` permission in devvit.json:
@@ -31,7 +33,7 @@ app.post('/api/upload-screenshot', async (c) => {
 
   const response = await media.upload({
     url: image,       // HTTP URL or data URL
-    type: 'png',      // 'image' | 'gif' | 'png' | 'jpg'
+    type: 'image',    // 'image' | 'gif' | 'video'
   })
 
   return c.json({
@@ -61,8 +63,19 @@ const res = await fetch('/api/upload-screenshot', {
 
 ## Limits
 
-- GIF uploads: max 20 MB
+- Supported image formats: PNG, JPEG, WEBP, GIF
+- Maximum upload size: 20 MB
+- Use `type: 'image'` for PNG, JPEG, and WEBP
+- WEBP may be converted to JPEG in the returned Reddit URL
 - Only Reddit-hosted URLs can be displayed in posts
+
+## Validation rules
+
+- Validate request body shape before upload
+- Accept only data URLs or allowlisted remote URLs
+- Bound payload size before passing user input to `media.upload()`
+- Do not trust MIME/type strings from the client; derive or validate them server-side
+- If uploaded media contains user-generated content, make the user action explicit and preserve a deletion/reporting path
 
 ## Testing
 
@@ -90,5 +103,7 @@ Note: In tests, uploads don't hit the network. The mock records the payload and 
 - [ ] Tests written FIRST for upload handlers
 - [ ] `permissions.media: true` added to devvit.json
 - [ ] Upload happens server-side only (not from client)
+- [ ] Upload type is `image`, `gif`, or `video` (not file extensions like `png`)
+- [ ] Runtime image input is validated and size-bounded
 - [ ] Response returns Reddit-hosted URL to client
 - [ ] `bun run test` passes with zero failures

@@ -1,6 +1,6 @@
 ---
 name: daily-content
-description: Design daily/weekly challenges, scheduled content, rotating events, and content calendars. Read when building any time-based content, automated posting, or FOMO-driven features.
+description: Design daily/weekly challenges, scheduler tasks, timed game events, rotating content, delayed notifications, cleanup jobs, and content calendars. Read when building any time-based content, automated posting, periodic maintenance, or FOMO-driven feature.
 ---
 
 # Daily Content & Scheduled Events
@@ -16,6 +16,8 @@ description: Design daily/weekly challenges, scheduled content, rotating events,
 | Leaderboards get stale | Daily reset gives everyone fresh start |
 | Content feels repetitive | Rotating themes/difficulty keeps it fresh |
 | No urgency to play | "Today only" creates FOMO |
+
+FOMO must be honest: only show countdowns or scarcity when the content, leaderboard, reward, or event actually expires.
 
 ---
 
@@ -51,7 +53,9 @@ description: Design daily/weekly challenges, scheduled content, rotating events,
 
 ## Automated Daily Post Creation
 
-### Scheduler setup (devvit.json)
+## Scheduler setup
+
+Declare recurring or one-off tasks in `devvit.json`; each task maps to an internal endpoint.
 
 ```json
 {
@@ -73,6 +77,52 @@ description: Design daily/weekly challenges, scheduled content, rotating events,
   }
 }
 ```
+
+- Tasks with `cron` run automatically on schedule.
+- Tasks without `cron` are one-off and are scheduled at runtime via `scheduler.runJob()`.
+- Keep handlers bounded. If work may exceed 30 seconds, process a small batch and schedule the next one-off job with a cursor.
+- Limits: 10 live recurring actions per installation, 60 `runJob()` calls/minute, 60 deliveries/minute.
+
+### Runtime one-off jobs
+
+```typescript
+import { scheduler } from '@devvit/web/server'
+
+const jobId = await scheduler.runJob({
+  name: 'game-timeout',
+  data: { postId: context.postId },
+  runAt: new Date(Date.now() + 5 * 60 * 1000),
+})
+
+await redis.set(`job:${context.postId}`, jobId)
+```
+
+Cancel jobs by storing their job id in Redis and calling `scheduler.cancelJob(jobId)`.
+
+### Bounded batch jobs
+
+Use scheduler batches for notification campaigns, Redis migrations, `redisCompressed` backfills, leaderboard trimming, old-record cleanup, derived indexes, and event settlement.
+
+```typescript
+type BatchData = { cursor: string }
+
+app.post('/internal/cron/cleanup-batch', async (c) => {
+  const { data } = await c.req.json<TaskRequest<BatchData>>()
+  const result = await processCleanupPage(data?.cursor ?? '0', 100)
+
+  if (!result.done) {
+    await scheduler.runJob({
+      name: 'cleanup-batch',
+      data: { cursor: result.cursor },
+      runAt: new Date(Date.now() + 1000),
+    })
+  }
+
+  return c.json<TaskResponse>({ status: 'ok' })
+})
+```
+
+For notifications, use Devvit notification APIs only, page opted-in users, and enqueue in groups. Do not build custom push providers, service workers, browser push subscriptions, or Redis opt-in lists.
 
 ### Daily challenge handler
 
@@ -107,6 +157,10 @@ app.post('/internal/cron/daily-challenge', async (c) => {
   // Store reference for leaderboard and stats
   await redis.set(`daily:${today}:postId`, post.id)
   await redis.set(`daily:latest`, post.id)
+  await redis.hSet(`daily:${today}:meta`, {
+    postId: post.id,
+    createdAt: new Date().toISOString(),
+  })
 
   // Pin/sticky the post (if app has mod permissions)
   // await reddit.stickyPost(post.id)
@@ -118,9 +172,14 @@ app.post('/internal/cron/daily-challenge', async (c) => {
   })
   await redis.set(`post:${post.id}:scoreThread`, scoreComment.id)
 
+  // If push notifications are approved for the app, schedule a bounded campaign job.
+  // Use Devvit notifications only; do not create custom push queues or browser push.
+
   return c.json<TaskResponse>({ status: 'ok' })
 })
 ```
+
+Use the daily post id and server-written creation timestamp as the canonical content identity for streaks, notifications, and share links. Do not award streak credit from the client clock or from opening the post.
 
 ### Deterministic challenge generation
 
@@ -163,6 +222,8 @@ const hashString = (str: string): number => {
 ---
 
 ## FOMO Mechanics
+
+FOMO must never block core gameplay, force waiting, or punish a missed day so harshly that a player churns. Use recovery paths: easy re-entry, streak freezes, archived play, and a clear "today's challenge" route.
 
 ### Expiring content
 
@@ -240,7 +301,7 @@ const getDifficultyForDay = (date: Date): Difficulty => {
 
 ## Weekly Recap Post
 
-Celebrate the community's achievements to build belonging:
+Celebrate the community's achievements to build belonging. Do not include private user data or content copied from deleted posts/comments. If recap posts include user-generated text or images, use appropriate attribution and deletion cleanup.
 
 ```typescript
 app.post('/internal/cron/weekly-recap', async (c) => {
@@ -286,6 +347,16 @@ Plan content 2 weeks ahead. Store in Redis for dynamic access:
 }
 ```
 
+## Notifications and Journeys
+
+Push notifications and Devvit Journeys are gated beta features. Use them only when the app has approval:
+
+- Notification opt-in state must come from Devvit notifications APIs, not Redis
+- Notification copy must be short, contextual, and approved
+- Use scheduler batches to page opted-in users; do not send a large campaign in one request
+- Include the canonical daily post/content link
+- Journeys events should track starts, completions, exits, session duration, and key friction points; handle receipts in tests/mocks
+
 ## Checklist before finishing
 - [ ] Daily challenge post created automatically via scheduler
 - [ ] Challenge generation is deterministic (same date = same puzzle for all)
@@ -296,5 +367,10 @@ Plan content 2 weeks ahead. Store in Redis for dynamic access:
 - [ ] Weekly recap post celebrates community stats
 - [ ] League reset runs weekly via scheduler
 - [ ] All scheduler tasks declared in devvit.json
+- [ ] One-off job IDs stored in Redis when cancellation is needed
+- [ ] Long scheduled work split into bounded batches with cursor/progress state
 - [ ] Content calendar stored in Redis for dynamic access
 - [ ] FOMO messaging is honest (real scarcity, not fake urgency)
+- [ ] Daily content id and server-created timestamp anchor streaks and notifications
+- [ ] Push notifications used only if approved, opted-in, copy-reviewed, and batched
+- [ ] Recaps and archives respect Reddit content deletion/account deletion rules

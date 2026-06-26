@@ -41,7 +41,7 @@ app.post('/api/submit-move', async (c) => {
   // ... process move, update Redis ...
 
   // Broadcast to all connected clients
-  await realtime.send(`game:${context.postId}`, {
+  await realtime.send(`game-${context.postId}`, {
     type: 'move',
     player: context.userId,
     position: body.position,
@@ -120,6 +120,13 @@ await connection.disconnect()
 | Max messages/second per installation | 100 |
 | Channel name | No `:` character allowed |
 
+## Channel design
+
+- Use stable, bounded channel names such as `game-${postId}` or `leaderboard-${date}`.
+- Never include raw user input in a channel name.
+- Validate and sanitize any dynamic channel segment; replace `:` and whitespace with safe separators.
+- Store durable state in Redis first, then send realtime as a notification/update hint. Clients should be able to refetch after reconnect.
+
 ## Testing
 
 ```typescript
@@ -143,5 +150,7 @@ test('emits realtime events', async ({ mocks }) => {
 - [ ] Client subscribes via `connectRealtime()` from `@devvit/web/client`
 - [ ] Connection cleaned up on component unmount
 - [ ] Channel names don't contain `:`
+- [ ] Channel names are built from server-sourced IDs or validated strings
+- [ ] Redis remains source of truth for durable multiplayer/leaderboard state
 - [ ] Message payloads under 1 MB
 - [ ] `bun run test` passes with zero failures
